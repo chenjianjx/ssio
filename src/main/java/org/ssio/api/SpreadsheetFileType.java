@@ -4,7 +4,7 @@ public enum SpreadsheetFileType {
     /**
      * microsoft office / open office/ WPS spreadsheet files
      */
-    SPREADSHEET,
+    OFFICE,
 
     /**
      * plain csv text files

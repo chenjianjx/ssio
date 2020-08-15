@@ -8,14 +8,14 @@ import org.ssio.api.SpreadsheetFileType;
 import java.io.OutputStream;
 import java.util.Collection;
 
-public class BeansToSheetParam<T> {
+public class BeansToSheetParam<BEAN> {
 
     private static final String DEFAULT_DATUM_ERR_PLACEHOLDER = "!!ERROR!!";
 
     /**
      * Please use the builder to create an instance
      */
-    protected BeansToSheetParam(Collection<T> beans, Class<T> beanClass,
+    protected BeansToSheetParam(Collection<BEAN> beans, Class<BEAN> beanClass,
                                 OutputStream outputTarget, SpreadsheetFileType fileType,
                                 String sheetName, boolean stillSaveIfDataError,
                                 String datumErrPlaceholder) {
@@ -31,12 +31,12 @@ public class BeansToSheetParam<T> {
     /**
      * not nullable
      */
-    private Collection<T> beans;
+    private Collection<BEAN> beans;
 
     /**
      * not nullable
      */
-    private Class<T> beanClass;
+    private Class<BEAN> beanClass;
     /**
      * not nullable
      */
@@ -66,11 +66,11 @@ public class BeansToSheetParam<T> {
     private String datumErrPlaceholder;
 
 
-    public Collection<T> getBeans() {
+    public Collection<BEAN> getBeans() {
         return beans;
     }
 
-    public Class<T> getBeanClass() {
+    public Class<BEAN> getBeanClass() {
         return beanClass;
     }
 

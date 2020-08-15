@@ -6,9 +6,9 @@ import org.ssio.api.SpreadsheetFileType;
 
 import java.io.InputStream;
 
-public class SheetToBeansParam<T> {
+public class SheetToBeansParam<BEAN> {
 
-    public SheetToBeansParam(Class<T> beanClass, InputStream spreadsheetInput, SpreadsheetFileType fileType, String sheetName, int sheetIndex) {
+    public SheetToBeansParam(Class<BEAN> beanClass, InputStream spreadsheetInput, SpreadsheetFileType fileType, String sheetName, int sheetIndex) {
         this.beanClass = beanClass;
         this.spreadsheetInput = spreadsheetInput;
         this.sheetName = sheetName;
@@ -19,7 +19,7 @@ public class SheetToBeansParam<T> {
     /**
      * not null
      */
-    private Class<T> beanClass;
+    private Class<BEAN> beanClass;
 
     /**
      * not null
@@ -47,7 +47,7 @@ public class SheetToBeansParam<T> {
     private int sheetIndex = 0;
 
 
-    public Class<T> getBeanClass() {
+    public Class<BEAN> getBeanClass() {
         return beanClass;
     }
 

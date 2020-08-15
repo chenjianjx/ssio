@@ -18,8 +18,19 @@ public class BeansToSheetResult {
         return datumErrors;
     }
 
+
+    public boolean hasNoDatumErrors() {
+        return !this.hasDatumErrors();
+    }
+
+    public String getStats() {
+        return "Number of datumErrors is  " + datumErrors.size();
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
+
+
 }

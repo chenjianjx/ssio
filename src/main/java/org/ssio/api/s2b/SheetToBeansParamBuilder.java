@@ -9,14 +9,14 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SheetToBeansParamBuilder<T> {
-    private Class<T> beanClass;
+public class SheetToBeansParamBuilder<BEAN> {
+    private Class<BEAN> beanClass;
     private InputStream spreadsheetInput;
     private SpreadsheetFileType fileType;
     private String sheetName;
     private int sheetIndex;
 
-    public SheetToBeansParamBuilder setBeanClass(Class<T> beanClass) {
+    public SheetToBeansParamBuilder setBeanClass(Class<BEAN> beanClass) {
         this.beanClass = beanClass;
         return this;
     }

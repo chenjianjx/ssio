@@ -11,21 +11,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BeansToSheetParamBuilder<T> {
-    private Collection<T> beans;
-    private Class<T> beanClass;
+public class BeansToSheetParamBuilder<BEAN> {
+    private Collection<BEAN> beans;
+    private Class<BEAN> beanClass;
     private OutputStream outputTarget;
     private SpreadsheetFileType fileType;
     private String sheetName;
     private boolean stillSaveIfDataError;
     private String datumErrPlaceholder;
 
-    public BeansToSheetParamBuilder setBeans(Collection<T> beans) {
+    public BeansToSheetParamBuilder setBeans(Collection<BEAN> beans) {
         this.beans = beans;
         return this;
     }
 
-    public BeansToSheetParamBuilder setBeanClass(Class<T> beanClass) {
+    public BeansToSheetParamBuilder setBeanClass(Class<BEAN> beanClass) {
         this.beanClass = beanClass;
         return this;
     }

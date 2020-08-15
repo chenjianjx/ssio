@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * help with reflection. commons-beanutils have too many limitations (for
- * example, accessing properties of a private internal class is not supported).
- * So we write this.
  * 
  * @author chenjianjx
  */
@@ -20,7 +17,7 @@ public class SsioReflectionHelper {
 	/**
 	 * get property value through getter methods. A runtime exception will be
 	 * thrown if no getter found
-	 * 
+	 *
 	 * @return
 	 * @throws RuntimeException
 	 */
@@ -125,7 +122,7 @@ public class SsioReflectionHelper {
 
 	/**
 	 * find a getter
-	 * 
+	 *
 	 * @param clazz
 	 * @param propName
 	 * @return
@@ -144,7 +141,7 @@ public class SsioReflectionHelper {
 
 	/**
 	 * find a getter method for primitive boolean
-	 * 
+	 *
 	 * @param clazz
 	 * @param propName
 	 * @return
@@ -165,7 +162,7 @@ public class SsioReflectionHelper {
 
 	/**
 	 * find a getter method which starts "get"
-	 * 
+	 *
 	 * @param clazz
 	 * @param propName
 	 * @return

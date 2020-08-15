@@ -11,13 +11,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.ssio.api.abstractsheet.SsCellValueHelper;
 import org.ssio.api.abstractsheet.SsCellValueJavaType;
 import org.ssio.api.abstractsheet.SsSheet;
 import org.ssio.api.b2s.DatumError;
-import org.ssio.internal.common.office.cellvalue.binder.OfficeCellValueBinder;
-import org.ssio.internal.common.office.cellvalue.binder.OfficeCellValueBinderRepo;
+import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinder;
+import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinderRepo;
 
-import java.beans.PropertyDescriptor;
 import java.util.List;
 import java.util.Map;
 
@@ -76,17 +76,11 @@ public class OfficeSheet implements SsSheet {
             String propName = entry.getKey();
 
             try {
-                PropertyDescriptor pd = PropertyUtils.getPropertyDescriptor(bean, propName);
-                SsCellValueJavaType javaType = SsCellValueJavaType.fromRealType(pd.getPropertyType());
-                String nonSupportMsg = "Unsupported real java type to write to an office cell. The type is " + pd.getPropertyType().getName();
-                if (javaType == null) {
-                    throw new IllegalStateException(nonSupportMsg);
-                }
+                SsCellValueJavaType javaType = SsCellValueHelper.resolveJavaTypeOfPropertyOrThrow(bean, propName);
                 OfficeCellValueBinder cellValueBinder = OfficeCellValueBinderRepo.getOfficeCellValueBinder(javaType);
                 if (cellValueBinder == null) {
-                    throw new IllegalStateException(nonSupportMsg);
+                    throw new IllegalStateException();
                 }
-
                 Object propValue = PropertyUtils.getProperty(bean, propName);
                 if (propValue != null) {
                     cellValueBinder.setNonNullValue(cell, propValue);

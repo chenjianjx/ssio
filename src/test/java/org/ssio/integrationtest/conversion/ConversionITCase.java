@@ -3,6 +3,8 @@ package org.ssio.integrationtest.conversion;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.ssio.api.ConversionManager;
 import org.ssio.api.SpreadsheetFileType;
 import org.ssio.api.b2s.BeansToSheetParam;
@@ -26,8 +28,9 @@ class ConversionITCase {
         System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "DEBUG");
     }
 
-    @Test
-    void beansToSheet_officeSanityTest() throws IOException {
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void beansToSheet_sanityTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
 
         Collection<ConversionITBean> beans = Arrays.asList(ConversionITBeanFactory.allEmpty(), ConversionITBeanFactory.allFilled());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -36,7 +39,7 @@ class ConversionITCase {
                 new BeansToSheetParamBuilder<ConversionITBean>()
                         .setBeanClass(ConversionITBean.class)
                         .setBeans(beans)
-                        .setFileType(SpreadsheetFileType.OFFICE)
+                        .setFileType(spreadsheetFileType)
                         .setOutputTarget(outputStream)
                         .setSheetName("first sheet")
                         .build();
@@ -47,7 +50,8 @@ class ConversionITCase {
 
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
-        FileUtils.writeByteArrayToFile(createOfficeFile("beansToSheet_officeSanityTest"), spreadsheet);
+        String extension = spreadsheetFileType == SpreadsheetFileType.CSV ? ".csv" : ".xlsx";
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_sanityTest", extension), spreadsheet);
 
         if (result.hasDatumErrors()) {
             for (DatumError datumError : result.getDatumErrors()) {
@@ -58,10 +62,16 @@ class ConversionITCase {
 
     }
 
-    private File createOfficeFile(String prefix) {
+    /**
+     *
+     * @param prefix
+     * @param extension including the dot "."
+     * @return
+     */
+    private File createSpreadsheetFile(String prefix, String extension) {
         File dir = new File(System.getProperty("java.io.tmpdir"), "/ssio-it-test");
         dir.mkdirs();
-        String filename = prefix + "-" + System.nanoTime() + ".xlsx";
+        String filename = prefix + "-" + System.nanoTime() + extension;
         File file = new File(dir, filename);
         System.out.println("File created: " + file.getAbsolutePath());
         return file;

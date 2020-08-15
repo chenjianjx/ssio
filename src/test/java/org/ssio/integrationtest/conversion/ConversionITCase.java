@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class ConversionITCase {
@@ -111,6 +112,35 @@ class ConversionITCase {
                 Arguments.of(SpreadsheetFileType.CSV, BeansToSheetParam.DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION)
         );
     }
+
+
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void beansToSheet_datumError_noSave(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        Collection<ConversionITSickBean> beans = Arrays.asList(new ConversionITSickBean());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        BeansToSheetParam<ConversionITSickBean> param =
+                new BeansToSheetParamBuilder<ConversionITSickBean>()
+                        .setBeanClass(ConversionITSickBean.class)
+                        .setBeans(beans)
+                        .setFileType(spreadsheetFileType)
+                        .setOutputTarget(outputStream)
+                        .setSheetName("no save")
+                        .setStillSaveIfDataError(false)
+                        .build();
+
+
+        // convert it
+        BeansToSheetResult result = manager.beansToSheet(param);
+
+        // do a save for human eye check
+        byte[] spreadsheet = outputStream.toByteArray();
+        assertEquals(0, spreadsheet.length);
+
+    }
+
 
     private String decideTargetFileExtension(SpreadsheetFileType spreadsheetFileType) {
         return spreadsheetFileType == SpreadsheetFileType.CSV ? ".csv" : ".xlsx";

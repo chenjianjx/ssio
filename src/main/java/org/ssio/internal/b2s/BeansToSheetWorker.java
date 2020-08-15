@@ -38,7 +38,7 @@ public class BeansToSheetWorker {
         int recordIndex = 0;
         for (BEAN bean : param.getBeans()) {
             int rowIndex = recordIndex + 1;
-            sheet.createDataRow(headerMap, bean, recordIndex, rowIndex, param.getDatumErrPlaceholder(), result.getDatumErrors());
+            sheet.createDataRow(headerMap, bean, recordIndex, rowIndex, param.getDatumErrDisplayFunction(), result.getDatumErrors());
             logger.debug("Row created for record " + (recordIndex + 1) + "/" + numOfBeans);
             recordIndex++;
         }

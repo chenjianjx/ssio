@@ -10,8 +10,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
-import static org.ssio.api.b2s.BeansToSheetParam.DEFAULT_DATUM_ERR_PLACEHOLDER;
+import static org.ssio.api.b2s.BeansToSheetParam.DEFAULT_DATUM_ERR_DISPLAY_FUNCTION;
 
 public class BeansToSheetParamBuilder<BEAN> {
     private Collection<BEAN> beans;
@@ -20,7 +21,7 @@ public class BeansToSheetParamBuilder<BEAN> {
     private SpreadsheetFileType fileType;
     private String sheetName;
     private boolean stillSaveIfDataError = true;
-    private String datumErrPlaceholder = DEFAULT_DATUM_ERR_PLACEHOLDER;
+    private Function<DatumError, String> datumErrDisplayFunction = DEFAULT_DATUM_ERR_DISPLAY_FUNCTION;
 
     public BeansToSheetParamBuilder setBeans(Collection<BEAN> beans) {
         this.beans = beans;
@@ -52,8 +53,8 @@ public class BeansToSheetParamBuilder<BEAN> {
         return this;
     }
 
-    public BeansToSheetParamBuilder setDatumErrPlaceholder(String datumErrPlaceholder) {
-        this.datumErrPlaceholder = datumErrPlaceholder;
+    public BeansToSheetParamBuilder setDatumErrDisplayFunction(Function<DatumError, String> datumErrDisplayFunction) {
+        this.datumErrDisplayFunction = datumErrDisplayFunction;
         return this;
     }
 
@@ -65,6 +66,7 @@ public class BeansToSheetParamBuilder<BEAN> {
         builderHelper.validateFieldNotNull("beanClass", beanClass, errors);
         builderHelper.validateFieldNotNull("outputTarget", outputTarget, errors);
         builderHelper.validateFieldNotNull("fileType", fileType, errors);
+        builderHelper.validateFieldNotNull("datumErrDisplayFunction", datumErrDisplayFunction, errors);
         return errors;
     }
 
@@ -73,7 +75,7 @@ public class BeansToSheetParamBuilder<BEAN> {
         if (errors.size() > 0) {
             throw new IllegalArgumentException("Cannot build an object because of the following errors: " + StringUtils.join(errors, "\n"));
         }
-        return new BeansToSheetParam(beans, beanClass, outputTarget, fileType, sheetName, stillSaveIfDataError, datumErrPlaceholder);
+        return new BeansToSheetParam(beans, beanClass, outputTarget, fileType, sheetName, stillSaveIfDataError, datumErrDisplayFunction);
     }
 
 

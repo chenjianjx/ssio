@@ -20,6 +20,7 @@ import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinderRep
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public class OfficeSheet implements SsSheet {
 
@@ -33,17 +34,6 @@ public class OfficeSheet implements SsSheet {
 
     @Override
     public void createHeaderRow(Map<String, String> headerMap) {
-        createHeaderRowInPoi(headerMap);
-
-    }
-
-    @Override
-    public <BEAN> void createDataRow(Map<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, String datumErrPlaceholder, List<DatumError> datumErrors) {
-        createDataRowInPoi(headerMap, bean, recordIndex, rowIndex, datumErrPlaceholder, datumErrors);
-    }
-
-
-    private Row createHeaderRowInPoi(Map<String, String> headerMap) {
         CellStyle style = poiSheet.getWorkbook().createCellStyle();
         style.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -62,11 +52,11 @@ public class OfficeSheet implements SsSheet {
             poiSheet.autoSizeColumn(columnIndex);
             columnIndex++;
         }
-        return header;
+
     }
 
-
-    private <BEAN> Row createDataRowInPoi(Map<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, String datumErrPlaceholder, List<DatumError> datumErrors) {
+    @Override
+    public <BEAN> void createDataRow(Map<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, Function<DatumError, String> datumErrDisplayFunction, List<DatumError> datumErrors) {
         Row row = poiSheet.createRow(rowIndex);
         int columnIndex = 0;
         for (Map.Entry<String, String> entry : headerMap.entrySet()) {
@@ -97,7 +87,7 @@ public class OfficeSheet implements SsSheet {
                 datumErrors.add(de);
 
 
-                cell.setCellValue(datumErrPlaceholder);
+                cell.setCellValue(datumErrDisplayFunction.apply(de));
 
                 CellStyle errStyle = poiSheet.getWorkbook().createCellStyle();
                 errStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
@@ -108,7 +98,6 @@ public class OfficeSheet implements SsSheet {
             columnIndex++;
         }
 
-        return row;
     }
 
 

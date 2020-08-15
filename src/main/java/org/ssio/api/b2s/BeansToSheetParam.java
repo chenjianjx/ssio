@@ -6,10 +6,26 @@ import org.ssio.api.SpreadsheetFileType;
 
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.function.Function;
 
 public class BeansToSheetParam<BEAN> {
 
     static final String DEFAULT_DATUM_ERR_PLACEHOLDER = "!!ERROR!!";
+
+    public static Function<DatumError, String> DEFAULT_DATUM_ERR_DISPLAY_FUNCTION = (datumError) -> {
+        return DEFAULT_DATUM_ERR_PLACEHOLDER;
+    };
+
+    public static Function<DatumError, String> DATUM_ERR_BLANK_DISPLAY_FUNCTION = (datumError) -> {
+        return "";
+    };
+
+    /**
+     * show the stacktrace in the cells. Can be used in troubleshooting situations
+     */
+    public static Function<DatumError, String> DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION = (datumError) -> {
+        return datumError.getStackTrace();
+    };
 
     /**
      * Please use the builder to create an instance
@@ -17,14 +33,14 @@ public class BeansToSheetParam<BEAN> {
     protected BeansToSheetParam(Collection<BEAN> beans, Class<BEAN> beanClass,
                                 OutputStream outputTarget, SpreadsheetFileType fileType,
                                 String sheetName, boolean stillSaveIfDataError,
-                                String datumErrPlaceholder) {
+                                Function<DatumError, String> datumErrDisplayFunction) {
         this.beans = beans;
         this.beanClass = beanClass;
         this.outputTarget = outputTarget;
         this.fileType = fileType;
         this.sheetName = sheetName;
         this.stillSaveIfDataError = stillSaveIfDataError;
-        this.datumErrPlaceholder = datumErrPlaceholder;
+        this.datumErrDisplayFunction = datumErrDisplayFunction;
     }
 
     /**
@@ -58,11 +74,12 @@ public class BeansToSheetParam<BEAN> {
      */
     private boolean stillSaveIfDataError;
 
+
     /**
-     * if some datum is wrong, write this place holder to the cell.
-     * default is {@link #DEFAULT_DATUM_ERR_PLACEHOLDER}
+     * if some datum is wrong, write some string to the cell.
+     * default is to return {@link #DEFAULT_DATUM_ERR_PLACEHOLDER}
      */
-    private String datumErrPlaceholder;
+    private Function<DatumError, String> datumErrDisplayFunction;
 
 
     public Collection<BEAN> getBeans() {
@@ -89,8 +106,8 @@ public class BeansToSheetParam<BEAN> {
         return stillSaveIfDataError;
     }
 
-    public String getDatumErrPlaceholder() {
-        return datumErrPlaceholder;
+    public Function<DatumError, String> getDatumErrDisplayFunction() {
+        return datumErrDisplayFunction;
     }
 
     @Override

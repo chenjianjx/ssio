@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public class CsvSheet implements SsSheet {
 
@@ -43,7 +44,7 @@ public class CsvSheet implements SsSheet {
     }
 
     @Override
-    public <BEAN> void createDataRow(Map<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, String datumErrPlaceholder, List<DatumError> datumErrors) {
+    public <BEAN> void createDataRow(Map<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, Function<DatumError, String> datumErrDisplayFunction, List<DatumError> datumErrors) {
         List<String> cells = new ArrayList<>();
 
         for (Map.Entry<String, String> entry : headerMap.entrySet()) {
@@ -73,7 +74,7 @@ public class CsvSheet implements SsSheet {
                 de.setCause(e);
                 datumErrors.add(de);
 
-                cells.add(datumErrPlaceholder);
+                cells.add(datumErrDisplayFunction.apply(de));
             }
 
         }

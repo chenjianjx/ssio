@@ -2,9 +2,10 @@ package org.ssio.integrationtest.conversion;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.ssio.api.ConversionManager;
 import org.ssio.api.SpreadsheetFileType;
 import org.ssio.api.b2s.BeansToSheetParam;
@@ -17,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -30,9 +33,12 @@ class ConversionITCase {
 
     @ParameterizedTest
     @EnumSource(SpreadsheetFileType.class)
-    void beansToSheet_sanityTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
+    void beansToSheet_positiveTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
 
-        Collection<ConversionITBean> beans = Arrays.asList(ConversionITBeanFactory.allEmpty(), ConversionITBeanFactory.allFilled());
+        Collection<ConversionITBean> beans = Arrays.asList(
+                ConversionITBeanFactory.allEmpty(),
+                ConversionITBeanFactory.normalValues(),
+                ConversionITBeanFactory.bigValues());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         BeansToSheetParam<ConversionITBean> param =
@@ -50,8 +56,7 @@ class ConversionITCase {
 
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
-        String extension = spreadsheetFileType == SpreadsheetFileType.CSV ? ".csv" : ".xlsx";
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_sanityTest", extension), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_positiveTest", decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasDatumErrors()) {
             for (DatumError datumError : result.getDatumErrors()) {
@@ -62,8 +67,56 @@ class ConversionITCase {
 
     }
 
+
+    @ParameterizedTest
+    @MethodSource("beansToSheet_datumError_provider")
+    void beansToSheet_datumError(SpreadsheetFileType spreadsheetFileType, Function<DatumError, String> datumErrDisplayFunction) throws IOException {
+
+        Collection<ConversionITSickBean> beans = Arrays.asList(
+                new ConversionITSickBean(), new ConversionITSickBean());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        BeansToSheetParam<ConversionITSickBean> param =
+                new BeansToSheetParamBuilder<ConversionITSickBean>()
+                        .setBeanClass(ConversionITSickBean.class)
+                        .setBeans(beans)
+                        .setFileType(spreadsheetFileType)
+                        .setOutputTarget(outputStream)
+                        .setSheetName("sick sheet")
+                        .setDatumErrDisplayFunction(datumErrDisplayFunction)
+                        .build();
+
+
+        // save it
+        BeansToSheetResult result = manager.beansToSheet(param);
+
+        // do a save for human eye check
+        byte[] spreadsheet = outputStream.toByteArray();
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_datumError", decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+
+        if (result.hasNoDatumErrors()) {
+            fail("There should be datum errors");
+        }
+
+    }
+
+    static Stream<Arguments> beansToSheet_datumError_provider() {
+        return Stream.of(
+
+                Arguments.of(SpreadsheetFileType.OFFICE, BeansToSheetParam.DATUM_ERR_BLANK_DISPLAY_FUNCTION),
+                Arguments.of(SpreadsheetFileType.OFFICE, BeansToSheetParam.DEFAULT_DATUM_ERR_DISPLAY_FUNCTION),
+                Arguments.of(SpreadsheetFileType.OFFICE, BeansToSheetParam.DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION),
+                Arguments.of(SpreadsheetFileType.CSV, BeansToSheetParam.DATUM_ERR_BLANK_DISPLAY_FUNCTION),
+                Arguments.of(SpreadsheetFileType.CSV, BeansToSheetParam.DEFAULT_DATUM_ERR_DISPLAY_FUNCTION),
+                Arguments.of(SpreadsheetFileType.CSV, BeansToSheetParam.DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION)
+        );
+    }
+
+    private String decideTargetFileExtension(SpreadsheetFileType spreadsheetFileType) {
+        return spreadsheetFileType == SpreadsheetFileType.CSV ? ".csv" : ".xlsx";
+    }
+
     /**
-     *
      * @param prefix
      * @param extension including the dot "."
      * @return

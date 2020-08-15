@@ -1,6 +1,5 @@
 package org.ssio.integrationtest.conversion;
 
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -9,11 +8,11 @@ import java.util.Date;
 
 public class ConversionITBeanFactory {
 
-    public static ConversionITBean allEmpty(){
+    public static ConversionITBean allEmpty() {
         return new ConversionITBean();
     }
 
-    public static ConversionITBean allFilled(){
+    public static ConversionITBean bigValues() {
         ConversionITBean bean = new ConversionITBean();
 
         bean.setPrimBoolean(true);
@@ -33,10 +32,36 @@ public class ConversionITBeanFactory {
         bean.setDate(new Date());
         bean.setLocalDate(LocalDate.now());
         bean.setLocalDateTime(LocalDateTime.now());
-        bean.setStr("some string");
+        bean.setStr("A very very very very very very very very very very very very \n very very very very very very very very very very long string with line breaks");
         bean.setEnumeration(ConversionITEnum.ENUM_VALUE_A);
 
         return bean;
     }
 
+
+    public static ConversionITBean normalValues() {
+        ConversionITBean bean = new ConversionITBean();
+
+        bean.setPrimBoolean(true);
+        bean.setPrimShort((short) 123);
+        bean.setPrimInt(9999);
+        bean.setPrimLong(1000000001);
+        bean.setPrimFloat(123.456f);
+        bean.setPrimDouble(456.789);
+        bean.setObjBoolean(true);
+        bean.setObjShort((short) -123);
+        bean.setObjInt(-9999);
+        bean.setObjLong(-1000000001l);
+        bean.setObjFloat(-123.456f);
+        bean.setObjDouble(-456.789);
+        bean.setBigInteger(BigInteger.valueOf(777));
+        bean.setBigDecimal(BigDecimal.valueOf(-888));
+        bean.setDate(new Date());
+        bean.setLocalDate(LocalDate.now());
+        bean.setLocalDateTime(LocalDateTime.now());
+        bean.setStr("A normal string");
+        bean.setEnumeration(ConversionITEnum.ENUM_VALUE_A);
+
+        return bean;
+    }
 }

@@ -1,6 +1,5 @@
 package org.ssio.api.b2s;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.SpreadsheetFileType;
@@ -10,7 +9,7 @@ import java.util.Collection;
 
 public class BeansToSheetParam<BEAN> {
 
-    private static final String DEFAULT_DATUM_ERR_PLACEHOLDER = "!!ERROR!!";
+    static final String DEFAULT_DATUM_ERR_PLACEHOLDER = "!!ERROR!!";
 
     /**
      * Please use the builder to create an instance
@@ -57,7 +56,7 @@ public class BeansToSheetParam<BEAN> {
      * output the sheet if there are data error?
      * default true
      */
-    private boolean stillSaveIfDataError = true;
+    private boolean stillSaveIfDataError;
 
     /**
      * if some datum is wrong, write this place holder to the cell.
@@ -91,9 +90,6 @@ public class BeansToSheetParam<BEAN> {
     }
 
     public String getDatumErrPlaceholder() {
-        if (StringUtils.isBlank(datumErrPlaceholder)) {
-            datumErrPlaceholder = DEFAULT_DATUM_ERR_PLACEHOLDER;
-        }
         return datumErrPlaceholder;
     }
 

@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public interface SsSheet {
 
-    SsRow createHeaderRow(Map<String, String> headerMap);
+    void createHeaderRow(Map<String, String> headerMap);
 
-    <BEAN> SsRow createDataRow(Map<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, String datumErrPlaceholder, List<DatumError> datumErrors);
+    <BEAN> void createDataRow(Map<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, String datumErrPlaceholder, List<DatumError> datumErrors);
 }

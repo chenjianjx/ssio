@@ -1,5 +1,6 @@
 package org.ssio.api.abstractsheet.office;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -8,14 +9,21 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.ssio.api.abstractsheet.SsCellValueJavaType;
 import org.ssio.api.abstractsheet.SsSheet;
 import org.ssio.api.b2s.DatumError;
-import org.ssio.internal.util.SsioReflectionHelper;
+import org.ssio.internal.common.office.cellvalue.binder.OfficeCellValueBinder;
+import org.ssio.internal.common.office.cellvalue.binder.OfficeCellValueBinderRepo;
 
+import java.beans.PropertyDescriptor;
 import java.util.List;
 import java.util.Map;
 
 public class OfficeSheet implements SsSheet {
+
+    private static final Logger logger = LoggerFactory.getLogger(OfficeSheet.class);
 
     private Sheet poiSheet;
 
@@ -24,15 +32,14 @@ public class OfficeSheet implements SsSheet {
     }
 
     @Override
-    public OfficeRow createHeaderRow(Map<String, String> headerMap) {
-        Row header = createHeaderRowInPoi(headerMap);
-        return new OfficeRow(header);
+    public void createHeaderRow(Map<String, String> headerMap) {
+        createHeaderRowInPoi(headerMap);
+
     }
 
     @Override
-    public <BEAN> OfficeRow createDataRow(Map<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, String datumErrPlaceholder, List<DatumError> datumErrors) {
-        Row poiRow = createDataRowInPoi(headerMap, bean, recordIndex, rowIndex, datumErrPlaceholder, datumErrors);
-        return new OfficeRow(poiRow);
+    public <BEAN> void createDataRow(Map<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, String datumErrPlaceholder, List<DatumError> datumErrors) {
+        createDataRowInPoi(headerMap, bean, recordIndex, rowIndex, datumErrPlaceholder, datumErrors);
     }
 
 
@@ -63,34 +70,47 @@ public class OfficeSheet implements SsSheet {
         Row row = poiSheet.createRow(rowIndex);
         int columnIndex = 0;
         for (Map.Entry<String, String> entry : headerMap.entrySet()) {
-            boolean hasDatumError = false;
-            String propName = entry.getKey();
-            Object propValue;
-            try {
-                propValue = SsioReflectionHelper.getProperty(bean, propName);
-            } catch (Exception e) {
-                if (datumErrors != null) {
-                    DatumError de = new DatumError();
-                    de.setPropName(propName);
-                    de.setRecordIndex(recordIndex);
-                    de.setCause(e);
-                    datumErrors.add(de);
-                }
-                hasDatumError = true;
-                propValue = datumErrPlaceholder;
-            }
-            String propValueText = (propValue == null ? null : propValue
-                    .toString());
-            Cell cell = row.createCell(columnIndex);
-            cell.setCellValue(StringUtils.defaultString(propValueText));
 
-            if (hasDatumError) {
+            Cell cell = row.createCell(columnIndex);
+
+            String propName = entry.getKey();
+
+            try {
+                PropertyDescriptor pd = PropertyUtils.getPropertyDescriptor(bean, propName);
+                SsCellValueJavaType javaType = SsCellValueJavaType.fromRealType(pd.getPropertyType());
+                String nonSupportMsg = "Unsupported real java type to write to an office cell. The type is " + pd.getPropertyType().getName();
+                if (javaType == null) {
+                    throw new IllegalStateException(nonSupportMsg);
+                }
+                OfficeCellValueBinder cellValueBinder = OfficeCellValueBinderRepo.getOfficeCellValueBinder(javaType);
+                if (cellValueBinder == null) {
+                    throw new IllegalStateException(nonSupportMsg);
+                }
+
+                Object propValue = PropertyUtils.getProperty(bean, propName);
+                if (propValue != null) {
+                    cellValueBinder.setNonNullValue(cell, propValue);
+                }
+
+            } catch (Exception e) {
+
+                logger.warn("Datum error", e);
+
+                DatumError de = new DatumError();
+                de.setPropName(propName);
+                de.setRecordIndex(recordIndex);
+                de.setCause(e);
+                datumErrors.add(de);
+
+
+                cell.setCellValue(datumErrPlaceholder);
+
                 CellStyle errStyle = poiSheet.getWorkbook().createCellStyle();
                 errStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
                 errStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
                 cell.setCellStyle(errStyle);
-            }
 
+            }
             columnIndex++;
         }
 

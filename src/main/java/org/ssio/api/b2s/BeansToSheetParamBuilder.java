@@ -11,14 +11,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static org.ssio.api.b2s.BeansToSheetParam.DEFAULT_DATUM_ERR_PLACEHOLDER;
+
 public class BeansToSheetParamBuilder<BEAN> {
     private Collection<BEAN> beans;
     private Class<BEAN> beanClass;
     private OutputStream outputTarget;
     private SpreadsheetFileType fileType;
     private String sheetName;
-    private boolean stillSaveIfDataError;
-    private String datumErrPlaceholder;
+    private boolean stillSaveIfDataError = true;
+    private String datumErrPlaceholder = DEFAULT_DATUM_ERR_PLACEHOLDER;
 
     public BeansToSheetParamBuilder setBeans(Collection<BEAN> beans) {
         this.beans = beans;
@@ -79,5 +81,4 @@ public class BeansToSheetParamBuilder<BEAN> {
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
-
 }

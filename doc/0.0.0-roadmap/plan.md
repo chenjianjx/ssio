@@ -1,7 +1,7 @@
 # Roadmap
 
-* Define the api including the data structure (using builder pattern)  
-* saving using header map instead of annotations (default format for date/number in excel and csv)
+* Define the api including the data structure (using builder pattern)   ✔
+* saving using header map instead of annotations (default format for date/number in excel and csv) ✔
 * parsing using header map instead of annotations (default format for date/number in excel and csv)
 * fix the api/internal problem
 * annotations (default format for date/number in excel and csv)

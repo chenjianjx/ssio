@@ -12,7 +12,7 @@ import java.io.IOException;
  * The facade.
  * It's state-less, hence thread-safe
  */
-public class SsioManager {
+public class ConversionManager {
 
 
     /**

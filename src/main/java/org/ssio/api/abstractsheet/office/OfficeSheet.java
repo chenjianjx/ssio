@@ -18,6 +18,7 @@ import org.ssio.api.b2s.DatumError;
 import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinder;
 import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinderRepo;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -33,7 +34,7 @@ public class OfficeSheet implements SsSheet {
     }
 
     @Override
-    public void createHeaderRow(Map<String, String> headerMap) {
+    public void createHeaderRow(LinkedHashMap<String, String> headerMap) {
         CellStyle style = poiSheet.getWorkbook().createCellStyle();
         style.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -56,7 +57,7 @@ public class OfficeSheet implements SsSheet {
     }
 
     @Override
-    public <BEAN> void createDataRow(Map<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, Function<DatumError, String> datumErrDisplayFunction, List<DatumError> datumErrors) {
+    public <BEAN> void createDataRow(LinkedHashMap<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, Function<DatumError, String> datumErrDisplayFunction, List<DatumError> datumErrors) {
         Row row = poiSheet.createRow(rowIndex);
         int columnIndex = 0;
         for (Map.Entry<String, String> entry : headerMap.entrySet()) {

@@ -12,8 +12,8 @@ import org.ssio.internal.temp.HeaderUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BeansToSheetWorker {
 
@@ -21,7 +21,7 @@ public class BeansToSheetWorker {
 
     public <BEAN> BeansToSheetResult doWork(BeansToSheetParam<BEAN> param) throws IOException {
 
-        Map<String, String> headerMap = HeaderUtils.generateHeaderMapFromProps(param.getBeanClass());
+        LinkedHashMap<String, String> headerMap = HeaderUtils.generateHeaderMapFromProps(param.getBeanClass());
 
         SsFactory ssFactory = new DefaultSsFactory();
 

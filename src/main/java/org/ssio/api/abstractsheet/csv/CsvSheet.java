@@ -13,6 +13,7 @@ import org.ssio.internal.common.cellvalue.binder.csv.CsvCellValueBinderRepo;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -28,7 +29,7 @@ public class CsvSheet implements SsSheet {
     }
 
     @Override
-    public void createHeaderRow(Map<String, String> headerMap) {
+    public void createHeaderRow(LinkedHashMap<String, String> headerMap) {
         List<String> cells = new ArrayList<>();
         for (String value : headerMap.values()) {
             cells.add(value);
@@ -44,7 +45,7 @@ public class CsvSheet implements SsSheet {
     }
 
     @Override
-    public <BEAN> void createDataRow(Map<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, Function<DatumError, String> datumErrDisplayFunction, List<DatumError> datumErrors) {
+    public <BEAN> void createDataRow(LinkedHashMap<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, Function<DatumError, String> datumErrDisplayFunction, List<DatumError> datumErrors) {
         List<String> cells = new ArrayList<>();
 
         for (Map.Entry<String, String> entry : headerMap.entrySet()) {

@@ -2,13 +2,11 @@ package org.ssio.internal.temp;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-
 import java.beans.PropertyDescriptor;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +22,7 @@ public class HeaderUtils {
 	 * @param beanClass
 	 * @return A modifiable map.  Feel free to add or remove elements.
 	 */
-	public static Map<String, String> generateHeaderMapFromProps(Class<?> beanClass) {
+	public static LinkedHashMap<String, String> generateHeaderMapFromProps(Class<?> beanClass) {
 
 		PropertyDescriptor[] pdArray = PropertyUtils.getPropertyDescriptors(beanClass);
 		if (pdArray == null || pdArray.length == 0) {
@@ -46,7 +44,7 @@ public class HeaderUtils {
 	 * @param propNames
 	 * @return A modifiable map.  Feel free to add or remove elements.
 	 */
-	public static Map<String, String> generateHeaderMapFromPropNames(Collection<String> propNames) {
+	public static LinkedHashMap<String, String> generateHeaderMapFromPropNames(Collection<String> propNames) {
 		LinkedHashMap<String, String> resultMap = new LinkedHashMap<String, String>();
 
 		if(propNames == null || propNames.isEmpty()){
@@ -66,7 +64,7 @@ public class HeaderUtils {
 	 * @param beanClass
 	 * @return A modifiable map.  Feel free to add or remove elements.
 	 */
-	public static Map<String, String> generateReverseHeaderMapFromProps(Class<?> beanClass) {
+	public static LinkedHashMap<String, String> generateReverseHeaderMapFromProps(Class<?> beanClass) {
 		LinkedHashMap<String, String> resultMap = new LinkedHashMap<String, String>();
 
 		PropertyDescriptor[] pdArray = PropertyUtils.getPropertyDescriptors(beanClass);
@@ -95,7 +93,7 @@ public class HeaderUtils {
 	 * @param columnHeaders the column headers in the spreadsheet
 	 * @return A modifiable map.  Feel free to add or remove elements.
 	 */
-	public static Map<String, String> generateReverseHeaderMapFromColumnHeaders(Collection<String> columnHeaders) {
+	public static LinkedHashMap<String, String> generateReverseHeaderMapFromColumnHeaders(Collection<String> columnHeaders) {
 		LinkedHashMap<String, String> resultMap = new LinkedHashMap<String, String>();
 		if (columnHeaders == null || columnHeaders.isEmpty()) {
 			return resultMap;
@@ -112,7 +110,7 @@ public class HeaderUtils {
 	 * @param strings
 	 * @return
      */
-	public static Map<String, String> mirrorMap(Collection<String> strings) {
+	public static LinkedHashMap<String, String> mirrorMap(Collection<String> strings) {
 		LinkedHashMap<String, String> resultMap = new LinkedHashMap<String, String>();
 		if (strings == null || strings.isEmpty()) {
 			return resultMap;

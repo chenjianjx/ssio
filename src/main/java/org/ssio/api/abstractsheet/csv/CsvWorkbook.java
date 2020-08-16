@@ -14,10 +14,11 @@ import java.io.StringWriter;
 public class CsvWorkbook implements SsWorkbook {
     private final CSVPrinter csvPrinter;
 
-    public CsvWorkbook() {
+    public CsvWorkbook(char cellSeparator) {
         StringWriter out = new StringWriter();
         try {
-            this.csvPrinter = new CSVPrinter(out, CSVFormat.EXCEL);
+            CSVFormat csvFormat = CSVFormat.EXCEL.withDelimiter(cellSeparator);
+            this.csvPrinter = new CSVPrinter(out, csvFormat);
         } catch (IOException e) {
             //shouldn't happen
             throw new IllegalStateException(e);

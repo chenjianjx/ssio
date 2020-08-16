@@ -12,13 +12,9 @@ public class BeansToSheetParam<BEAN> {
 
     static final String DEFAULT_DATUM_ERR_PLACEHOLDER = "!!ERROR!!";
 
-    public static Function<DatumError, String> DEFAULT_DATUM_ERR_DISPLAY_FUNCTION = (datumError) -> {
-        return DEFAULT_DATUM_ERR_PLACEHOLDER;
-    };
+    public static Function<DatumError, String> DEFAULT_DATUM_ERR_DISPLAY_FUNCTION = (datumError) -> DEFAULT_DATUM_ERR_PLACEHOLDER;
 
-    public static Function<DatumError, String> DATUM_ERR_BLANK_DISPLAY_FUNCTION = (datumError) -> {
-        return "";
-    };
+    public static Function<DatumError, String> DATUM_ERR_BLANK_DISPLAY_FUNCTION = (datumError) -> "";
 
     /**
      * show the stacktrace in the cells. Can be used in troubleshooting situations
@@ -29,15 +25,24 @@ public class BeansToSheetParam<BEAN> {
 
     /**
      * Please use the builder to create an instance
+     * @param beans
+     * @param beanClass
+     * @param outputTarget
+     * @param fileType
+     * @param cellSeparator
+     * @param createHeader
+     * @param sheetName
+     * @param stillSaveIfDataError
+     * @param datumErrDisplayFunction
      */
-    protected BeansToSheetParam(Collection<BEAN> beans, Class<BEAN> beanClass,
-                                OutputStream outputTarget, SpreadsheetFileType fileType,
-                                String sheetName, boolean stillSaveIfDataError,
-                                Function<DatumError, String> datumErrDisplayFunction) {
+    public BeansToSheetParam(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget, SpreadsheetFileType fileType, char cellSeparator, boolean createHeader,
+                             String sheetName, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction) {
         this.beans = beans;
         this.beanClass = beanClass;
         this.outputTarget = outputTarget;
         this.fileType = fileType;
+        this.cellSeparator = cellSeparator;
+        this.createHeader = createHeader;
         this.sheetName = sheetName;
         this.stillSaveIfDataError = stillSaveIfDataError;
         this.datumErrDisplayFunction = datumErrDisplayFunction;
@@ -60,6 +65,20 @@ public class BeansToSheetParam<BEAN> {
      * not nullable
      */
     private SpreadsheetFileType fileType;
+
+
+    /**
+     * Only used for CSV.  Default is ","
+     */
+    private char cellSeparator;
+
+
+    /**
+     * whether to create a header row. Default is true.
+     *
+     */
+    private boolean createHeader;
+
 
     /**
      * nullable.
@@ -108,6 +127,14 @@ public class BeansToSheetParam<BEAN> {
 
     public Function<DatumError, String> getDatumErrDisplayFunction() {
         return datumErrDisplayFunction;
+    }
+
+    public char getCellSeparator() {
+        return cellSeparator;
+    }
+
+    public boolean isCreateHeader() {
+        return createHeader;
     }
 
     @Override

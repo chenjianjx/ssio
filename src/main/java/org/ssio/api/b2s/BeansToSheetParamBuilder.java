@@ -19,6 +19,8 @@ public class BeansToSheetParamBuilder<BEAN> {
     private Class<BEAN> beanClass;
     private OutputStream outputTarget;
     private SpreadsheetFileType fileType;
+    private char cellSeparator = ',' ;
+    private boolean createHeader = true;
     private String sheetName;
     private boolean stillSaveIfDataError = true;
     private Function<DatumError, String> datumErrDisplayFunction = DEFAULT_DATUM_ERR_DISPLAY_FUNCTION;
@@ -40,6 +42,16 @@ public class BeansToSheetParamBuilder<BEAN> {
 
     public BeansToSheetParamBuilder setFileType(SpreadsheetFileType fileType) {
         this.fileType = fileType;
+        return this;
+    }
+
+    public BeansToSheetParamBuilder<BEAN> setCellSeparator(char cellSeparator) {
+        this.cellSeparator = cellSeparator;
+        return this;
+    }
+
+    public BeansToSheetParamBuilder<BEAN> setCreateHeader(boolean createHeader) {
+        this.createHeader = createHeader;
         return this;
     }
 
@@ -67,6 +79,7 @@ public class BeansToSheetParamBuilder<BEAN> {
         builderHelper.validateFieldNotNull("outputTarget", outputTarget, errors);
         builderHelper.validateFieldNotNull("fileType", fileType, errors);
         builderHelper.validateFieldNotNull("datumErrDisplayFunction", datumErrDisplayFunction, errors);
+
         return errors;
     }
 
@@ -75,7 +88,7 @@ public class BeansToSheetParamBuilder<BEAN> {
         if (errors.size() > 0) {
             throw new IllegalArgumentException("Cannot build an object because of the following errors: " + StringUtils.join(errors, "\n"));
         }
-        return new BeansToSheetParam(beans, beanClass, outputTarget, fileType, sheetName, stillSaveIfDataError, datumErrDisplayFunction);
+        return new BeansToSheetParam(beans, beanClass, outputTarget, fileType, cellSeparator, createHeader, sheetName, stillSaveIfDataError, datumErrDisplayFunction);
     }
 
 

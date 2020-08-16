@@ -11,6 +11,8 @@ import org.ssio.api.b2s.BeansToSheetResult;
 import org.ssio.internal.temp.HeaderUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class BeansToSheetWorker {
@@ -23,7 +25,7 @@ public class BeansToSheetWorker {
 
         SsFactory ssFactory = new DefaultSsFactory();
 
-        SsWorkbook workbook = ssFactory.newWorkbook(param.getFileType());
+        SsWorkbook workbook = ssFactory.newWorkbook(param.getFileType(), param.getCellSeparator());
         SsSheet sheet = workbook.createSheet(param.getSheetName());
 
         int numOfBeans = param.getBeans().size();
@@ -31,17 +33,22 @@ public class BeansToSheetWorker {
 
         BeansToSheetResult result = new BeansToSheetResult();
 
-        sheet.createHeaderRow(headerMap);
-        logger.debug("Header row created");
+        int rowIndex = 0;
+        if (param.isCreateHeader()) {
+            sheet.createHeaderRow(headerMap);
+            logger.debug("Header row created");
+            rowIndex++;
+        }
 
 
-        int recordIndex = 0;
-        for (BEAN bean : param.getBeans()) {
-            int rowIndex = recordIndex + 1;
+        List<BEAN> beans = new ArrayList<>(param.getBeans());
+        for (int recordIndex = 0; recordIndex < beans.size(); recordIndex++) {
+            BEAN bean = beans.get(recordIndex);
             sheet.createDataRow(headerMap, bean, recordIndex, rowIndex, param.getDatumErrDisplayFunction(), result.getDatumErrors());
             logger.debug("Row created for record " + (recordIndex + 1) + "/" + numOfBeans);
-            recordIndex++;
+            rowIndex++;
         }
+
 
         if (shouldWriteToTarget(param, result)) {
             workbook.write(param.getOutputTarget());

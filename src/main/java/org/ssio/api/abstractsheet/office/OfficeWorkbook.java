@@ -18,7 +18,7 @@ public class OfficeWorkbook implements SsWorkbook {
 
     @Override
     public SsSheet createSheet(String sheetName) {
-        Sheet poiSheet = poiBook.createSheet(sheetName);
+        Sheet poiSheet = sheetName == null ? poiBook.createSheet() : poiBook.createSheet(sheetName);
         return new OfficeSheet(poiSheet);
     }
 

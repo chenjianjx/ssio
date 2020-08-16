@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.ssio.api.ConversionManager;
 import org.ssio.api.SpreadsheetFileType;
 import org.ssio.api.b2s.BeansToSheetParam;
@@ -135,9 +136,71 @@ class ConversionITCase {
         // convert it
         BeansToSheetResult result = manager.beansToSheet(param);
 
-        // do a save for human eye check
+
         byte[] spreadsheet = outputStream.toByteArray();
         assertEquals(0, spreadsheet.length);
+
+    }
+
+
+    @ParameterizedTest
+    @ValueSource(chars = {',', '\t'})
+    void beansToSheet_csvSeparator(char cellSeparator) throws IOException {
+
+        Collection<ConversionITSimpleBean> beans = Arrays.asList(new ConversionITSimpleBean());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        BeansToSheetParam<ConversionITSimpleBean> param =
+                new BeansToSheetParamBuilder<ConversionITSimpleBean>()
+                        .setBeanClass(ConversionITSimpleBean.class)
+                        .setBeans(beans)
+                        .setFileType(SpreadsheetFileType.CSV)
+                        .setCellSeparator(cellSeparator)
+                        .setOutputTarget(outputStream)
+                        .build();
+
+
+        // convert it
+        BeansToSheetResult result = manager.beansToSheet(param);
+
+        // do a save for human eye check
+        byte[] spreadsheet = outputStream.toByteArray();
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_csvSeparator", decideTargetFileExtension(SpreadsheetFileType.CSV)), spreadsheet);
+
+        if (result.hasDatumErrors()) {
+            fail("There should be no datum errors");
+        }
+
+    }
+
+
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void beansToSheet_noHeader(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        Collection<ConversionITSimpleBean> beans = Arrays.asList(new ConversionITSimpleBean(), new ConversionITSimpleBean());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        BeansToSheetParam<ConversionITSimpleBean> param =
+                new BeansToSheetParamBuilder<ConversionITSimpleBean>()
+                        .setBeanClass(ConversionITSimpleBean.class)
+                        .setBeans(beans)
+                        .setFileType(spreadsheetFileType)
+                        .setOutputTarget(outputStream)
+                        .setCreateHeader(false)
+                        .build();
+
+
+        // save it
+        BeansToSheetResult result = manager.beansToSheet(param);
+
+        // do a save for human eye check
+        byte[] spreadsheet = outputStream.toByteArray();
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_noHeader", decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+
+        if (result.hasDatumErrors()) {
+            fail("There should be no datum errors");
+        }
 
     }
 

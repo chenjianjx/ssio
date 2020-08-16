@@ -7,14 +7,14 @@ import org.ssio.api.abstractsheet.office.OfficeWorkbook;
 public class DefaultSsFactory implements SsFactory {
 
     @Override
-    public SsWorkbook newWorkbook(SpreadsheetFileType fileType) {
+    public SsWorkbook newWorkbook(SpreadsheetFileType fileType, char cellSeparator) {
         if (fileType == null) {
             throw new IllegalArgumentException();
         }
 
         switch (fileType) {
             case CSV:
-                return new CsvWorkbook();
+                return new CsvWorkbook(cellSeparator);
 
             case OFFICE:
                 return new OfficeWorkbook();

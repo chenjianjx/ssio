@@ -44,7 +44,7 @@ public class SheetToBeansParam<BEAN> {
      * not null
      * Will be ignored if input is csv
      */
-    private int sheetIndex = 0;
+    private int sheetIndex;
 
 
     public Class<BEAN> getBeanClass() {

@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-class ConversionITCase {
+class BeansToSheetITCase {
     ConversionManager manager = new ConversionManager();
 
     @BeforeAll
@@ -58,7 +58,7 @@ class ConversionITCase {
 
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_positiveTest", decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_positiveTest", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasDatumErrors()) {
             for (DatumError datumError : result.getDatumErrors()) {
@@ -94,7 +94,7 @@ class ConversionITCase {
 
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_datumError", decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_datumError", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasNoDatumErrors()) {
             fail("There should be datum errors");
@@ -165,7 +165,7 @@ class ConversionITCase {
 
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_csvSeparator", decideTargetFileExtension(SpreadsheetFileType.CSV)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_csvSeparator", ConversionITTestHelper.decideTargetFileExtension(SpreadsheetFileType.CSV)), spreadsheet);
 
         if (result.hasDatumErrors()) {
             fail("There should be no datum errors");
@@ -196,7 +196,7 @@ class ConversionITCase {
 
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_noHeader", decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_noHeader", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasDatumErrors()) {
             fail("There should be no datum errors");
@@ -204,10 +204,6 @@ class ConversionITCase {
 
     }
 
-
-    private String decideTargetFileExtension(SpreadsheetFileType spreadsheetFileType) {
-        return spreadsheetFileType == SpreadsheetFileType.CSV ? ".csv" : ".xlsx";
-    }
 
     /**
      * @param prefix

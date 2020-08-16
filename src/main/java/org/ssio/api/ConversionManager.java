@@ -5,6 +5,7 @@ import org.ssio.api.b2s.BeansToSheetResult;
 import org.ssio.api.s2b.SheetToBeansParam;
 import org.ssio.api.s2b.SheetToBeansResult;
 import org.ssio.internal.b2s.BeansToSheetWorker;
+import org.ssio.internal.s2b.SheetToBeansWorker;
 
 import java.io.IOException;
 
@@ -35,7 +36,11 @@ public class ConversionManager {
      * @param param Please use {@link SheetToBeansParam} to create the param
      * @return
      */
-    public <BEAN> SheetToBeansResult<BEAN> sheetToBeans(SheetToBeansParam<BEAN> param) {
-        return new SheetToBeansResult<>();
+    public <BEAN> SheetToBeansResult<BEAN> sheetToBeans(SheetToBeansParam<BEAN> param) throws IOException {
+        if (param == null) {
+            throw new IllegalArgumentException();
+        }
+        SheetToBeansWorker worker = new SheetToBeansWorker();
+        return worker.doWork(param);
     }
 }

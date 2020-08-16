@@ -86,7 +86,7 @@ public class BeansToSheetParamBuilder<BEAN> {
     public BeansToSheetParam build() {
         List<String> errors = this.validate();
         if (errors.size() > 0) {
-            throw new IllegalArgumentException("Cannot build an object because of the following errors: " + StringUtils.join(errors, "\n"));
+            throw new IllegalArgumentException("Cannot build an object because of the following errors: \n" + StringUtils.join(errors, "\n"));
         }
         return new BeansToSheetParam(beans, beanClass, outputTarget, fileType, cellSeparator, createHeader, sheetName, stillSaveIfDataError, datumErrDisplayFunction);
     }

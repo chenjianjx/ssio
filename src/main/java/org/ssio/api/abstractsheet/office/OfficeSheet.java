@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ssio.api.abstractsheet.SsCellValueHelper;
 import org.ssio.api.abstractsheet.SsCellValueJavaType;
+import org.ssio.api.abstractsheet.SsRow;
 import org.ssio.api.abstractsheet.SsSheet;
 import org.ssio.api.b2s.DatumError;
 import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinder;
@@ -22,6 +23,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
+import static org.ssio.internal.util.SsioReflectionHelper.getPropertyEnumClassIfEnum;
 
 public class OfficeSheet implements SsSheet {
 
@@ -68,7 +71,8 @@ public class OfficeSheet implements SsSheet {
 
             try {
                 SsCellValueJavaType javaType = SsCellValueHelper.resolveJavaTypeOfPropertyOrThrow(bean, propName);
-                OfficeCellValueBinder cellValueBinder = OfficeCellValueBinderRepo.getOfficeCellValueBinder(javaType);
+                Class<Enum<?>> enumClassIfEnum = getPropertyEnumClassIfEnum(bean, propName);
+                OfficeCellValueBinder cellValueBinder = OfficeCellValueBinderRepo.getOfficeCellValueBinder(javaType, enumClassIfEnum);
                 if (cellValueBinder == null) {
                     throw new IllegalStateException();
                 }
@@ -101,5 +105,14 @@ public class OfficeSheet implements SsSheet {
 
     }
 
+    @Override
+    public SsRow getRow(int rowIndex) {
+        Row poiRow = poiSheet.getRow(rowIndex);
+        return new OfficeRow(poiRow);
+    }
 
+    @Override
+    public int getNumberOfRows() {
+        return poiSheet.getLastRowNum() + 1;
+    }
 }

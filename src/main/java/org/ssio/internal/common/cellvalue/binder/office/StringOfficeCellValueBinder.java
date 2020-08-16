@@ -7,4 +7,35 @@ public class StringOfficeCellValueBinder implements OfficeCellValueBinder {
     public void setNonNullValue(Cell cell, Object value) {
         cell.setCellValue((String) value);
     }
+
+    @Override
+    public String getValue(Cell poiCell) {
+        switch (poiCell.getCellType()) {
+            case _NONE: {
+                return null;
+            }
+            case BLANK: {
+                return null;
+            }
+            case ERROR: {
+                throw cannotReadFormulaErrorCellException();
+            }
+            case FORMULA: {
+                throw noSupportToReadFormulaCellException();
+            }
+            case STRING: {
+                String string = poiCell.getStringCellValue(); //no trimming
+                return string;
+            }
+            case BOOLEAN: {
+                return String.valueOf(poiCell.getBooleanCellValue());
+            }
+            case NUMERIC: {
+                return String.valueOf(poiCell.getNumericCellValue());
+            }
+
+            default:
+                throw new UnsupportedOperationException("Unsupported cell type: " + poiCell.getCellType());
+        }
+    }
 }

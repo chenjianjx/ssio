@@ -74,8 +74,6 @@ public class HeaderUtils {
 
 		List<PropertyDescriptor> writablePdList = Arrays.stream(pdArray)
 				.filter(pd -> !pd.getName().equals("class"))
-				.filter(pd -> pd.getWriteMethod() != null)
-				.filter(pd -> (SepBasicTypeConverts.canTypeFromString(pd.getPropertyType()) || pd.getPropertyType().equals(java.util.Date.class)))
 				.collect(Collectors.toList());
 		List<String> finalProps = writablePdList.stream().map(pd -> pd.getName()).collect(Collectors.toList());
 

@@ -10,4 +10,9 @@ public class BuilderPatternHelper {
         }
     }
 
+    public void validateFieldNotNegative(String fieldName, long value, List<String> errors) {
+        if (value < 0) {
+            errors.add("The value of " + fieldName + " cannot be negative: " + value);
+        }
+    }
 }

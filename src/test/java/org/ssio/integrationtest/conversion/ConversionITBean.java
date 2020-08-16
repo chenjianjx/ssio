@@ -2,15 +2,17 @@ package org.ssio.integrationtest.conversion;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.ssio.api.common.SsioConstants;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 public class ConversionITBean {
-
 
     private boolean primBoolean;
     private short primShort;
@@ -197,5 +199,37 @@ public class ConversionITBean {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConversionITBean that = (ConversionITBean) o;
+        return primBoolean == that.primBoolean &&
+                primShort == that.primShort &&
+                primInt == that.primInt &&
+                primLong == that.primLong &&
+                Float.compare(that.primFloat, primFloat) == 0 &&
+                Double.compare(that.primDouble, primDouble) == 0 &&
+                Objects.equals(objBoolean, that.objBoolean) &&
+                Objects.equals(objShort, that.objShort) &&
+                Objects.equals(objInt, that.objInt) &&
+                Objects.equals(objLong, that.objLong) &&
+                Objects.equals(objFloat, that.objFloat) &&
+                Objects.equals(objDouble, that.objDouble) &&
+                Objects.equals(bigInteger, that.bigInteger) &&
+                Objects.equals(bigDecimal, that.bigDecimal) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(localDate, that.localDate) &&
+                Objects.equals(localDateTime, that.localDateTime) &&
+                Objects.equals(str, that.str) &&
+                enumeration == that.enumeration;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(primBoolean, primShort, primInt, primLong, primFloat, primDouble, objBoolean, objShort, objInt, objLong, objFloat, objDouble, bigInteger, bigDecimal, date, localDate, localDateTime, str, enumeration);
     }
 }

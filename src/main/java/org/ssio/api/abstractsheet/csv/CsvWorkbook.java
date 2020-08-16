@@ -36,4 +36,19 @@ public class CsvWorkbook implements SsWorkbook {
         StringReader reader = new StringReader(out.toString());
         IOUtils.copy(reader, outputTarget, "utf8");
     }
+
+    @Override
+    public int getNumberOfSheets() {
+        return 0;
+    }
+
+    @Override
+    public SsSheet getSheetByName(String sheetName) {
+        return null;
+    }
+
+    @Override
+    public SsSheet getSheetAt(int sheetIndex) {
+        return null;
+    }
 }

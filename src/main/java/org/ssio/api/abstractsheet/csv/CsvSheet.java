@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ssio.api.abstractsheet.SsCellValueHelper;
 import org.ssio.api.abstractsheet.SsCellValueJavaType;
+import org.ssio.api.abstractsheet.SsRow;
 import org.ssio.api.abstractsheet.SsSheet;
 import org.ssio.api.b2s.DatumError;
 import org.ssio.internal.common.cellvalue.binder.csv.CsvCellValueBinder;
@@ -88,6 +89,16 @@ public class CsvSheet implements SsSheet {
         }
 
 
+    }
+
+    @Override
+    public SsRow getRow(int rowIndex) {
+        return null;
+    }
+
+    @Override
+    public int getNumberOfRows() {
+        return 0;
     }
 
 

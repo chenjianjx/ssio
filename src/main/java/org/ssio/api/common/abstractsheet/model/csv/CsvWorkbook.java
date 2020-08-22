@@ -2,48 +2,77 @@ package org.ssio.api.common.abstractsheet.model.csv;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
 import org.ssio.api.common.abstractsheet.model.SsSheet;
 import org.ssio.api.common.abstractsheet.model.SsWorkbook;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
 public class CsvWorkbook implements SsWorkbook {
-    private CSVPrinter csvPrinter;
+
+    private CSVPrinter csvPrinterForOutput;
     private CsvSheet sheet;
 
-    public CsvWorkbook(char cellSeparator) {
+    private CsvWorkbook() {
+
+    }
+
+    /**
+     * create an empty workbook to write out to somewhere
+     *
+     * @param cellSeparator
+     * @return
+     */
+    public static CsvWorkbook createNewWorkbook(char cellSeparator) {
+        CsvWorkbook workbook = new CsvWorkbook();
+
         StringWriter out = new StringWriter();
         try {
-            CSVFormat csvFormat = CSVFormat.EXCEL.withDelimiter(cellSeparator);
-            this.csvPrinter = new CSVPrinter(out, csvFormat);
+            CSVFormat csvFormat = getCsvFormat(cellSeparator);
+            workbook.csvPrinterForOutput = new CSVPrinter(out, csvFormat);
         } catch (IOException e) {
             //shouldn't happen
             throw new IllegalStateException(e);
         }
+
+        return workbook;
+    }
+
+    public static CsvWorkbook createFromInput(Reader reader, char cellSeparator) throws IOException {
+        CsvWorkbook workbook = new CsvWorkbook();
+        Iterable<CSVRecord> records = getCsvFormat(cellSeparator).parse(reader);
+        CsvSheet sheet = CsvSheet.createSheetFromAcsRecords(records);
+        workbook.sheet = sheet;
+        return workbook;
+    }
+
+    private static CSVFormat getCsvFormat(char cellSeparator) {
+        return CSVFormat.EXCEL.withDelimiter(cellSeparator);
     }
 
     @Override
     public SsSheet createNewSheet(String sheetName) {
-        this.sheet = new CsvSheet();
+        this.sheet = CsvSheet.createEmptySheet();
         return this.sheet;
     }
 
     @Override
     public void write(OutputStream outputTarget) throws IOException {
-        sheet.acceptPrinting(this.csvPrinter);
+        sheet.acceptPrinting(this.csvPrinterForOutput);
 
-        StringWriter out = (StringWriter) this.csvPrinter.getOut();
+        StringWriter out = (StringWriter) this.csvPrinterForOutput.getOut();
         StringReader reader = new StringReader(out.toString());
         IOUtils.copy(reader, outputTarget, "utf8");
     }
 
     @Override
     public int getNumberOfSheets() {
-        return 0;
+        return 1;
     }
 
     @Override

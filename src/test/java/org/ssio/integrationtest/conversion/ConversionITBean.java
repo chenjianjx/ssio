@@ -2,8 +2,6 @@ package org.ssio.integrationtest.conversion;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.ssio.api.common.SsioConstants;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -224,8 +222,16 @@ public class ConversionITBean {
                 Objects.equals(date, that.date) &&
                 Objects.equals(localDate, that.localDate) &&
                 Objects.equals(localDateTime, that.localDateTime) &&
-                Objects.equals(str, that.str) &&
+                Objects.equals(unixLineBreak(str), unixLineBreak(that.str)) &&
                 enumeration == that.enumeration;
+    }
+
+    private String unixLineBreak(String str) {
+        if (str == null) {
+            return null;
+        }
+
+        return str.replaceAll("\\r\\n", "\n");
     }
 
     @Override

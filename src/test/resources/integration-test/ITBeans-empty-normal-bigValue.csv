@@ -1,5 +1,5 @@
 Date,Local Date Time,Prim Float,Obj Boolean,Prim Boolean,Big Integer,Obj Short,Prim Double,Str,Obj Float,Prim Short,Prim Int,Obj Double,Obj Int,Prim Long,Local Date,Obj Long,Big Decimal,Enumeration
 ,,0.0,,false,,,0.0,,,0,0,,,0,,,,
-2011-11-11T11:11:11,2020-10-10T10:10:10,123.456,true,true,777,-123,456.789,A normal string,-123.456,123,9999,-456.789,-9999,1000000001,2020-12-12,-1000000001,-888,ENUM_VALUE_A
+2011-11-11T11:11:11,2020-10-10T10:10:10,123.456,true,true,777,-123,456.789,A normal string,-123.456,123,9999,-456.789,-9999,1000000001,2020-12-12,-1000000001,-888.0,ENUM_VALUE_A
 3000-11-11T11:11:11,3000-10-10T10:10:10,3.4028235E38,true,true,9223372036854775807,-32768,1.7976931348623157E308,"A very very very very very very very very very very very very 
  very very very very very very very very very very long string with line breaks",1.4E-45,32767,2147483647,4.9E-324,-2147483648,9223372036854775807,3000-12-12,-9223372036854775808,1.7976931348623157E+308,ENUM_VALUE_A

@@ -9,10 +9,12 @@ import java.io.InputStream;
 
 public class SheetToBeansParam<BEAN> {
 
-    public SheetToBeansParam(Class<BEAN> beanClass, InputStream spreadsheetInput, SpreadsheetFileType fileType, SsSheetLocator sheetLocator) {
+    public SheetToBeansParam(Class<BEAN> beanClass, InputStream spreadsheetInput, String inputCharset, SpreadsheetFileType fileType, char cellSeparator, SsSheetLocator sheetLocator) {
         this.beanClass = beanClass;
         this.spreadsheetInput = spreadsheetInput;
+        this.inputCharset = inputCharset;
         this.fileType = fileType;
+        this.cellSeparator = cellSeparator;
         this.sheetLocator = sheetLocator;
     }
 
@@ -27,6 +29,16 @@ public class SheetToBeansParam<BEAN> {
     private InputStream spreadsheetInput;
 
     /**
+     * Required for CSV input.  Ignored by office(Excel) input
+     */
+    private String inputCharset;
+
+    /**
+     * Only used for CSV.  Default is ","
+     */
+    private char cellSeparator;
+
+    /**
      * not null
      */
     private SpreadsheetFileType fileType;
@@ -36,6 +48,10 @@ public class SheetToBeansParam<BEAN> {
      */
     private SsSheetLocator sheetLocator;
 
+
+    public char getCellSeparator() {
+        return cellSeparator;
+    }
 
     public SsSheetLocator getSheetLocator() {
         return sheetLocator;
@@ -49,6 +65,9 @@ public class SheetToBeansParam<BEAN> {
         return spreadsheetInput;
     }
 
+    public String getInputCharset() {
+        return inputCharset;
+    }
 
     public SpreadsheetFileType getFileType() {
         return fileType;

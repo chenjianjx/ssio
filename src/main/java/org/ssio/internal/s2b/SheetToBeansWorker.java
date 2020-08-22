@@ -35,7 +35,7 @@ public class SheetToBeansWorker {
         LinkedHashMap<String, String> reversedHeaderMap = HeaderUtils.generateReverseHeaderMapFromProps(param.getBeanClass());
 
         SsFactory ssFactory = new DefaultSsFactory();
-        SsWorkbook workbook = ssFactory.createWorkbookFromInput(param.getFileType(), param.getSpreadsheetInput());
+        SsWorkbook workbook = ssFactory.createWorkbookFromInput(param.getFileType(), param.getSpreadsheetInput(), param.getInputCharset(), param.getCellSeparator());
         if (workbook.getNumberOfSheets() <= 0) {
             logger.warn("There are no sheets in the spreadsheet");
             return result;

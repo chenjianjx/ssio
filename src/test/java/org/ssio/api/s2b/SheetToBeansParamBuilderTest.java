@@ -3,6 +3,7 @@ package org.ssio.api.s2b;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.ssio.api.SpreadsheetFileType;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,6 +29,14 @@ class SheetToBeansParamBuilderTest {
         SheetToBeansParamBuilder builder = new SheetToBeansParamBuilder().setBeanClass(beanClass);
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
         assertTrue(e.getMessage().contains("doesn't have an accessible zero-argument constructor"));
+    }
+
+    @Test
+    void build_inputCharsetNullForCsv() {
+        SheetToBeansParamBuilder builder = new SheetToBeansParamBuilder().setFileType(SpreadsheetFileType.CSV).setInputCharset(null);
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
+        assertTrue(e.getMessage().contains("the inputCharset is required"));
     }
 
 

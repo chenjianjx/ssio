@@ -1,6 +1,7 @@
 package org.ssio.api.common.abstractsheet.model.csv;
 
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ssio.api.common.abstractsheet.model.SsRow;
@@ -15,6 +16,28 @@ public class CsvSheet implements SsSheet {
     private static final Logger logger = LoggerFactory.getLogger(CsvSheet.class);
 
     private List<CsvRow> rows = new ArrayList<>();
+
+    private CsvSheet() {
+
+    }
+
+    public static CsvSheet createEmptySheet() {
+        return new CsvSheet();
+    }
+
+    /**
+     * Acs = Apache Commons CSV
+     *
+     * @param acsRecords
+     * @return
+     */
+    public static CsvSheet createSheetFromAcsRecords(Iterable<CSVRecord> acsRecords) {
+        CsvSheet sheet = new CsvSheet();
+        for (CSVRecord acsRecord : acsRecords) {
+            sheet.rows.add(CsvRow.createFromAcsRecord(acsRecord));
+        }
+        return sheet;
+    }
 
 
     @Override
@@ -43,7 +66,7 @@ public class CsvSheet implements SsSheet {
         if (rowIndex != currentSize) {
             throw new IllegalArgumentException(String.format("Current there are %s rows. So the next row should start with %s, but the input rowIndex is %s", currentSize, currentSize, rowIndex));
         }
-        CsvRow row = new CsvRow();
+        CsvRow row = CsvRow.createEmptyRow();
         rows.add(row);
         return row;
     }

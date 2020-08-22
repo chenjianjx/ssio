@@ -6,6 +6,7 @@ import org.ssio.api.common.abstractsheet.model.office.OfficeWorkbook;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class DefaultSsFactory implements SsFactory {
 
@@ -17,7 +18,7 @@ public class DefaultSsFactory implements SsFactory {
 
         switch (fileType) {
             case CSV:
-                return new CsvWorkbook(cellSeparator);
+                return CsvWorkbook.createNewWorkbook(cellSeparator);
 
             case OFFICE:
                 return OfficeWorkbook.createNewWorkbook();
@@ -28,14 +29,14 @@ public class DefaultSsFactory implements SsFactory {
     }
 
     @Override
-    public SsWorkbook createWorkbookFromInput(SpreadsheetFileType fileType, InputStream spreadsheetInput) throws IOException {
+    public SsWorkbook createWorkbookFromInput(SpreadsheetFileType fileType, InputStream spreadsheetInput, String inputCharset, char cellSeparator) throws IOException {
         if (fileType == null) {
             throw new IllegalArgumentException();
         }
 
         switch (fileType) {
             case CSV:
-                throw new UnsupportedOperationException();
+                return CsvWorkbook.createFromInput(new InputStreamReader(spreadsheetInput, inputCharset), cellSeparator);
 
             case OFFICE:
                 return OfficeWorkbook.createFromInput(spreadsheetInput);

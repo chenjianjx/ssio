@@ -23,7 +23,7 @@ public class LocalDateCsvCellValueBinder extends CsvCellValueBinder {
     }
 
     private LocalDate parseLocalDate(String string) {
-        return LocalDate.parse(string, DateTimeFormatter.ofPattern(SsioConstants.DEFAULT_LOCAL_DATE_TIME_PATTERN));
+        return LocalDate.parse(string, DateTimeFormatter.ofPattern(SsioConstants.DEFAULT_LOCAL_DATE_PATTERN));
     }
 
 }

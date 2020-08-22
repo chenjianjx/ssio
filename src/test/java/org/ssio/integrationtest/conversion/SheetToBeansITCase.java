@@ -38,6 +38,7 @@ public class SheetToBeansITCase {
                             .setBeanClass(ConversionITBean.class)
                             .setFileType(spreadsheetFileType)
                             .setSpreadsheetInput(input)
+                            .setInputCharset("utf8") //for csv only
                             .build();
 
             SheetToBeansResult<ConversionITBean> result = manager.sheetToBeans(param);

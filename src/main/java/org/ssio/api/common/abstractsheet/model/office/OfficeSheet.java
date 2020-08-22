@@ -22,7 +22,11 @@ public class OfficeSheet implements SsSheet {
      */
     private Map<Integer, OfficeRow> rows = new LinkedHashMap<>();
 
-    public static OfficeSheet createNewSheet(Workbook poiBook, String sheetName) {
+    private OfficeSheet() {
+
+    }
+
+    public static OfficeSheet createEmptySheet(Workbook poiBook, String sheetName) {
         Sheet poiSheet = sheetName == null ? poiBook.createSheet() : poiBook.createSheet(sheetName);
         OfficeSheet sheet = new OfficeSheet();
         sheet.poiSheet = poiSheet;

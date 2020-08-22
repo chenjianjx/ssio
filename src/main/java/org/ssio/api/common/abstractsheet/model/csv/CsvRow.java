@@ -1,6 +1,7 @@
 package org.ssio.api.common.abstractsheet.model.csv;
 
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 import org.ssio.api.common.abstractsheet.model.SsCell;
 import org.ssio.api.common.abstractsheet.model.SsRow;
 
@@ -11,6 +12,22 @@ import java.util.stream.Collectors;
 
 public class CsvRow implements SsRow {
     private List<CsvCell> cells = new ArrayList<>();
+
+    private CsvRow() {
+
+    }
+
+    public static CsvRow createEmptyRow() {
+        return new CsvRow();
+    }
+
+    public static CsvRow createFromAcsRecord(CSVRecord acsRecord) {
+        CsvRow row = new CsvRow();
+        for (String s : acsRecord) {
+            row.cells.add(CsvCell.createWithContent(s));
+        }
+        return row;
+    }
 
     @Override
     public int getNumberOfCells() {
@@ -28,7 +45,7 @@ public class CsvRow implements SsRow {
         if (columnIndex != currentSize) {
             throw new IllegalArgumentException(String.format("Current there are %s cells. So the next cell should start with %s, but the input columnIndex is %s", currentSize, currentSize, columnIndex));
         }
-        CsvCell cell = new CsvCell();
+        CsvCell cell = CsvCell.createEmptyCell();
         cells.add(cell);
         return cell;
     }

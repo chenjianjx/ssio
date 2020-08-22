@@ -1,6 +1,5 @@
 package org.ssio.api.common.abstractsheet.model.office;
 
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -17,6 +16,9 @@ public class OfficeWorkbook implements SsWorkbook {
     private Workbook poiBook;
     private List<OfficeSheet> sheets = new ArrayList<>();
 
+    private OfficeWorkbook() {
+
+    }
 
     public static OfficeWorkbook createNewWorkbook() {
         Workbook poiBook = new XSSFWorkbook();
@@ -37,7 +39,7 @@ public class OfficeWorkbook implements SsWorkbook {
 
     @Override
     public SsSheet createNewSheet(String sheetName) {
-        OfficeSheet sheet = OfficeSheet.createNewSheet(poiBook, sheetName);
+        OfficeSheet sheet = OfficeSheet.createEmptySheet(poiBook, sheetName);
         sheets.add(sheet);
         return sheet;
     }

@@ -8,5 +8,5 @@ import java.io.InputStream;
 public interface SsFactory {
     SsWorkbook newWorkbook(SpreadsheetFileType fileType, char cellSeparator);
 
-    SsWorkbook createWorkbookFromInput(SpreadsheetFileType fileType, InputStream spreadsheetInput) throws IOException;
+    SsWorkbook createWorkbookFromInput(SpreadsheetFileType fileType, InputStream spreadsheetInput, String inputCharset, char cellSeparator) throws IOException;
 }

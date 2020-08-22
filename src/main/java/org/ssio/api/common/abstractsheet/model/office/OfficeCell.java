@@ -14,6 +14,9 @@ import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinderRep
 public class OfficeCell implements SsCell {
     private Cell poiCell;
 
+    private OfficeCell() {
+
+    }
 
     public static OfficeCell createFromExistingPoiCell(Cell poiCell) {
         OfficeCell cell = new OfficeCell();

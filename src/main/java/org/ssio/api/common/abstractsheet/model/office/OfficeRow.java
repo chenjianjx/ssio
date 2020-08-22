@@ -17,6 +17,10 @@ public class OfficeRow implements SsRow {
      */
     private Map<Integer, OfficeCell> cells = new LinkedHashMap<>();
 
+    private OfficeRow() {
+
+    }
+
     public static OfficeRow createEmptyRow(Sheet poiSheet, int rowIndex) {
         Row poiRow = poiSheet.createRow(rowIndex);
         OfficeRow row = new OfficeRow();

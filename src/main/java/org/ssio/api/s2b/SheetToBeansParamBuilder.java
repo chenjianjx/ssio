@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.SpreadsheetFileType;
 import org.ssio.api.common.BuilderPatternHelper;
+import org.ssio.api.common.SsioConstants;
 import org.ssio.api.common.abstractsheet.helper.SsSheetLocator;
 
 import java.io.InputStream;
@@ -16,6 +17,8 @@ import static org.ssio.internal.util.SsioReflectionHelper.hasAccessibleZeroArgum
 public class SheetToBeansParamBuilder<BEAN> {
     private Class<BEAN> beanClass;
     private InputStream spreadsheetInput;
+    private String inputCharset;
+    private char cellSeparator = SsioConstants.DEFAULT_CSV_CELL_SEPARATOR;
     private SpreadsheetFileType fileType;
     private SsSheetLocator sheetLocator = SsSheetLocator.byIndexLocator(0);
 
@@ -40,6 +43,16 @@ public class SheetToBeansParamBuilder<BEAN> {
         return this;
     }
 
+    public SheetToBeansParamBuilder<BEAN> setInputCharset(String inputCharset) {
+        this.inputCharset = inputCharset;
+        return this;
+    }
+
+    public SheetToBeansParamBuilder<BEAN> setCellSeparator(char cellSeparator) {
+        this.cellSeparator = cellSeparator;
+        return this;
+    }
+
     private List<String> validate() {
         BuilderPatternHelper builderHelper = new BuilderPatternHelper();
 
@@ -53,6 +66,10 @@ public class SheetToBeansParamBuilder<BEAN> {
             errors.add("The beanClass doesn't have an accessible zero-argument constructor: " + beanClass.getName());
         }
 
+        if (fileType == SpreadsheetFileType.CSV && inputCharset == null) {
+            errors.add("For CSV input the inputCharset is required");
+        }
+
 
         return errors;
     }
@@ -62,7 +79,7 @@ public class SheetToBeansParamBuilder<BEAN> {
         if (errors.size() > 0) {
             throw new IllegalArgumentException("Cannot build an object because of the following errors: \n" + StringUtils.join(errors, "\n"));
         }
-        return new SheetToBeansParam(beanClass, spreadsheetInput, fileType, sheetLocator);
+        return new SheetToBeansParam(beanClass, spreadsheetInput, inputCharset, fileType, cellSeparator, sheetLocator);
     }
 
     @Override

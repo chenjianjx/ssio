@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.SpreadsheetFileType;
 import org.ssio.api.common.BuilderPatternHelper;
+import org.ssio.api.common.SsioConstants;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class BeansToSheetParamBuilder<BEAN> {
     private Class<BEAN> beanClass;
     private OutputStream outputTarget;
     private SpreadsheetFileType fileType;
-    private char cellSeparator = ',' ;
+    private char cellSeparator = SsioConstants.DEFAULT_CSV_CELL_SEPARATOR ;
     private boolean createHeader = true;
     private String sheetName;
     private boolean stillSaveIfDataError = true;

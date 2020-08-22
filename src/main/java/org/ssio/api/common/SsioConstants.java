@@ -8,4 +8,5 @@ public interface SsioConstants {
      * it doesn't allow 'T', but only T
      */
     String DEFAULT_LOCAL_DATE_TIME_PATTERN_FOR_SPREADSHEET = "yyyy-MM-ddTHH:mm:ss";
+    char DEFAULT_CSV_CELL_SEPARATOR = ',';
 }

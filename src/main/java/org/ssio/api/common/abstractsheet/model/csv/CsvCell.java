@@ -9,6 +9,21 @@ public class CsvCell implements SsCell {
 
     private String content;
 
+    private CsvCell() {
+
+    }
+
+    public static CsvCell createEmptyCell() {
+        CsvCell cell = new CsvCell();
+        return cell;
+    }
+
+    public static CsvCell createWithContent(String content) {
+        CsvCell cell = new CsvCell();
+        cell.content = content;
+        return cell;
+    }
+
 
     public String getContent() {
         return content;

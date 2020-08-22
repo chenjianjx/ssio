@@ -3,9 +3,11 @@ package org.ssio.integrationtest.conversion;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.ssio.api.ConversionManager;
 import org.ssio.api.SpreadsheetFileType;
+import org.ssio.api.common.abstractsheet.helper.SsSheetLocator;
 import org.ssio.api.s2b.CellError;
 import org.ssio.api.s2b.SheetToBeansParam;
 import org.ssio.api.s2b.SheetToBeansParamBuilder;
@@ -13,6 +15,7 @@ import org.ssio.api.s2b.SheetToBeansResult;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -63,7 +66,7 @@ public class SheetToBeansITCase {
     @EnumSource(SpreadsheetFileType.class)
     void sheetToBeans_cellErrors(SpreadsheetFileType spreadsheetFileType) throws IOException {
 
-        String inputResourceClasspath = "/integration-test/parse-to-SickBean" + decideTargetFileExtension(spreadsheetFileType);
+        String inputResourceClasspath = "/integration-test/SickBean" + decideTargetFileExtension(spreadsheetFileType);
         try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
             SheetToBeansParam<ConversionITSickBean> param =
                     new SheetToBeansParamBuilder<ConversionITSickBean>()
@@ -121,6 +124,39 @@ public class SheetToBeansITCase {
 
 
     }
+
+
+    @ParameterizedTest
+    @MethodSource("sheetToBeans_notTheFirstSheet_provider")
+    void sheetToBeans_notTheFirstSheet(SsSheetLocator sheetLocator) throws IOException {
+
+        String inputResourceClasspath = "/integration-test/SimpleBean-content-not-in-first-sheet.xlsx";
+        try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
+            SheetToBeansParam<ConversionITSimpleBean> param =
+                    new SheetToBeansParamBuilder<ConversionITSimpleBean>()
+                            .setBeanClass(ConversionITSimpleBean.class)
+                            .setFileType(SpreadsheetFileType.OFFICE)
+                            .setSpreadsheetInput(input)
+                            .setSheetLocator(sheetLocator)
+                            .build();
+
+            SheetToBeansResult<ConversionITSimpleBean> result = manager.sheetToBeans(param);
+            printResult(result);
+
+            assertEquals(1, result.getBeans().size());
+            assertFalse(result.hasCellErrors());
+        }
+
+
+    }
+
+    static Stream<SsSheetLocator> sheetToBeans_notTheFirstSheet_provider() {
+        return Stream.of(
+                SsSheetLocator.byIndexLocator(1),
+                SsSheetLocator.byNameLocator("The real sheet")
+        );
+    }
+
 
     private void printResult(SheetToBeansResult<?> result) {
         result.getBeans().forEach(b -> System.out.println(b));

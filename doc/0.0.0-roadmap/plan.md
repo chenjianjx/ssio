@@ -6,9 +6,9 @@
   * optional header   ✔
   * csv seperator    ✔
 * parsing using header map instead of annotations (default format for date/number in excel and csv)
-  * Basic features including negative cases
+  * Basic features including negative cases ✔
   * enum problem at last ✔
-  * Test about non-0 sheet 
+  * Test about non-0 sheet ✔ 
   * optional header 
 * extensible file type  
 * fix the api/internal problem and make helper/manager/workers injectable 

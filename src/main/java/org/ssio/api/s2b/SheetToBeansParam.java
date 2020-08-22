@@ -3,17 +3,17 @@ package org.ssio.api.s2b;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.SpreadsheetFileType;
+import org.ssio.api.common.abstractsheet.helper.SsSheetLocator;
 
 import java.io.InputStream;
 
 public class SheetToBeansParam<BEAN> {
 
-    public SheetToBeansParam(Class<BEAN> beanClass, InputStream spreadsheetInput, SpreadsheetFileType fileType, String sheetName, int sheetIndex) {
+    public SheetToBeansParam(Class<BEAN> beanClass, InputStream spreadsheetInput, SpreadsheetFileType fileType, SsSheetLocator sheetLocator) {
         this.beanClass = beanClass;
         this.spreadsheetInput = spreadsheetInput;
-        this.sheetName = sheetName;
         this.fileType = fileType;
-        this.sheetIndex = sheetIndex;
+        this.sheetLocator = sheetLocator;
     }
 
     /**
@@ -32,20 +32,14 @@ public class SheetToBeansParam<BEAN> {
     private SpreadsheetFileType fileType;
 
     /**
-     *
-     * which sheet to load the data ?  This has higher priority than {@link #sheetIndex}
-     * nullable.
-     * Will be ignored if input is csv
+     * which sheet to load the data ?  By default it's the sheet at index 0
      */
-    private String sheetName;
+    private SsSheetLocator sheetLocator;
 
-    /**
-     * which sheet to load the data?  default 0
-     * not null
-     * Will be ignored if input is csv
-     */
-    private int sheetIndex;
 
+    public SsSheetLocator getSheetLocator() {
+        return sheetLocator;
+    }
 
     public Class<BEAN> getBeanClass() {
         return beanClass;
@@ -55,13 +49,6 @@ public class SheetToBeansParam<BEAN> {
         return spreadsheetInput;
     }
 
-    public String getSheetName() {
-        return sheetName;
-    }
-
-    public int getSheetIndex() {
-        return sheetIndex;
-    }
 
     public SpreadsheetFileType getFileType() {
         return fileType;

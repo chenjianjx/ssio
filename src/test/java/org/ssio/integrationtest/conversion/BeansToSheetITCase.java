@@ -23,6 +23,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class BeansToSheetITCase {
@@ -58,6 +59,7 @@ class BeansToSheetITCase {
 
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
+        assertTrue(spreadsheet.length > 0);
         FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_positiveTest", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasDatumErrors()) {
@@ -94,6 +96,7 @@ class BeansToSheetITCase {
 
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
+        assertTrue(spreadsheet.length > 0);
         FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_datumError", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasNoDatumErrors()) {
@@ -165,6 +168,7 @@ class BeansToSheetITCase {
 
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
+        assertTrue(spreadsheet.length > 0);
         FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_csvSeparator", ConversionITTestHelper.decideTargetFileExtension(SpreadsheetFileType.CSV)), spreadsheet);
 
         if (result.hasDatumErrors()) {
@@ -196,6 +200,7 @@ class BeansToSheetITCase {
 
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
+        assertTrue(spreadsheet.length > 0);
         FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_noHeader", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasDatumErrors()) {

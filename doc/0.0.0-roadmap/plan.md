@@ -6,10 +6,12 @@
   * optional header   ✔
   * csv seperator    ✔
 * parsing using header map instead of annotations (default format for date/number in excel and csv)
+  * Basic feature  
   * enum problem at last ✔
   * Test about non-0 sheet 
   * optional header 
-* fix the api/internal problem
+* extensible file type  
+* fix the api/internal problem and make helper/manager/workers injectable 
 * annotations (default format for date/number in excel and csv)
 * format for date in excel and csv
 * format for numbers in csv

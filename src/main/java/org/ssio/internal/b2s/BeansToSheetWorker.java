@@ -2,10 +2,10 @@ package org.ssio.internal.b2s;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.ssio.api.abstractsheet.DefaultSsFactory;
-import org.ssio.api.abstractsheet.SsFactory;
-import org.ssio.api.abstractsheet.SsSheet;
-import org.ssio.api.abstractsheet.SsWorkbook;
+import org.ssio.api.common.abstractsheet.model.DefaultSsFactory;
+import org.ssio.api.common.abstractsheet.model.SsFactory;
+import org.ssio.api.common.abstractsheet.model.SsSheet;
+import org.ssio.api.common.abstractsheet.model.SsWorkbook;
 import org.ssio.api.b2s.BeansToSheetParam;
 import org.ssio.api.b2s.BeansToSheetResult;
 import org.ssio.internal.temp.HeaderUtils;

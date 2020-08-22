@@ -3,7 +3,6 @@ package org.ssio.api.s2b;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.ssio.api.b2s.BeansToSheetParamBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,14 +11,14 @@ class SheetToBeansParamBuilderTest {
 
     @Test
     void build_allWrong() {
-        SheetToBeansParamBuilder builder = new SheetToBeansParamBuilder().setSheetIndex(-1);
+        SheetToBeansParamBuilder builder = new SheetToBeansParamBuilder().setSheetLocator(null);
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
 
         assertTrue(e.getMessage().contains("beanClass cannot be null"));
         assertTrue(e.getMessage().contains("spreadsheetInput cannot be null"));
         assertTrue(e.getMessage().contains("fileType cannot be null"));
-        assertTrue(e.getMessage().contains("sheetIndex cannot be negative"));
+        assertTrue(e.getMessage().contains("sheetLocator cannot be null"));
     }
 
 

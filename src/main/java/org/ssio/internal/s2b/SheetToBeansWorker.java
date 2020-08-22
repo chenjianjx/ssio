@@ -6,14 +6,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.ssio.api.abstractsheet.DefaultSsFactory;
-import org.ssio.api.abstractsheet.SsCell;
-import org.ssio.api.abstractsheet.SsCellValueHelper;
-import org.ssio.api.abstractsheet.SsCellValueJavaType;
-import org.ssio.api.abstractsheet.SsFactory;
-import org.ssio.api.abstractsheet.SsRow;
-import org.ssio.api.abstractsheet.SsSheet;
-import org.ssio.api.abstractsheet.SsWorkbook;
+import org.ssio.api.common.abstractsheet.model.DefaultSsFactory;
+import org.ssio.api.common.abstractsheet.model.SsCell;
+import org.ssio.api.common.abstractsheet.model.SsCellValueHelper;
+import org.ssio.api.common.abstractsheet.model.SsCellValueJavaType;
+import org.ssio.api.common.abstractsheet.model.SsFactory;
+import org.ssio.api.common.abstractsheet.model.SsRow;
+import org.ssio.api.common.abstractsheet.model.SsSheet;
+import org.ssio.api.common.abstractsheet.model.SsWorkbook;
 import org.ssio.api.s2b.CellError;
 import org.ssio.api.s2b.SheetToBeansParam;
 import org.ssio.api.s2b.SheetToBeansResult;
@@ -40,15 +40,10 @@ public class SheetToBeansWorker {
             return result;
         }
 
-        SsSheet sheet;
+        SsSheet sheet = param.getSheetLocator().getSheet(workbook);
 
-        if (param.getSheetName() != null) {
-            sheet = workbook.getSheetByName(param.getSheetName());
-            if (sheet == null) {
-                throw new IllegalArgumentException("No sheet named " + param.getSheetName() + " is found. Maybe there are spaces around the sheet name?");
-            }
-        } else {
-            sheet = workbook.getSheetAt(param.getSheetIndex());
+        if (sheet == null) {
+            throw new IllegalArgumentException("No sheet found using locator: " + param.getSheetLocator().getDesc());
         }
 
 
@@ -90,7 +85,7 @@ public class SheetToBeansWorker {
         for (int columnIndex = 0; columnIndex < row.getNumberOfCells(); columnIndex++) {
             SsCell cell = row.getCell(columnIndex);
 
-            String headerText = StringUtils.trimToNull(cell.readValueAsString());
+            String headerText = StringUtils.trimToNull((String) cell.readValueAsType(SsCellValueJavaType.String, null));
             if (headerText == null) {
                 continue;
             }

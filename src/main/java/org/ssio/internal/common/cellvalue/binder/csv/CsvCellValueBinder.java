@@ -1,9 +1,32 @@
 package org.ssio.internal.common.cellvalue.binder.csv;
 
-/**
- * Specify how to read a value from a csv cell and how to write a value to an csv cell, according to the java type
- * Note: the implementations has to be stateless (thread safe)
- */
-public interface CsvCellValueBinder {
-    String nonNullValueToCellText(Object value);
+
+import org.ssio.api.common.abstractsheet.model.csv.CsvCell;
+import org.ssio.internal.common.cellvalue.binder.SsCellValueBinder;
+
+public abstract class CsvCellValueBinder implements SsCellValueBinder<CsvCell> {
+
+    @Override
+    public void setNonNullValue(CsvCell cell, Object value) {
+        cell.setContent(this.convertNonNullValueToCellText(value));
+    }
+
+    @Override
+    public void setNullValue(CsvCell cell) {
+        cell.setContent(null);
+    }
+
+    @Override
+    public Object getValue(CsvCell cell) {
+        return this.parseFromCellText(cell.getContent());
+    }
+
+    protected abstract String convertNonNullValueToCellText(Object value);
+
+
+    /**
+     * @return the java type of the value will be the curated type of the binder
+     */
+    protected abstract Object parseFromCellText(String text);
+
 }

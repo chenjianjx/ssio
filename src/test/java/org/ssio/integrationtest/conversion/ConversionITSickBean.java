@@ -3,20 +3,14 @@ package org.ssio.integrationtest.conversion;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-
 /**
  * A bean that throws exceptions when properties are accessed
  */
 public class ConversionITSickBean {
 
-    private String healthyField = "random text";
+    private String healthyField = "defaultHealthyField";
 
-    private String unhealthyField = "whatever";
+    public String unhealthyField = "defaultUnhealthyField";
 
 
     public String getHealthyField() {
@@ -28,11 +22,11 @@ public class ConversionITSickBean {
     }
 
     public String getUnhealthyField() {
-        throw new IllegalStateException("I am a sick field");
+        throw new IllegalStateException("I am a sick getter");
     }
 
     public void setUnhealthyField(String unhealthyField) {
-        this.unhealthyField = unhealthyField;
+        throw new IllegalStateException("I am a sick setter");
     }
 
     @Override

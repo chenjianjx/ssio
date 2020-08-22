@@ -3,8 +3,10 @@ package org.ssio.integrationtest.conversion;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.ssio.api.ConversionManager;
 import org.ssio.api.SpreadsheetFileType;
+import org.ssio.api.s2b.CellError;
 import org.ssio.api.s2b.SheetToBeansParam;
 import org.ssio.api.s2b.SheetToBeansParamBuilder;
 import org.ssio.api.s2b.SheetToBeansResult;
@@ -18,7 +20,6 @@ import static org.ssio.integrationtest.conversion.ConversionITTestHelper.decideT
 
 public class SheetToBeansITCase {
     ConversionManager manager = new ConversionManager();
-
 
 
     @BeforeAll
@@ -57,9 +58,83 @@ public class SheetToBeansITCase {
 
     }
 
-    private void printResult(SheetToBeansResult<ConversionITBean> result) {
+
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void sheetToBeans_cellErrors(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        String inputResourceClasspath = "/integration-test/parse-to-SickBean" + decideTargetFileExtension(spreadsheetFileType);
+        try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
+            SheetToBeansParam<ConversionITSickBean> param =
+                    new SheetToBeansParamBuilder<ConversionITSickBean>()
+                            .setBeanClass(ConversionITSickBean.class)
+                            .setFileType(spreadsheetFileType)
+                            .setSpreadsheetInput(input)
+                            .setInputCharset("utf8") //for csv only
+                            .build();
+
+            SheetToBeansResult<ConversionITSickBean> result = manager.sheetToBeans(param);
+            printResult(result);
+
+            assertEquals(1, result.getBeans().size());
+            ConversionITSickBean bean = result.getBeans().get(0);
+            assertEquals("random text", bean.getHealthyField());
+            assertEquals("defaultUnhealthyField", bean.unhealthyField);
+
+            assertEquals(1, result.getCellErrors().size());
+            CellError cellError = result.getCellErrors().get(0);
+            assertEquals(1, cellError.getRowIndex());
+            assertEquals(1, cellError.getColumnIndex());
+            assertEquals("unhealthyField", cellError.getPropName());
+            assertEquals("Unhealthy Field", cellError.getHeaderText());
+        }
+
+
+    }
+
+
+    @ParameterizedTest
+    @ValueSource(chars = {',', '\t'})
+    void sheetToBeans_csvSeparator(char cellSeparator) throws IOException {
+
+        String inputResourceClasspath = "/integration-test/SimpleBean-separated-by-" + getSeparatorName(cellSeparator) + ".csv";
+        try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
+            SheetToBeansParam<ConversionITSimpleBean> param =
+                    new SheetToBeansParamBuilder<ConversionITSimpleBean>()
+                            .setBeanClass(ConversionITSimpleBean.class)
+                            .setFileType(SpreadsheetFileType.CSV)
+                            .setSpreadsheetInput(input)
+                            .setInputCharset("utf8")
+                            .setCellSeparator(cellSeparator)
+                            .build();
+
+            SheetToBeansResult<ConversionITSimpleBean> result = manager.sheetToBeans(param);
+            printResult(result);
+
+            assertEquals(1, result.getBeans().size());
+            assertFalse(result.hasCellErrors());
+
+            ConversionITSimpleBean bean = result.getBeans().get(0);
+            assertEquals("another string", bean.getStr());
+            assertEquals(200, bean.getPrimInt());
+        }
+
+
+    }
+
+    private void printResult(SheetToBeansResult<?> result) {
         result.getBeans().forEach(b -> System.out.println(b));
         result.getCellErrors().forEach(e -> System.err.println(e));
+    }
+
+    private String getSeparatorName(char cellSeparator) {
+        if (cellSeparator == ',') {
+            return "comma";
+        }
+        if (cellSeparator == '\t') {
+            return "tab";
+        }
+        throw new IllegalArgumentException("No name for " + cellSeparator);
     }
 
 }

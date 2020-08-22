@@ -38,7 +38,7 @@ public class CsvSheet implements SsSheet {
     }
 
     @Override
-    public SsRow createRow(int rowIndex) {
+    public SsRow createNewRow(int rowIndex) {
         int currentSize = rows.size();
         if (rowIndex != currentSize) {
             throw new IllegalArgumentException(String.format("Current there are %s rows. So the next row should start with %s, but the input rowIndex is %s", currentSize, currentSize, rowIndex));

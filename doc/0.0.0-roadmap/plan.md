@@ -2,11 +2,11 @@
 
 * Define the api including the data structure (using builder pattern)   ✔
 * saving using header map instead of annotations (default format for date/number in excel and csv) 
-  * Basic feature  ✔
+  * Basic features  ✔
   * optional header   ✔
   * csv seperator    ✔
 * parsing using header map instead of annotations (default format for date/number in excel and csv)
-  * Basic feature  
+  * Basic features including negative cases
   * enum problem at last ✔
   * Test about non-0 sheet 
   * optional header 

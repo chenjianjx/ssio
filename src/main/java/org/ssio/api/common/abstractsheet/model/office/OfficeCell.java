@@ -5,16 +5,27 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
 import org.ssio.api.common.abstractsheet.model.SsCell;
 import org.ssio.api.common.abstractsheet.model.SsCellValueJavaType;
 import org.ssio.internal.common.cellvalue.binder.SsCellValueBinder;
 import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinderRepo;
 
 public class OfficeCell implements SsCell {
-    private final Cell poiCell;
+    private Cell poiCell;
 
-    public OfficeCell(Cell poiCell) {
-        this.poiCell = poiCell;
+
+    public static OfficeCell createFromExistingPoiCell(Cell poiCell) {
+        OfficeCell cell = new OfficeCell();
+        cell.poiCell = poiCell;
+        return cell;
+    }
+
+    public static OfficeCell createEmptyCell(Row poiRow, int columnIndex) {
+        Cell poiCell = poiRow.createCell(columnIndex);
+        OfficeCell cell = new OfficeCell();
+        cell.poiCell = poiCell;
+        return cell;
     }
 
     public Cell getPoiCell() {

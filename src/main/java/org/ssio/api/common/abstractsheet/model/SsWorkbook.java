@@ -7,7 +7,7 @@ import java.io.OutputStream;
  * file-type-independent workbook
  */
 public interface SsWorkbook {
-    SsSheet createSheet(String sheetName);
+    SsSheet createNewSheet(String sheetName);
     
     int getNumberOfSheets();
 

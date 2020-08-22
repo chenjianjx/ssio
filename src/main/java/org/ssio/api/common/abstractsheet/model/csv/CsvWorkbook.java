@@ -27,7 +27,7 @@ public class CsvWorkbook implements SsWorkbook {
     }
 
     @Override
-    public SsSheet createSheet(String sheetName) {
+    public SsSheet createNewSheet(String sheetName) {
         this.sheet = new CsvSheet();
         return this.sheet;
     }

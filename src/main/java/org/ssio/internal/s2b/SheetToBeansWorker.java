@@ -37,6 +37,7 @@ public class SheetToBeansWorker {
         SsFactory ssFactory = new DefaultSsFactory();
         SsWorkbook workbook = ssFactory.createWorkbookFromInput(param.getFileType(), param.getSpreadsheetInput());
         if (workbook.getNumberOfSheets() <= 0) {
+            logger.warn("There are no sheets in the spreadsheet");
             return result;
         }
 

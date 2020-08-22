@@ -17,24 +17,27 @@ public class OfficeWorkbook implements SsWorkbook {
     private Workbook poiBook;
     private List<OfficeSheet> sheets = new ArrayList<>();
 
-    private OfficeWorkbook(Workbook poiBook) {
-        this.poiBook = poiBook;
-    }
 
     public static OfficeWorkbook createNewWorkbook() {
         Workbook poiBook = new XSSFWorkbook();
-        return new OfficeWorkbook(poiBook);
+        OfficeWorkbook workbook = new OfficeWorkbook();
+        workbook.poiBook = poiBook;
+        return workbook;
     }
 
-    public static SsWorkbook createFromInput(InputStream spreadsheetInput) throws IOException {
+    public static OfficeWorkbook createFromInput(InputStream spreadsheetInput) throws IOException {
         Workbook poiBook = WorkbookFactory.create(spreadsheetInput);
-        return new OfficeWorkbook(poiBook);
+        OfficeWorkbook workbook = new OfficeWorkbook();
+        workbook.poiBook = poiBook;
+        for (int i = 0; i < poiBook.getNumberOfSheets(); i++) {
+            workbook.sheets.add(OfficeSheet.createFromExistingPoiSheet(poiBook.getSheetAt(i)));
+        }
+        return workbook;
     }
 
     @Override
-    public SsSheet createSheet(String sheetName) {
-        Sheet poiSheet = sheetName == null ? poiBook.createSheet() : poiBook.createSheet(sheetName);
-        OfficeSheet sheet = new OfficeSheet(poiSheet);
+    public SsSheet createNewSheet(String sheetName) {
+        OfficeSheet sheet = OfficeSheet.createNewSheet(poiBook, sheetName);
         sheets.add(sheet);
         return sheet;
     }
@@ -56,7 +59,6 @@ public class OfficeWorkbook implements SsWorkbook {
 
     @Override
     public SsSheet getSheetAt(int sheetIndex) {
-        Sheet poiSheet = poiBook.getSheetAt(sheetIndex);
-        return new OfficeSheet(poiSheet);
+        return sheets.get(sheetIndex);
     }
 }

@@ -2,6 +2,7 @@ package org.ssio.api.common.abstractsheet.model.office;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ssio.api.common.abstractsheet.model.SsRow;
@@ -21,8 +22,26 @@ public class OfficeSheet implements SsSheet {
      */
     private Map<Integer, OfficeRow> rows = new LinkedHashMap<>();
 
-    public OfficeSheet(Sheet poiSheet) {
-        this.poiSheet = poiSheet;
+    public static OfficeSheet createNewSheet(Workbook poiBook, String sheetName) {
+        Sheet poiSheet = sheetName == null ? poiBook.createSheet() : poiBook.createSheet(sheetName);
+        OfficeSheet sheet = new OfficeSheet();
+        sheet.poiSheet = poiSheet;
+        return sheet;
+    }
+
+
+    public static OfficeSheet createFromExistingPoiSheet(Sheet poiSheet) {
+        OfficeSheet sheet = new OfficeSheet();
+        sheet.poiSheet = poiSheet;
+
+        int numOfRows = poiSheet.getLastRowNum() + 1;
+        for (int i = 0; i < numOfRows; i++) {
+            Row poiRow = poiSheet.getRow(i);
+            OfficeRow row = OfficeRow.createFromExistingPoiRow(poiRow);
+            sheet.rows.put(i, row);
+        }
+
+        return sheet;
     }
 
 
@@ -48,15 +67,14 @@ public class OfficeSheet implements SsSheet {
     }
 
     @Override
-    public SsRow createRow(int rowIndex) {
-        Row poiRow = poiSheet.createRow(rowIndex);
-        OfficeRow row = new OfficeRow(poiRow);
+    public SsRow createNewRow(int rowIndex) {
+        OfficeRow row = OfficeRow.createEmptyRow(poiSheet, rowIndex);
         rows.put(rowIndex, row);
         return row;
     }
 
     @Override
     public int getNumberOfRows() {
-        return poiSheet.getLastRowNum() + 1;
+        return rows.size();
     }
 }

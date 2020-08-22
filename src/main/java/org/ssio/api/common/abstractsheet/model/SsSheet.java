@@ -29,12 +29,12 @@ public interface SsSheet {
      * @param rowIndex 0-based
      * @return
      */
-    SsRow createRow(int rowIndex);
+    SsRow createNewRow(int rowIndex);
 
 
     default SsRow createHeaderRow(LinkedHashMap<String, String> headerMap) {
 
-        SsRow header = this.createRow(0);
+        SsRow header = this.createNewRow(0);
         int columnIndex = 0;
         for (Map.Entry<String, String> entry : headerMap.entrySet()) {
             String headerText = StringUtils.defaultString(entry.getValue());
@@ -59,7 +59,7 @@ public interface SsSheet {
      * @return
      */
     default <BEAN> SsRow createDataRow(LinkedHashMap<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, Function<DatumError, String> datumErrDisplayFunction, List<DatumError> datumErrors) {
-        SsRow row = this.createRow(rowIndex);
+        SsRow row = this.createNewRow(rowIndex);
         int columnIndex = 0;
         for (Map.Entry<String, String> entry : headerMap.entrySet()) {
 

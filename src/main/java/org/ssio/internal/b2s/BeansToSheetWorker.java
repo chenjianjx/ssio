@@ -26,7 +26,7 @@ public class BeansToSheetWorker {
         SsFactory ssFactory = new DefaultSsFactory();
 
         SsWorkbook workbook = ssFactory.newWorkbook(param.getFileType(), param.getCellSeparator());
-        SsSheet sheet = workbook.createSheet(param.getSheetName());
+        SsSheet sheet = workbook.createNewSheet(param.getSheetName());
 
         int numOfBeans = param.getBeans().size();
         logger.info(numOfBeans + " beans will be written to a spreadsheet");

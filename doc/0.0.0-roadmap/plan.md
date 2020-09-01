@@ -9,14 +9,15 @@
   * Basic features including negative cases ✔
   * enum problem at last ✔
   * Test about non-0 sheet ✔ 
-  * optional header 
-* extensible file type  
-* fix the api/internal problem and make helper/manager/workers injectable 
 * annotations (default format for date/number in excel and csv)
+  * beans2sheet
+  * sheet2beans
 * format for date in excel and csv
 * format for numbers in csv
+* optional header during parsing 
 * custom serialiser/deserialiser to support any type of field in a bean
-* explore formula and formula errors
+* extensible file type  
+* fix the api/internal problem and make helper/manager/workers injectable 
 * [Release Milestone] shortcut methods  and readme
-
+* explore formula and formula errors
 * extract, split and merge

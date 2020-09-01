@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
@@ -37,8 +38,8 @@ public class SsioReflectionHelper {
         } catch (Exception e) {
             return false;
         }
-            Constructor<T> constructor = ConstructorUtils.getAccessibleConstructor(clazz, new Class<?>[0]);
-            return constructor != null;
+        Constructor<T> constructor = ConstructorUtils.getAccessibleConstructor(clazz, new Class<?>[0]);
+        return constructor != null;
 
     }
 
@@ -220,4 +221,54 @@ public class SsioReflectionHelper {
         }
     }
 
+    /**
+     * Extract property name from a supposed-to-be getter/setter method
+     *
+     * @param shouldBeGetterOrSetter should be, but doesn't have to be. If it is, null will be returned
+     * @return
+     */
+    public static String extractPropertyName(Method shouldBeGetterOrSetter) {
+        String methodName = shouldBeGetterOrSetter.getName();
+
+        String propName = null;
+        if (methodName.startsWith("is") && shouldBeGetterOrSetter.getParameterCount() == 0 && boolean.class.equals(shouldBeGetterOrSetter.getReturnType())) {
+            propName = methodName.substring("is".length());
+        }
+
+        if (methodName.startsWith("get") && shouldBeGetterOrSetter.getParameterCount() == 0
+                && !void.class.equals(shouldBeGetterOrSetter.getReturnType())
+                && !boolean.class.equals(shouldBeGetterOrSetter.getReturnType())
+        ) {
+            propName = methodName.substring("get".length());
+        }
+
+        if (methodName.startsWith("set") && shouldBeGetterOrSetter.getParameterCount() == 1) {
+            propName = methodName.substring("set".length());
+        }
+
+        return propName == null ? null : StringUtils.uncapitalize(propName);
+    }
+
+
+    /**
+     * copied from https://stackoverflow.com/a/3567901/301447
+     *
+     * @param clazz
+     * @return
+     */
+    public static List<Field> getDeclaredFieldsFromClassAndAncestors(Class<?> clazz) {
+        List<Field> result = new ArrayList<Field>();
+
+        Class<?> i = clazz;
+        while (i != null && i != Object.class) {
+            for (Field field : i.getDeclaredFields()) {
+                if (!field.isSynthetic()) {
+                    result.add(field);
+                }
+            }
+            i = i.getSuperclass();
+        }
+
+        return result;
+    }
 }

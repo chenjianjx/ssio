@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.SpreadsheetFileType;
+import org.ssio.api.common.BeanClassInspector;
 import org.ssio.api.common.BuilderPatternHelper;
 import org.ssio.api.common.SsioConstants;
 
@@ -80,6 +81,8 @@ public class BeansToSheetParamBuilder<BEAN> {
         builderHelper.validateFieldNotNull("outputTarget", outputTarget, errors);
         builderHelper.validateFieldNotNull("fileType", fileType, errors);
         builderHelper.validateFieldNotNull("datumErrDisplayFunction", datumErrDisplayFunction, errors);
+
+        new BeanClassInspector().getMappingsForBeans2Sheet(beanClass, errors);
 
         return errors;
     }

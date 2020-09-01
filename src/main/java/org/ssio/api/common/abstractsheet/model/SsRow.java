@@ -10,5 +10,10 @@ public interface SsRow {
      */
     SsCell getCell(int columnIndex);
 
+    /**
+     *
+     * @param columnIndex 0-based
+     * @return
+     */
     SsCell createCell(int columnIndex);
 }

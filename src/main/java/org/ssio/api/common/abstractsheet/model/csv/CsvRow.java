@@ -42,12 +42,13 @@ public class CsvRow implements SsRow {
     @Override
     public SsCell createCell(int columnIndex) {
         int currentSize = cells.size();
-        if (columnIndex != currentSize) {
-            throw new IllegalArgumentException(String.format("Current there are %s cells. So the next cell should start with %s, but the input columnIndex is %s", currentSize, currentSize, columnIndex));
+        int nextIndex = currentSize;
+        CsvCell newCell = null;
+        for (int i = nextIndex; i <= columnIndex; i++) {
+            newCell = CsvCell.createEmptyCell();
+            cells.add(newCell);
         }
-        CsvCell cell = CsvCell.createEmptyCell();
-        cells.add(cell);
-        return cell;
+        return newCell;
     }
 
     public void acceptPrinting(CSVPrinter csvPrinter) throws IOException {

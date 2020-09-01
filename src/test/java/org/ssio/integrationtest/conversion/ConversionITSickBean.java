@@ -2,14 +2,17 @@ package org.ssio.integrationtest.conversion;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.ssio.api.common.annotation.SsColumn;
 
 /**
  * A bean that throws exceptions when properties are accessed
  */
 public class ConversionITSickBean {
 
+    @SsColumn(index = 0)
     private String healthyField = "defaultHealthyField";
 
+    @SsColumn(index = 1)
     public String unhealthyField = "defaultUnhealthyField";
 
 

@@ -2,6 +2,7 @@ package org.ssio.integrationtest.conversion;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.ssio.api.common.annotation.SsColumn;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -12,32 +13,47 @@ import java.util.Objects;
 
 public class ConversionITBean {
 
+    @SsColumn(index = 0)
     private boolean primBoolean;
+    @SsColumn(index = 1)
     private short primShort;
+    @SsColumn(index = 2)
     private int primInt;
+    @SsColumn(index = 3)
     private long primLong;
+    @SsColumn(index = 4)
     private float primFloat;
+    @SsColumn(index = 5)
     private double primDouble;
 
-
+    @SsColumn(index = 6)
     private Boolean objBoolean;
+    @SsColumn(index = 7)
     private Short objShort;
+    @SsColumn(index = 8)
     private Integer objInt;
+    @SsColumn(index = 9)
     private Long objLong;
+    @SsColumn(index = 10)
     private Float objFloat;
+    @SsColumn(index = 11)
     private Double objDouble;
 
-
+    @SsColumn(index = 12)
     private BigInteger bigInteger;
+    @SsColumn(index = 13)
     private BigDecimal bigDecimal;
 
-
+    @SsColumn(index = 14)
     private Date date;
+    @SsColumn(index = 15)
     private LocalDate localDate;
+    @SsColumn(index = 16)
     private LocalDateTime localDateTime;
 
-
+    @SsColumn(index = 17)
     private String str;
+    @SsColumn(index = 18)
     private ConversionITEnum enumeration;
 
 

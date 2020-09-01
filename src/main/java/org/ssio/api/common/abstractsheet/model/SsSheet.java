@@ -4,6 +4,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.ssio.api.b2s.DatumError;
+import org.ssio.api.common.mapping.PropAndColumn;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,24 +33,23 @@ public interface SsSheet {
     SsRow createNewRow(int rowIndex);
 
 
-    default SsRow createHeaderRow(LinkedHashMap<String, String> headerMap) {
+    default SsRow createHeaderRow(List<PropAndColumn> propAndColumnList) {
 
         SsRow header = this.createNewRow(0);
-        int columnIndex = 0;
-        for (Map.Entry<String, String> entry : headerMap.entrySet()) {
-            String headerText = StringUtils.defaultString(entry.getValue());
-            SsCell cell = header.createCell(columnIndex);
+        for (PropAndColumn pac : propAndColumnList) {
+            String headerText = StringUtils.defaultString(pac.getColumnName());
+            SsCell cell = header.createCell(pac.getColumnIndex());
             cell.writeValueAsType(SsCellValueJavaType.String, null, headerText);
             cell.styleAsHeader();
-            this.autoSizeColumn(columnIndex);
-            columnIndex++;
+            this.autoSizeColumn(pac.getColumnIndex());
         }
+
         return header;
     }
 
 
     /**
-     * @param headerMap
+     * @param propAndColumnList
      * @param bean
      * @param recordIndex             0-based
      * @param rowIndex                0-based
@@ -58,14 +58,15 @@ public interface SsSheet {
      * @param <BEAN>
      * @return
      */
-    default <BEAN> SsRow createDataRow(LinkedHashMap<String, String> headerMap, BEAN bean, int recordIndex, int rowIndex, Function<DatumError, String> datumErrDisplayFunction, List<DatumError> datumErrors) {
+    default <BEAN> SsRow createDataRow(List<PropAndColumn> propAndColumnList, BEAN bean, int recordIndex, int rowIndex, Function<DatumError, String> datumErrDisplayFunction, List<DatumError> datumErrors) {
         SsRow row = this.createNewRow(rowIndex);
-        int columnIndex = 0;
-        for (Map.Entry<String, String> entry : headerMap.entrySet()) {
 
-            SsCell cell = row.createCell(columnIndex);
 
-            String propName = entry.getKey();
+        for (PropAndColumn propAndColumn : propAndColumnList) {
+
+            SsCell cell = row.createCell(propAndColumn.getColumnIndex());
+
+            String propName = propAndColumn.getPropName();
 
             try {
                 SsCellValueJavaType javaType = SsCellValueHelper.resolveJavaTypeOfPropertyOrThrow(bean, propName);
@@ -91,7 +92,7 @@ public interface SsSheet {
                 }
                 cell.styleAsError();
             }
-            columnIndex++;
+
         }
 
         return row;

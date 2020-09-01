@@ -73,6 +73,41 @@ class BeansToSheetITCase {
 
 
     @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void beansToSheet_strangeAnnotationTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        Collection<ConversionITStrangeAnnotationBean> beans = Arrays.asList(new ConversionITStrangeAnnotationBean());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        BeansToSheetParam<ConversionITStrangeAnnotationBean> param =
+                new BeansToSheetParamBuilder<ConversionITStrangeAnnotationBean>()
+                        .setBeanClass(ConversionITStrangeAnnotationBean.class)
+                        .setBeans(beans)
+                        .setFileType(spreadsheetFileType)
+                        .setOutputTarget(outputStream)
+                        .setSheetName("first sheet")
+                        .build();
+
+
+        // save it
+        BeansToSheetResult result = manager.beansToSheet(param);
+
+        // do a save for human eye check
+        byte[] spreadsheet = outputStream.toByteArray();
+        assertTrue(spreadsheet.length > 0);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_strangeAnnotationTest", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+
+        if (result.hasDatumErrors()) {
+            for (DatumError datumError : result.getDatumErrors()) {
+                System.err.println(datumError);
+            }
+            fail("There should not be datum errors");
+        }
+
+    }
+
+
+    @ParameterizedTest
     @MethodSource("beansToSheet_datumError_provider")
     void beansToSheet_datumError(SpreadsheetFileType spreadsheetFileType, Function<DatumError, String> datumErrDisplayFunction) throws IOException {
 

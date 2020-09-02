@@ -13,30 +13,30 @@ import java.util.Objects;
 
 public class ConversionITBean {
 
-    @SsColumn(index = 0)
+    @SsColumn(index = 0, name = "Primitive Boolean")
     private boolean primBoolean;
-    @SsColumn(index = 1)
+    @SsColumn(index = 1, name = "Primitive Short")
     private short primShort;
-    @SsColumn(index = 2)
+    @SsColumn(index = 2, name = "Primitive Int")
     private int primInt;
-    @SsColumn(index = 3)
+    @SsColumn(index = 3, name = "Primitive Long")
     private long primLong;
-    @SsColumn(index = 4)
+    @SsColumn(index = 4, name = "Primitive Float")
     private float primFloat;
-    @SsColumn(index = 5)
+    @SsColumn(index = 5, name = "Primitive Double")
     private double primDouble;
 
-    @SsColumn(index = 6)
+    @SsColumn(index = 6, name = "Object Boolean")
     private Boolean objBoolean;
-    @SsColumn(index = 7)
+    @SsColumn(index = 7, name = "Object Short")
     private Short objShort;
-    @SsColumn(index = 8)
+    @SsColumn(index = 8, name = "Object Int")
     private Integer objInt;
-    @SsColumn(index = 9)
+    @SsColumn(index = 9, name = "Object Long")
     private Long objLong;
-    @SsColumn(index = 10)
+    @SsColumn(index = 10, name = "Object Float")
     private Float objFloat;
-    @SsColumn(index = 11)
+    @SsColumn(index = 11, name = "Object Double")
     private Double objDouble;
 
     @SsColumn(index = 12)
@@ -51,7 +51,7 @@ public class ConversionITBean {
     @SsColumn(index = 16)
     private LocalDateTime localDateTime;
 
-    @SsColumn(index = 17)
+    @SsColumn(index = 17, name = "String")
     private String str;
     @SsColumn(index = 18)
     private ConversionITEnum enumeration;

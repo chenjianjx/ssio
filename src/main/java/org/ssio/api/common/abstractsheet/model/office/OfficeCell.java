@@ -12,6 +12,9 @@ import org.ssio.internal.common.cellvalue.binder.SsCellValueBinder;
 import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinderRepo;
 
 public class OfficeCell implements SsCell {
+    /**
+     * note: can be null
+     */
     private Cell poiCell;
 
     private OfficeCell() {

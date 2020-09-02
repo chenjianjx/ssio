@@ -2,6 +2,7 @@ package org.ssio.integrationtest.conversion;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -9,6 +10,7 @@ import org.ssio.api.ConversionManager;
 import org.ssio.api.SpreadsheetFileType;
 import org.ssio.api.common.abstractsheet.helper.SsSheetLocator;
 import org.ssio.api.s2b.CellError;
+import org.ssio.api.s2b.PropFromColumnMappingMode;
 import org.ssio.api.s2b.SheetToBeansParam;
 import org.ssio.api.s2b.SheetToBeansParamBuilder;
 import org.ssio.api.s2b.SheetToBeansResult;
@@ -31,9 +33,19 @@ public class SheetToBeansITCase {
     }
 
 
+    static Stream<Arguments> fileType_mappingMode_provider() {
+        return Stream.of(
+                Arguments.of(SpreadsheetFileType.OFFICE, PropFromColumnMappingMode.BY_INDEX),
+                Arguments.of(SpreadsheetFileType.OFFICE, PropFromColumnMappingMode.BY_NAME),
+                Arguments.of(SpreadsheetFileType.CSV, PropFromColumnMappingMode.BY_INDEX),
+                Arguments.of(SpreadsheetFileType.CSV, PropFromColumnMappingMode.BY_NAME)
+        );
+    }
+
+
     @ParameterizedTest
-    @EnumSource(SpreadsheetFileType.class)
-    void sheetToBeans_positiveTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
+    @MethodSource("fileType_mappingMode_provider")
+    void sheetToBeans_positiveTest(SpreadsheetFileType spreadsheetFileType, PropFromColumnMappingMode propFromColumnMappingMode) throws IOException {
 
         String inputResourceClasspath = "/integration-test/ITBeans-empty-normal-bigValue" + decideTargetFileExtension(spreadsheetFileType);
         try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
@@ -43,6 +55,7 @@ public class SheetToBeansITCase {
                             .setFileType(spreadsheetFileType)
                             .setSpreadsheetInput(input)
                             .setInputCharset("utf8") //for csv only
+                            .setPropFromColumnMappingMode(propFromColumnMappingMode)
                             .build();
 
             SheetToBeansResult<ConversionITBean> result = manager.sheetToBeans(param);
@@ -58,8 +71,40 @@ public class SheetToBeansITCase {
             result.getBeans().forEach(b -> System.out.println(b));
         }
 
+    }
+
+
+
+
+    @ParameterizedTest
+    @MethodSource("fileType_mappingMode_provider")
+    void sheetToBeans_strangeAnnotationTest(SpreadsheetFileType spreadsheetFileType, PropFromColumnMappingMode propFromColumnMappingMode) throws IOException {
+
+        String inputResourceClasspath = "/integration-test/StrangeAnnotationBean" + decideTargetFileExtension(spreadsheetFileType);
+        try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
+            SheetToBeansParam<ConversionITStrangeAnnotationBean> param =
+                    new SheetToBeansParamBuilder<ConversionITStrangeAnnotationBean>()
+                            .setBeanClass(ConversionITStrangeAnnotationBean.class)
+                            .setFileType(spreadsheetFileType)
+                            .setSpreadsheetInput(input)
+                            .setInputCharset("utf8") //for csv only
+                            .setPropFromColumnMappingMode(propFromColumnMappingMode)
+                            .build();
+
+            SheetToBeansResult<ConversionITStrangeAnnotationBean> result = manager.sheetToBeans(param);
+            printResult(result);
+
+            assertEquals(1, result.getBeans().size());
+            assertFalse(result.hasCellErrors());
+
+            assertEquals(new ConversionITStrangeAnnotationBean(), result.getBeans().get(0));
+            result.getBeans().forEach(b -> System.out.println(b));
+        }
 
     }
+
+
+
 
 
     @ParameterizedTest

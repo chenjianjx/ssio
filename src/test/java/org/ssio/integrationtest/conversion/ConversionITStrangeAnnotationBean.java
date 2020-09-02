@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.common.annotation.SsColumn;
 
+import java.util.Objects;
+
 
 public class ConversionITStrangeAnnotationBean {
 
@@ -28,6 +30,20 @@ public class ConversionITStrangeAnnotationBean {
 
     public void setBar(String bar) {
         this.bar = bar;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConversionITStrangeAnnotationBean that = (ConversionITStrangeAnnotationBean) o;
+        return Objects.equals(foo, that.foo) &&
+                Objects.equals(bar, that.bar);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(foo, bar);
     }
 
     @Override

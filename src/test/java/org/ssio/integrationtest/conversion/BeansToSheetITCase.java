@@ -109,7 +109,7 @@ class BeansToSheetITCase {
 
     @ParameterizedTest
     @MethodSource("beansToSheet_datumError_provider")
-    void beansToSheet_datumError(SpreadsheetFileType spreadsheetFileType, Function<DatumError, String> datumErrDisplayFunction) throws IOException {
+    void beansToSheet_datumError(SpreadsheetFileType spreadsheetFileType, Function<DatumError, String> datumErrDisplayFunction, String datumErrDisplayFunctionName) throws IOException {
 
         Collection<ConversionITSickBean> beans = Arrays.asList(
                 new ConversionITSickBean(), new ConversionITSickBean());
@@ -132,7 +132,7 @@ class BeansToSheetITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_datumError", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_datumError_" + datumErrDisplayFunctionName, ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasNoDatumErrors()) {
             fail("There should be datum errors");
@@ -143,12 +143,12 @@ class BeansToSheetITCase {
     static Stream<Arguments> beansToSheet_datumError_provider() {
         return Stream.of(
 
-                Arguments.of(SpreadsheetFileType.OFFICE, BeansToSheetParam.DATUM_ERR_BLANK_DISPLAY_FUNCTION),
-                Arguments.of(SpreadsheetFileType.OFFICE, BeansToSheetParam.DEFAULT_DATUM_ERR_DISPLAY_FUNCTION),
-                Arguments.of(SpreadsheetFileType.OFFICE, BeansToSheetParam.DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION),
-                Arguments.of(SpreadsheetFileType.CSV, BeansToSheetParam.DATUM_ERR_BLANK_DISPLAY_FUNCTION),
-                Arguments.of(SpreadsheetFileType.CSV, BeansToSheetParam.DEFAULT_DATUM_ERR_DISPLAY_FUNCTION),
-                Arguments.of(SpreadsheetFileType.CSV, BeansToSheetParam.DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION)
+                Arguments.of(SpreadsheetFileType.OFFICE, BeansToSheetParam.DATUM_ERR_BLANK_DISPLAY_FUNCTION, "DATUM_ERR_BLANK_DISPLAY_FUNCTION"),
+                Arguments.of(SpreadsheetFileType.OFFICE, BeansToSheetParam.DEFAULT_DATUM_ERR_DISPLAY_FUNCTION, "DEFAULT_DATUM_ERR_DISPLAY_FUNCTION"),
+                Arguments.of(SpreadsheetFileType.OFFICE, BeansToSheetParam.DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION, "DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION"),
+                Arguments.of(SpreadsheetFileType.CSV, BeansToSheetParam.DATUM_ERR_BLANK_DISPLAY_FUNCTION, "DATUM_ERR_BLANK_DISPLAY_FUNCTION"),
+                Arguments.of(SpreadsheetFileType.CSV, BeansToSheetParam.DEFAULT_DATUM_ERR_DISPLAY_FUNCTION, "DEFAULT_DATUM_ERR_DISPLAY_FUNCTION"),
+                Arguments.of(SpreadsheetFileType.CSV, BeansToSheetParam.DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION, "DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION")
         );
     }
 
@@ -204,12 +204,22 @@ class BeansToSheetITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_csvSeparator", ConversionITTestHelper.decideTargetFileExtension(SpreadsheetFileType.CSV)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_csvSeparator_" + getSeparatorName(cellSeparator), ConversionITTestHelper.decideTargetFileExtension(SpreadsheetFileType.CSV)), spreadsheet);
 
         if (result.hasDatumErrors()) {
             fail("There should be no datum errors");
         }
 
+    }
+
+    private String getSeparatorName(char cellSeparator) {
+        if (cellSeparator == ',') {
+            return "comma";
+        }
+        if (cellSeparator == '\t') {
+            return "tab";
+        }
+        throw new UnsupportedOperationException("Don't know the name of this separator: " + cellSeparator);
     }
 
 

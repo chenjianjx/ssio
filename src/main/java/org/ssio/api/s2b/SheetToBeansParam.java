@@ -9,8 +9,9 @@ import java.io.InputStream;
 
 public class SheetToBeansParam<BEAN> {
 
-    public SheetToBeansParam(Class<BEAN> beanClass, InputStream spreadsheetInput, String inputCharset, SpreadsheetFileType fileType, char cellSeparator, SsSheetLocator sheetLocator) {
+    public SheetToBeansParam(Class<BEAN> beanClass, PropFromColumnMappingMode propFromColumnMappingMode, InputStream spreadsheetInput, String inputCharset, SpreadsheetFileType fileType, char cellSeparator, SsSheetLocator sheetLocator) {
         this.beanClass = beanClass;
+        this.propFromColumnMappingMode = propFromColumnMappingMode;
         this.spreadsheetInput = spreadsheetInput;
         this.inputCharset = inputCharset;
         this.fileType = fileType;
@@ -22,6 +23,11 @@ public class SheetToBeansParam<BEAN> {
      * not null
      */
     private Class<BEAN> beanClass;
+
+    /**
+     * not null. Default is by column name
+     */
+    private PropFromColumnMappingMode propFromColumnMappingMode;
 
     /**
      * not null
@@ -71,6 +77,10 @@ public class SheetToBeansParam<BEAN> {
 
     public SpreadsheetFileType getFileType() {
         return fileType;
+    }
+
+    public PropFromColumnMappingMode getPropFromColumnMappingMode() {
+        return propFromColumnMappingMode;
     }
 
     @Override

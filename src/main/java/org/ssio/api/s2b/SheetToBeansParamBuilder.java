@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.SpreadsheetFileType;
+import org.ssio.api.common.BeanClassInspector;
 import org.ssio.api.common.BuilderPatternHelper;
 import org.ssio.api.common.SsioConstants;
 import org.ssio.api.common.abstractsheet.helper.SsSheetLocator;
@@ -16,6 +17,7 @@ import static org.ssio.internal.util.SsioReflectionHelper.hasAccessibleZeroArgum
 
 public class SheetToBeansParamBuilder<BEAN> {
     private Class<BEAN> beanClass;
+    private PropFromColumnMappingMode propFromColumnMappingMode = PropFromColumnMappingMode.BY_NAME;
     private InputStream spreadsheetInput;
     private String inputCharset;
     private char cellSeparator = SsioConstants.DEFAULT_CSV_CELL_SEPARATOR;
@@ -23,17 +25,22 @@ public class SheetToBeansParamBuilder<BEAN> {
     private SsSheetLocator sheetLocator = SsSheetLocator.byIndexLocator(0);
 
 
-    public SheetToBeansParamBuilder setBeanClass(Class<BEAN> beanClass) {
+    public SheetToBeansParamBuilder<BEAN> setBeanClass(Class<BEAN> beanClass) {
         this.beanClass = beanClass;
         return this;
     }
 
-    public SheetToBeansParamBuilder setSpreadsheetInput(InputStream spreadsheetInput) {
+    public SheetToBeansParamBuilder<BEAN> setPropFromColumnMappingMode(PropFromColumnMappingMode propFromColumnMappingMode) {
+        this.propFromColumnMappingMode = propFromColumnMappingMode;
+        return this;
+    }
+
+    public SheetToBeansParamBuilder<BEAN> setSpreadsheetInput(InputStream spreadsheetInput) {
         this.spreadsheetInput = spreadsheetInput;
         return this;
     }
 
-    public SheetToBeansParamBuilder setFileType(SpreadsheetFileType fileType) {
+    public SheetToBeansParamBuilder<BEAN> setFileType(SpreadsheetFileType fileType) {
         this.fileType = fileType;
         return this;
     }
@@ -61,6 +68,7 @@ public class SheetToBeansParamBuilder<BEAN> {
         builderHelper.validateFieldNotNull("spreadsheetInput", spreadsheetInput, errors);
         builderHelper.validateFieldNotNull("fileType", fileType, errors);
         builderHelper.validateFieldNotNull("sheetLocator", sheetLocator, errors);
+        builderHelper.validateFieldNotNull("propFromColumnMappingMode", propFromColumnMappingMode, errors);
 
         if (beanClass != null && !hasAccessibleZeroArgumentConstructor(beanClass)) {
             errors.add("The beanClass doesn't have an accessible zero-argument constructor: " + beanClass.getName());
@@ -68,6 +76,10 @@ public class SheetToBeansParamBuilder<BEAN> {
 
         if (fileType == SpreadsheetFileType.CSV && inputCharset == null) {
             errors.add("For CSV input the inputCharset is required");
+        }
+
+        if (beanClass != null && propFromColumnMappingMode != null) {
+            new BeanClassInspector().getPropAndColumnMappingsForSheet2Beans(beanClass, propFromColumnMappingMode, errors);
         }
 
 
@@ -79,7 +91,7 @@ public class SheetToBeansParamBuilder<BEAN> {
         if (errors.size() > 0) {
             throw new IllegalArgumentException("Cannot build an object because of the following errors: \n" + StringUtils.join(errors, "\n"));
         }
-        return new SheetToBeansParam(beanClass, spreadsheetInput, inputCharset, fileType, cellSeparator, sheetLocator);
+        return new SheetToBeansParam(beanClass, propFromColumnMappingMode, spreadsheetInput, inputCharset, fileType, cellSeparator, sheetLocator);
     }
 
     @Override

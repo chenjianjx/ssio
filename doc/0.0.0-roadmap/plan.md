@@ -10,7 +10,7 @@
   * enum problem at last ✔
   * Test about non-0 sheet ✔ 
 * annotations (default format for date/number in excel and csv)
-  * beans2sheet
+  * beans2sheet ✔
   * sheet2beans
 * format for date in excel and csv
 * format for numbers in csv

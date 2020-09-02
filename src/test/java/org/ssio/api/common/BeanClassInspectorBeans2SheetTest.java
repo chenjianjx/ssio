@@ -10,8 +10,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.ssio.testutil.SsioTestUtils.havingErrorContains;
 
-class BeanClassInspectorTest {
+class BeanClassInspectorBeans2SheetTest {
 
     BeanClassInspector inspector = new BeanClassInspector();
 
@@ -78,7 +79,7 @@ class BeanClassInspectorTest {
         public void setPropBySetter(String s) {
         }
 
-        public String getPropBySetter(){
+        public String getPropBySetter() {
             return null;
         }
 
@@ -127,19 +128,19 @@ class BeanClassInspectorTest {
 
 
     @Test
-    void getMappingsForBeans2Sheet_noColumn() {
+    void getMappings_noColumn() {
         List<String> errors = new ArrayList<>();
-        List<PropAndColumn> pacList = inspector.getMappingsForBeans2Sheet(NoColumnBean.class, errors);
+        List<PropAndColumn> pacList = inspector.getPropAndColumnMappingsForBeans2Sheet(NoColumnBean.class, errors);
         System.out.println(errors);
         assertEquals(0, pacList.size());
         assertTrue(errors.get(0).contains("at least one"));
     }
 
     @Test
-    void getMappingsForBeans2Sheet_allCases() throws NoSuchFieldException {
+    void getMappings_allCases() throws NoSuchFieldException {
 
         List<String> errors = new ArrayList<>();
-        List<PropAndColumn> pacList = inspector.getMappingsForBeans2Sheet(ChildBean.class, errors);
+        List<PropAndColumn> pacList = inspector.getPropAndColumnMappingsForBeans2Sheet(ChildBean.class, errors);
         pacList.forEach(System.out::println);
 
         errors.forEach(System.err::println);
@@ -178,13 +179,6 @@ class BeanClassInspectorTest {
 
     }
 
-    private boolean havingErrorContains(List<String> errors, String... snippets) {
-        for (String error : errors) {
-            boolean containsAllSnippets = Arrays.stream(snippets).map(s -> error.contains(s)).reduce(Boolean::logicalAnd).get();
-            if (containsAllSnippets) {
-                return true;
-            }
-        }
-        return false;
-    }
+
+
 }

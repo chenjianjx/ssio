@@ -12,11 +12,12 @@ class SheetToBeansParamBuilderTest {
 
     @Test
     void build_allWrong() {
-        SheetToBeansParamBuilder builder = new SheetToBeansParamBuilder().setSheetLocator(null);
+        SheetToBeansParamBuilder builder = new SheetToBeansParamBuilder().setSheetLocator(null).setPropFromColumnMappingMode(null);
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
 
         assertTrue(e.getMessage().contains("beanClass cannot be null"));
+        assertTrue(e.getMessage().contains("propFromColumnMappingMode cannot be null"));
         assertTrue(e.getMessage().contains("spreadsheetInput cannot be null"));
         assertTrue(e.getMessage().contains("fileType cannot be null"));
         assertTrue(e.getMessage().contains("sheetLocator cannot be null"));

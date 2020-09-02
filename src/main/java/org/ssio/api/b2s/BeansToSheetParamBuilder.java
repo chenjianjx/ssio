@@ -82,7 +82,7 @@ public class BeansToSheetParamBuilder<BEAN> {
         builderHelper.validateFieldNotNull("fileType", fileType, errors);
         builderHelper.validateFieldNotNull("datumErrDisplayFunction", datumErrDisplayFunction, errors);
 
-        new BeanClassInspector().getMappingsForBeans2Sheet(beanClass, errors);
+        new BeanClassInspector().getPropAndColumnMappingsForBeans2Sheet(beanClass, errors);
 
         return errors;
     }

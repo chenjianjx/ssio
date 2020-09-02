@@ -89,7 +89,7 @@ public class SheetToBeansITCase {
             assertEquals(1, cellError.getRowIndex());
             assertEquals(1, cellError.getColumnIndex());
             assertEquals("unhealthyField", cellError.getPropName());
-            assertEquals("Unhealthy Field", cellError.getHeaderText());
+            assertEquals("Unhealthy Field", cellError.getColumnName());
         }
 
 

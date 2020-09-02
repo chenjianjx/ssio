@@ -29,9 +29,9 @@ public class CellError implements Serializable {
 	private String propName;
 
 	/**
-	 * the corresponding headerText
+	 * the corresponding columnName
 	 */
-	private String headerText;
+	private String columnName;
 
 	/**
 	 * the cause of the error. It could be null
@@ -70,12 +70,12 @@ public class CellError implements Serializable {
 		this.propName = propName;
 	}
 
-	public String getHeaderText() {
-		return headerText;
+	public String getColumnName() {
+		return columnName;
 	}
 
-	public void setHeaderText(String headerText) {
-		this.headerText = headerText;
+	public void setColumnName(String columnName) {
+		this.columnName = columnName;
 	}
 
 	public Exception getCause() {
@@ -89,6 +89,6 @@ public class CellError implements Serializable {
 	@Override
 	public String toString() {
 		return MessageFormat.format("rowIndex = {0}, columnIndex = {1}, propName = \"{2}\", headerText = \"{3}\", cause = {4} ", rowIndex,
-				columnIndex, propName, headerText, cause);
+				columnIndex, propName, columnName, cause);
 	}
 }

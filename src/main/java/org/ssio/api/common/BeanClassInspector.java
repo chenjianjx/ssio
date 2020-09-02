@@ -1,6 +1,7 @@
 package org.ssio.api.common;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.ssio.api.common.annotation.SsColumn;
 import org.ssio.api.common.mapping.PropAndColumn;
 import org.ssio.api.s2b.PropFromColumnMappingMode;
@@ -118,8 +119,8 @@ public class BeanClassInspector {
 
 
             //build a pac
-            String columnName = annotation.name();
-            if (columnName.equals(SsColumn.NAME_UNKNOWN)) { //falls back to "foobar => Foo Bar" in both beans2sheet and sheet2beans modes
+            String columnName = StringUtils.trimToNull(annotation.name());
+            if (columnName == null || columnName.equals(SsColumn.NAME_UNKNOWN)) { //falls back to "foobar => Foo Bar" in both beans2sheet and sheet2beans modes
                 columnName = SepStringHelper.camelCaseToCapitalizedWords(propName);
             }
 

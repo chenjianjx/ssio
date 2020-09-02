@@ -23,7 +23,7 @@ public class BeansToSheetWorker {
 
     public <BEAN> BeansToSheetResult doWork(BeansToSheetParam<BEAN> param) throws IOException {
 
-        ArrayList<String> beanClassErrors = new ArrayList<>();
+        List<String> beanClassErrors = new ArrayList<>();
         List<PropAndColumn> propAndColumnList = beanClassInspector.getPropAndColumnMappingsForBeans2Sheet(param.getBeanClass(), beanClassErrors);
         if (beanClassErrors.size() > 0) {
             //shouldn't happen here. The validation has been done before this is executed

@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.ssio.api.common.annotation.SsColumn;
 import org.ssio.api.common.mapping.PropAndColumn;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,6 +25,65 @@ class BeanClassInspectorBeans2SheetTest {
 
         public void setFoo(String foo) {
             this.foo = foo;
+        }
+    }
+
+    public static class UnsupportedPropTypeBean {
+        @SsColumn
+        private Object foo;
+
+        public Object getFoo() {
+            return foo;
+        }
+
+        public void setFoo(Object foo) {
+            this.foo = foo;
+        }
+    }
+
+    public static class FormatTestBean {
+        @SsColumn(index = 0)
+        private LocalDate formatNotSet;
+
+        @SsColumn(index = 1, format = "yyyy-MM-dd")
+        private LocalDate validFormat;
+
+        @SsColumn(index = 2, format = "total-nonsense")
+        private LocalDate invalidFormat;
+
+        @SsColumn(index = 3, format = "yyyy-MM-dd")
+        private String notDateTyped;
+
+        public LocalDate getFormatNotSet() {
+            return formatNotSet;
+        }
+
+        public void setFormatNotSet(LocalDate formatNotSet) {
+            this.formatNotSet = formatNotSet;
+        }
+
+        public LocalDate getValidFormat() {
+            return validFormat;
+        }
+
+        public void setValidFormat(LocalDate validFormat) {
+            this.validFormat = validFormat;
+        }
+
+        public LocalDate getInvalidFormat() {
+            return invalidFormat;
+        }
+
+        public void setInvalidFormat(LocalDate invalidFormat) {
+            this.invalidFormat = invalidFormat;
+        }
+
+        public String getNotDateTyped() {
+            return notDateTyped;
+        }
+
+        public void setNotDateTyped(String notDateTyped) {
+            this.notDateTyped = notDateTyped;
         }
     }
 
@@ -137,6 +196,31 @@ class BeanClassInspectorBeans2SheetTest {
     }
 
     @Test
+    void getMappings_unsupportedPropType() {
+        List<String> errors = new ArrayList<>();
+        List<PropAndColumn> pacList = inspector.getPropAndColumnMappingsForBeans2Sheet(UnsupportedPropTypeBean.class, errors);
+        System.out.println(errors);
+        assertEquals(0, pacList.size());
+        assertTrue(havingErrorContains(errors, "not supported", "java.lang.Object", "foo"));
+    }
+
+
+    @Test
+    void getMappings_formatTest() {
+        List<String> errors = new ArrayList<>();
+        List<PropAndColumn> pacList = inspector.getPropAndColumnMappingsForBeans2Sheet(FormatTestBean.class, errors);
+        System.out.println(errors);
+
+        assertEquals(3, pacList.size());
+        assertEquals(SsioConstants.DEFAULT_LOCAL_DATE_PATTERN, pacList.get(0).getFormat());
+        assertEquals("yyyy-MM-dd", pacList.get(1).getFormat());
+        assertEquals(null, pacList.get(2).getFormat());
+
+        assertTrue(havingErrorContains(errors, "an invalid date format", "total-nonsense", "invalidFormat"));
+    }
+
+
+    @Test
     void getMappings_allCases() throws NoSuchFieldException {
 
         List<String> errors = new ArrayList<>();
@@ -178,7 +262,6 @@ class BeanClassInspectorBeans2SheetTest {
         assertTrue(havingErrorContains(errors, "duplicated column indexes", "50"));
 
     }
-
 
 
 }

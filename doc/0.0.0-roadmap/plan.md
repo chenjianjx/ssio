@@ -13,11 +13,9 @@
   * beans2sheet ✔
   * sheet2beans ✔
 * format for date in excel and csv
-* format for numbers in csv
 * optional header during parsing 
-* custom serialiser/deserialiser to support any type of field in a bean
-* extensible file type  
-* fix the api/internal problem and make helper/manager/workers injectable 
+* fix the api/internal problem and make helper/manager/workers injectable
+  * extensible file type   
 * [Release Milestone] shortcut methods  and readme
 * explore formula and formula errors
 * extract, split and merge

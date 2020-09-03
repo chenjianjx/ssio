@@ -21,6 +21,11 @@ public class PropAndColumn {
      */
     private int columnIndex;
 
+    /**
+     * a valid format
+     */
+    private String format;
+
 
     public PropAndColumn() {
     }
@@ -29,6 +34,14 @@ public class PropAndColumn {
         this.propName = propName;
         this.columnName = columnName;
         this.columnIndex = columnIndex;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     public String getPropName() {

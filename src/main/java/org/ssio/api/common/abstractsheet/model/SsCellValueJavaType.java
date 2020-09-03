@@ -1,5 +1,7 @@
 package org.ssio.api.common.abstractsheet.model;
 
+import org.ssio.api.common.SsioConstants;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -42,6 +44,7 @@ public enum SsCellValueJavaType {
 
     private Class<?> realType;
 
+
     SsCellValueJavaType(Class<?> realType) {
         this.realType = realType;
     }
@@ -64,5 +67,22 @@ public enum SsCellValueJavaType {
     }
 
 
+    public boolean isDateRelated() {
+        return this == Date || this == LocalDate || this == LocalDateTime;
+    }
 
+    /**
+     * only call this if {@link #isDateRelated()} returns true
+     *
+     * @return
+     */
+    public String getDefaultDateFormat() {
+        if (this == Date || this == LocalDateTime) {
+            return SsioConstants.DEFAULT_LOCAL_DATE_TIME_PATTERN;
+        }
+        if (this == LocalDate) {
+            return SsioConstants.DEFAULT_LOCAL_DATE_PATTERN;
+        }
+        throw new IllegalStateException();
+    }
 }

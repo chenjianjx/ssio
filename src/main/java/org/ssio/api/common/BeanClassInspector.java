@@ -2,6 +2,8 @@ package org.ssio.api.common;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.ssio.api.common.abstractsheet.model.SsCellValueJavaType;
 import org.ssio.api.common.annotation.SsColumn;
 import org.ssio.api.common.mapping.PropAndColumn;
 import org.ssio.api.s2b.PropFromColumnMappingMode;
@@ -11,6 +13,7 @@ import org.ssio.internal.util.SsioReflectionHelper;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -64,22 +67,34 @@ public class BeanClassInspector {
         PropertyDescriptor[] propertyDescriptors = PropertyUtils.getPropertyDescriptors(beanClass);
         List<PropAndColumn> pacList = new ArrayList<>();
 
+
         for (Object o : fieldsAndMethods) {
             String propName;
+            Class<?> propType;
             SsColumn annotation;
             if (o instanceof Field) {
-                propName = ((Field) o).getName();
-                annotation = ((Field) o).getAnnotation(SsColumn.class);
+                Field field = (Field) o;
+                propName = field.getName();
+                propType = field.getType();
+                annotation = field.getAnnotation(SsColumn.class);
             } else {
                 Method method = (Method) o;
-                propName = SsioReflectionHelper.extractPropertyName(method);
+                Pair<String, Class<?>> propNameAndType = SsioReflectionHelper.extractPropertyNameAndType(method);
+                propName = propNameAndType.getLeft();
+                propType = propNameAndType.getRight();
                 if (propName == null) {
                     errors.add(String.format("Method '%s' is not a getter/setter method and can't be mapped to a column", method.getName()));
                     continue;
                 }
-
-                annotation = (method).getAnnotation(SsColumn.class);
+                annotation = method.getAnnotation(SsColumn.class);
             }
+
+            SsCellValueJavaType cellValueJavaType = SsCellValueJavaType.fromRealType(propType);
+            if (cellValueJavaType == null) {
+                errors.add(String.format("The type of Property '%s', %s, is not supported. The list of supported types are defined in %s . ", propName, propType.getName(), SsCellValueJavaType.class.getName()));
+                continue;
+            }
+
 
             //check property
             if (ssioMode == SsioMode.BEANS_TO_SHEET && !hasGetterMethodForProp(propertyDescriptors, propName)) {
@@ -118,6 +133,24 @@ public class BeanClassInspector {
             }
 
 
+            ////check format in annotation
+            String format = StringUtils.trimToNull(annotation.format());
+            if (cellValueJavaType.isDateRelated()) {
+                if (format == null || format.equals(SsColumn.FORMAT_UNKNOWN)) {
+                    format = cellValueJavaType.getDefaultDateFormat();
+                } else {
+                    try {
+                        new SimpleDateFormat(format);
+                    } catch (IllegalArgumentException e) {
+                        errors.add(String.format("Date format for property '%s', which is '%s', is an invalid date format. A date format must be accepted by java.text.SimpleDateFormat", propName, format));
+                        continue;
+                    }
+                }
+            } else {
+                format = null;
+            }
+
+
             //build a pac
             String columnName = StringUtils.trimToNull(annotation.name());
             if (columnName == null || columnName.equals(SsColumn.NAME_UNKNOWN)) { //falls back to "foobar => Foo Bar" in both beans2sheet and sheet2beans modes
@@ -128,6 +161,7 @@ public class BeanClassInspector {
             pac.setPropName(propName);
             pac.setColumnName(columnName);
             pac.setColumnIndex(annotation.index());
+            pac.setFormat(format);
 
             pacList.add(pac);
 
@@ -175,6 +209,7 @@ public class BeanClassInspector {
     private boolean hasGetterMethodForProp(PropertyDescriptor[] propertyDescriptors, String propName) {
         return Arrays.stream(propertyDescriptors).filter(pd -> pd.getName().equals(propName) && pd.getReadMethod() != null).findAny().isPresent();
     }
+
 
     private String desc(SsColumn annotation) {
         return String.format("[index = %s, name = %s]", annotation.index(), annotation.name());

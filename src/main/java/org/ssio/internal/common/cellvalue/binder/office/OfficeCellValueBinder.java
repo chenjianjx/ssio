@@ -19,11 +19,11 @@ public abstract class OfficeCellValueBinder implements SsCellValueBinder<OfficeC
     }
 
     @Override
-    public Object getValue(OfficeCell cell) {
+    public Object getValue(OfficeCell cell, String format) {
         if (cell.getPoiCell() == null) {
             return null;
         }
-        return this.getValueFromPoiCell(cell.getPoiCell());
+        return this.getValueFromPoiCell(cell.getPoiCell(), format);
     }
 
     /**
@@ -36,9 +36,10 @@ public abstract class OfficeCellValueBinder implements SsCellValueBinder<OfficeC
 
     /**
      * @param poiCell not null
+     * @param format
      * @return the java type of the value will be the curated type of the binder
      */
-    protected abstract Object getValueFromPoiCell(Cell poiCell);
+    protected abstract Object getValueFromPoiCell(Cell poiCell, String format);
 
 
     protected RuntimeException noSupportToReadFormulaCellException() {

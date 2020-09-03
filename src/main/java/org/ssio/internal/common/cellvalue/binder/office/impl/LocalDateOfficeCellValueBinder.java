@@ -3,7 +3,6 @@ package org.ssio.internal.common.cellvalue.binder.office.impl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
-import org.ssio.api.common.SsioConstants;
 import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinder;
 import org.ssio.internal.common.office.PoiSupport;
 
@@ -23,7 +22,7 @@ public class LocalDateOfficeCellValueBinder extends OfficeCellValueBinder {
     }
 
     @Override
-    public LocalDate getValueFromPoiCell(Cell poiCell) {
+    public LocalDate getValueFromPoiCell(Cell poiCell, String format) {
         switch (poiCell.getCellType()) {
             case _NONE: {
                 return null;
@@ -39,7 +38,7 @@ public class LocalDateOfficeCellValueBinder extends OfficeCellValueBinder {
             }
             case STRING: {
                 String string = StringUtils.trimToNull(poiCell.getStringCellValue());
-                return string == null ? null : parseLocalDate(string);
+                return string == null ? null : parseLocalDate(string, format);
             }
             case BOOLEAN: {
                 throw dateValueFromBooleanCellNotAllowedException();
@@ -58,8 +57,8 @@ public class LocalDateOfficeCellValueBinder extends OfficeCellValueBinder {
         }
     }
 
-    private LocalDate parseLocalDate(String string) {
-        return LocalDate.parse(string, DateTimeFormatter.ofPattern(SsioConstants.DEFAULT_LOCAL_DATE_TIME_PATTERN));
+    private LocalDate parseLocalDate(String string, String format) {
+        return LocalDate.parse(string, DateTimeFormatter.ofPattern(format));
     }
 
     public LocalDate convertToLocalDate(Date date) {

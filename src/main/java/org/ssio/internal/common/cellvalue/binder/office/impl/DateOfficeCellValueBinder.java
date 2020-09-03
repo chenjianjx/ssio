@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
-import org.ssio.api.common.SsioConstants;
 import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinder;
 import org.ssio.internal.common.office.PoiSupport;
 
@@ -19,7 +18,7 @@ public class DateOfficeCellValueBinder extends OfficeCellValueBinder {
     }
 
     @Override
-    public Date getValueFromPoiCell(Cell poiCell) {
+    public Date getValueFromPoiCell(Cell poiCell, String format) {
         switch (poiCell.getCellType()) {
             case _NONE: {
                 return null;
@@ -35,7 +34,7 @@ public class DateOfficeCellValueBinder extends OfficeCellValueBinder {
             }
             case STRING: {
                 String string = StringUtils.trimToNull(poiCell.getStringCellValue());
-                return string == null ? null : parseDate(string);
+                return string == null ? null : parseDate(string, format);
             }
             case BOOLEAN: {
                 throw dateValueFromBooleanCellNotAllowedException();
@@ -53,9 +52,9 @@ public class DateOfficeCellValueBinder extends OfficeCellValueBinder {
     }
 
 
-    private Date parseDate(String string) {
+    private Date parseDate(String string, String format) {
         try {
-            return DateUtils.parseDate(string, SsioConstants.DEFAULT_LOCAL_DATE_TIME_PATTERN);
+            return DateUtils.parseDate(string, format);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

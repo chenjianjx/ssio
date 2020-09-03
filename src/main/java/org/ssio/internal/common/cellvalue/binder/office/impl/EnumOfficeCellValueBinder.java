@@ -17,7 +17,7 @@ public class EnumOfficeCellValueBinder<T extends Enum<T>> extends OfficeCellValu
     }
 
     @Override
-    public Enum<?> getValueFromPoiCell(Cell poiCell) {
+    public Enum<?> getValueFromPoiCell(Cell poiCell, String format) {
         switch (poiCell.getCellType()) {
             case _NONE: {
                 return null;

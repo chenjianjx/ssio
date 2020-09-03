@@ -11,7 +11,7 @@ public class PrimitiveBooleanCsvCellValueBinder extends CsvCellValueBinder {
     }
 
     @Override
-    protected Object parseFromCellText(String text) {
+    protected Object parseFromCellText(String format, String text) {
         String string = StringUtils.trimToNull(text);
         if (string == null) {
             throw primitiveValueFromEmptyCellNotAllowedException();

@@ -11,7 +11,7 @@ public class IntegerCsvCellValueBinder extends CsvCellValueBinder {
     }
 
     @Override
-    protected Object parseFromCellText(String text) {
+    protected Object parseFromCellText(String format, String text) {
         String string = StringUtils.trimToNull(text);
         return string == null ? null : Integer.parseInt(string);
     }

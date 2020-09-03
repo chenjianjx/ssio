@@ -17,8 +17,8 @@ public abstract class CsvCellValueBinder implements SsCellValueBinder<CsvCell> {
     }
 
     @Override
-    public Object getValue(CsvCell cell) {
-        return this.parseFromCellText(cell.getContent());
+    public Object getValue(CsvCell cell, String format) {
+        return this.parseFromCellText(format, cell.getContent());
     }
 
     protected abstract String convertNonNullValueToCellText(String format, Object value);
@@ -27,6 +27,6 @@ public abstract class CsvCellValueBinder implements SsCellValueBinder<CsvCell> {
     /**
      * @return the java type of the value will be the curated type of the binder
      */
-    protected abstract Object parseFromCellText(String text);
+    protected abstract Object parseFromCellText(String format, String text);
 
 }

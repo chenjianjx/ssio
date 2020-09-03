@@ -14,7 +14,7 @@ public class PrimitiveLongOfficeCellValueBinder extends OfficeCellValueBinder {
      * @return won't be null
      */
     @Override
-    public Long getValueFromPoiCell(Cell poiCell) {
+    public Long getValueFromPoiCell(Cell poiCell, String format) {
         switch (poiCell.getCellType()) {
             case _NONE: {
                 throw primitiveValueFromEmptyCellNotAllowedException();

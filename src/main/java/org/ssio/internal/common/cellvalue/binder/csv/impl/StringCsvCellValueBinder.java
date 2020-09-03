@@ -11,7 +11,7 @@ public class StringCsvCellValueBinder extends CsvCellValueBinder {
     }
 
     @Override
-    protected Object parseFromCellText(String text) {
+    protected Object parseFromCellText(String format, String text) {
         if (StringUtils.isEmpty(text)) {
             return null;  // "" should be treated as null
         } else {

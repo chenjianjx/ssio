@@ -13,7 +13,7 @@ public class BigIntegerOfficeCellValueBinder extends OfficeCellValueBinder {
     }
 
     @Override
-    protected BigInteger getValueFromPoiCell(Cell poiCell) {
+    protected BigInteger getValueFromPoiCell(Cell poiCell, String format) {
         switch (poiCell.getCellType()) {
             case _NONE: {
                 return null;

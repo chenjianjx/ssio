@@ -9,12 +9,12 @@ public interface SsCell {
      *
      * @throws RuntimeException if the cell value and the java type are not compatible with each other
      */
-    default Object readValueAsType(SsCellValueJavaType targetType, Class<Enum<?>> enumClassIfEnum) throws RuntimeException {
+    default Object readValueAsType(SsCellValueJavaType targetType, Class<Enum<?>> enumClassIfEnum, String format) throws RuntimeException {
         SsCellValueBinder cellValueBinder = this.getCellValueBinder(targetType, enumClassIfEnum);
         if (cellValueBinder == null) {
             throw new IllegalStateException();
         }
-        return cellValueBinder.getValue(this);
+        return cellValueBinder.getValue(this, format);
     }
 
     /**

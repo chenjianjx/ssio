@@ -11,7 +11,7 @@ public class LongCsvCellValueBinder extends CsvCellValueBinder {
     }
 
     @Override
-    protected Object parseFromCellText(String text) {
+    protected Object parseFromCellText(String format, String text) {
         String string = StringUtils.trimToNull(text);
         return string == null ? null : Long.parseLong(string);
     }

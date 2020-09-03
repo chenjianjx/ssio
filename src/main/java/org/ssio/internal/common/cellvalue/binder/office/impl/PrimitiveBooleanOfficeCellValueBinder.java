@@ -14,7 +14,7 @@ public class PrimitiveBooleanOfficeCellValueBinder extends OfficeCellValueBinder
      * @return won't be null
      */
     @Override
-    public Boolean getValueFromPoiCell(Cell poiCell) {
+    public Boolean getValueFromPoiCell(Cell poiCell, String format) {
 
         switch (poiCell.getCellType()) {
             case _NONE: {

@@ -11,7 +11,7 @@ public class LongOfficeCellValueBinder extends OfficeCellValueBinder {
     }
 
     @Override
-    public Long getValueFromPoiCell(Cell poiCell) {
+    public Long getValueFromPoiCell(Cell poiCell, String format) {
         switch (poiCell.getCellType()) {
             case _NONE: {
                 return null;

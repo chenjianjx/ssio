@@ -3,7 +3,6 @@ package org.ssio.internal.common.cellvalue.binder.csv.impl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.ssio.api.common.SsioConstants;
 import org.ssio.internal.common.cellvalue.binder.csv.CsvCellValueBinder;
 
 import java.text.ParseException;
@@ -18,14 +17,14 @@ public class DateCsvCellValueBinder extends CsvCellValueBinder {
     }
 
     @Override
-    protected Object parseFromCellText(String text) {
+    protected Object parseFromCellText(String format, String text) {
         String string = StringUtils.trimToNull(text);
-        return string == null ? null : parseDate(string);
+        return string == null ? null : parseDate(string, format);
     }
 
-    private Date parseDate(String string) {
+    private Date parseDate(String string, String format) {
         try {
-            return DateUtils.parseDate(string, SsioConstants.DEFAULT_LOCAL_DATE_TIME_PATTERN);
+            return DateUtils.parseDate(string, format);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

@@ -12,7 +12,7 @@ public class ShortOfficeCellValueBinder extends OfficeCellValueBinder {
 
 
     @Override
-    public Short getValueFromPoiCell(Cell poiCell) {
+    public Short getValueFromPoiCell(Cell poiCell, String format) {
         switch (poiCell.getCellType()) {
             case _NONE: {
                 return null;

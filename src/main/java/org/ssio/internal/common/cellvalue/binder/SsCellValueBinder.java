@@ -25,9 +25,10 @@ public interface SsCellValueBinder<T extends SsCell> {
 
     /**
      * @param cell
+     * @param format
      * @return the java type of the value will be the curated type of the binder
      */
-    Object getValue(T cell);
+    Object getValue(T cell, String format);
 
     default RuntimeException primitiveValueFromEmptyCellNotAllowedException() {
         throw new RuntimeException("Cannot read primitive value (boolean, int, double etc.) from an empty cell");

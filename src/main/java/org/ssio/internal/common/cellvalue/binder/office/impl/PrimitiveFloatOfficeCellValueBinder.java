@@ -13,7 +13,7 @@ public class PrimitiveFloatOfficeCellValueBinder extends OfficeCellValueBinder {
      * @return won't be null
      */
     @Override
-    public Float getValueFromPoiCell(Cell poiCell) {
+    public Float getValueFromPoiCell(Cell poiCell, String format) {
         switch (poiCell.getCellType()) {
             case _NONE: {
                 throw primitiveValueFromEmptyCellNotAllowedException();

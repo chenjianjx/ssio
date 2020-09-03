@@ -1,7 +1,6 @@
 package org.ssio.internal.common.cellvalue.binder.csv.impl;
 
 import org.apache.commons.lang3.StringUtils;
-import org.ssio.api.common.SsioConstants;
 import org.ssio.internal.common.cellvalue.binder.csv.CsvCellValueBinder;
 
 import java.time.LocalDate;
@@ -17,13 +16,13 @@ public class LocalDateCsvCellValueBinder extends CsvCellValueBinder {
     }
 
     @Override
-    protected Object parseFromCellText(String text) {
+    protected Object parseFromCellText(String format, String text) {
         String string = StringUtils.trimToNull(text);
-        return string == null ? null : parseLocalDate(string);
+        return string == null ? null : parseLocalDate(string, format);
     }
 
-    private LocalDate parseLocalDate(String string) {
-        return LocalDate.parse(string, DateTimeFormatter.ofPattern(SsioConstants.DEFAULT_LOCAL_DATE_PATTERN));
+    private LocalDate parseLocalDate(String string, String format) {
+        return LocalDate.parse(string, DateTimeFormatter.ofPattern(format));
     }
 
 }

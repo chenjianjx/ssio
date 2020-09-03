@@ -13,7 +13,7 @@ public class BigDecimalOfficeCellValueBinder extends OfficeCellValueBinder {
     }
 
     @Override
-    public BigDecimal getValueFromPoiCell(Cell poiCell) {
+    public BigDecimal getValueFromPoiCell(Cell poiCell, String format) {
         switch (poiCell.getCellType()) {
             case _NONE: {
                 return null;

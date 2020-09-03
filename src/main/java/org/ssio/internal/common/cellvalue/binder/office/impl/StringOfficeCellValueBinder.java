@@ -10,7 +10,7 @@ public class StringOfficeCellValueBinder extends OfficeCellValueBinder {
     }
 
     @Override
-    public String getValueFromPoiCell(Cell poiCell) {
+    public String getValueFromPoiCell(Cell poiCell, String format) {
         switch (poiCell.getCellType()) {
             case _NONE: {
                 return null;

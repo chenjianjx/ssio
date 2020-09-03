@@ -106,7 +106,7 @@ public class SheetToBeansWorker {
         for (int columnIndex = 0; columnIndex < row.getNumberOfCells(); columnIndex++) {
             SsCell cell = row.getCell(columnIndex);
 
-            String headerText = StringUtils.trimToNull((String) cell.readValueAsType(SsCellValueJavaType.String, null));
+            String headerText = StringUtils.trimToNull((String) cell.readValueAsType(SsCellValueJavaType.String, null, null));
             if (headerText == null) {
                 continue;
             }
@@ -139,7 +139,7 @@ public class SheetToBeansWorker {
             try {
                 SsCellValueJavaType javaType = SsCellValueHelper.resolveJavaTypeOfPropertyOrThrow(bean, propName);
                 Class<Enum<?>> enumClassIfEnum = getPropertyEnumClassIfEnum(bean, propName);
-                Object value = cell.readValueAsType(javaType, enumClassIfEnum);
+                Object value = cell.readValueAsType(javaType, enumClassIfEnum, propAndColumn.getFormat());
                 PropertyUtils.setProperty(bean, propName, value);
             } catch (Exception e) {
                 if (cellErrors != null) {

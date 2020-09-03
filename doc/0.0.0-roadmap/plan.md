@@ -12,10 +12,8 @@
 * annotations (default format for date/number in excel and csv)
   * beans2sheet ✔
   * sheet2beans ✔
-* format for date in excel and csv
+* format for date in excel and csv ✔ 
 * optional header during parsing 
 * fix the api/internal problem and make helper/manager/workers injectable
   * extensible file type   
-* [Release Milestone] shortcut methods  and readme
-* explore formula and formula errors
-* extract, split and merge
+* [Release Milestone]  readme

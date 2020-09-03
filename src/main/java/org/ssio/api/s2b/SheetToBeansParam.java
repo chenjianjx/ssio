@@ -9,7 +9,7 @@ import java.io.InputStream;
 
 public class SheetToBeansParam<BEAN> {
 
-    public SheetToBeansParam(Class<BEAN> beanClass, PropFromColumnMappingMode propFromColumnMappingMode, InputStream spreadsheetInput, String inputCharset, SpreadsheetFileType fileType, char cellSeparator, SsSheetLocator sheetLocator) {
+    public SheetToBeansParam(Class<BEAN> beanClass, PropFromColumnMappingMode propFromColumnMappingMode, InputStream spreadsheetInput, String inputCharset, SpreadsheetFileType fileType, char cellSeparator, SsSheetLocator sheetLocator, boolean sheetHasHeader) {
         this.beanClass = beanClass;
         this.propFromColumnMappingMode = propFromColumnMappingMode;
         this.spreadsheetInput = spreadsheetInput;
@@ -17,42 +17,31 @@ public class SheetToBeansParam<BEAN> {
         this.fileType = fileType;
         this.cellSeparator = cellSeparator;
         this.sheetLocator = sheetLocator;
+        this.sheetHasHeader = sheetHasHeader;
     }
 
-    /**
-     * not null
-     */
     private Class<BEAN> beanClass;
 
-    /**
-     * not null. Default is by column name
-     */
+
     private PropFromColumnMappingMode propFromColumnMappingMode;
 
-    /**
-     * not null
-     */
+
     private InputStream spreadsheetInput;
 
-    /**
-     * Required for CSV input.  Ignored by office(Excel) input
-     */
+
     private String inputCharset;
 
-    /**
-     * Only used for CSV.  Default is ","
-     */
+
     private char cellSeparator;
 
-    /**
-     * not null
-     */
+
     private SpreadsheetFileType fileType;
 
-    /**
-     * which sheet to load the data ?  By default it's the sheet at index 0
-     */
+
     private SsSheetLocator sheetLocator;
+
+
+    private boolean sheetHasHeader;
 
 
     public char getCellSeparator() {
@@ -81,6 +70,10 @@ public class SheetToBeansParam<BEAN> {
 
     public PropFromColumnMappingMode getPropFromColumnMappingMode() {
         return propFromColumnMappingMode;
+    }
+
+    public boolean isSheetHasHeader() {
+        return sheetHasHeader;
     }
 
     @Override

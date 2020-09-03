@@ -21,52 +21,83 @@ public class BeansToSheetParamBuilder<BEAN> {
     private Class<BEAN> beanClass;
     private OutputStream outputTarget;
     private SpreadsheetFileType fileType;
-    private char cellSeparator = SsioConstants.DEFAULT_CSV_CELL_SEPARATOR ;
+    private char cellSeparator = SsioConstants.DEFAULT_CSV_CELL_SEPARATOR;
     private boolean createHeader = true;
     private String sheetName;
     private boolean stillSaveIfDataError = true;
     private Function<DatumError, String> datumErrDisplayFunction = DEFAULT_DATUM_ERR_DISPLAY_FUNCTION;
 
+
+    /**
+     * not nullable
+     */
     public BeansToSheetParamBuilder setBeans(Collection<BEAN> beans) {
         this.beans = beans;
         return this;
     }
 
+    /**
+     * not nullable
+     */
     public BeansToSheetParamBuilder setBeanClass(Class<BEAN> beanClass) {
         this.beanClass = beanClass;
         return this;
     }
 
+    /**
+     * not nullable
+     */
     public BeansToSheetParamBuilder setOutputTarget(OutputStream outputTarget) {
         this.outputTarget = outputTarget;
         return this;
     }
 
+    /**
+     * not nullable
+     */
     public BeansToSheetParamBuilder setFileType(SpreadsheetFileType fileType) {
         this.fileType = fileType;
         return this;
     }
 
+    /**
+     * Only used for CSV.  Default is ","
+     */
     public BeansToSheetParamBuilder<BEAN> setCellSeparator(char cellSeparator) {
         this.cellSeparator = cellSeparator;
         return this;
     }
 
+    /**
+     * whether to create a header row. Default is true.
+     */
     public BeansToSheetParamBuilder<BEAN> setCreateHeader(boolean createHeader) {
         this.createHeader = createHeader;
         return this;
     }
 
+    /**
+     * nullable.
+     * will be ignored by csv
+     */
     public BeansToSheetParamBuilder setSheetName(String sheetName) {
         this.sheetName = sheetName;
         return this;
     }
 
+    /**
+     * output the sheet if there are data error?
+     * default true
+     */
     public BeansToSheetParamBuilder setStillSaveIfDataError(boolean stillSaveIfDataError) {
         this.stillSaveIfDataError = stillSaveIfDataError;
         return this;
     }
 
+    /**
+     * if some datum is wrong, write some string to the cell.
+     * default is to return {@link BeansToSheetParam#DEFAULT_DATUM_ERR_PLACEHOLDER}
+     */
     public BeansToSheetParamBuilder setDatumErrDisplayFunction(Function<DatumError, String> datumErrDisplayFunction) {
         this.datumErrDisplayFunction = datumErrDisplayFunction;
         return this;

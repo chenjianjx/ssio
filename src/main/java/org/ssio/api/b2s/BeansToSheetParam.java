@@ -25,6 +25,7 @@ public class BeansToSheetParam<BEAN> {
 
     /**
      * Please use the builder to create an instance
+     *
      * @param beans
      * @param beanClass
      * @param outputTarget
@@ -48,56 +49,29 @@ public class BeansToSheetParam<BEAN> {
         this.datumErrDisplayFunction = datumErrDisplayFunction;
     }
 
-    /**
-     * not nullable
-     */
+
     private Collection<BEAN> beans;
 
-    /**
-     * not nullable
-     */
+
     private Class<BEAN> beanClass;
-    /**
-     * not nullable
-     */
+
     private OutputStream outputTarget;
-    /**
-     * not nullable
-     */
+
     private SpreadsheetFileType fileType;
 
 
-    /**
-     * Only used for CSV.  Default is ","
-     */
     private char cellSeparator;
 
 
-    /**
-     * whether to create a header row. Default is true.
-     *
-     */
     private boolean createHeader;
 
 
-    /**
-     * nullable.
-     * will be ignored by csv
-     */
     private String sheetName;
 
 
-    /**
-     * output the sheet if there are data error?
-     * default true
-     */
     private boolean stillSaveIfDataError;
 
 
-    /**
-     * if some datum is wrong, write some string to the cell.
-     * default is to return {@link #DEFAULT_DATUM_ERR_PLACEHOLDER}
-     */
     private Function<DatumError, String> datumErrDisplayFunction;
 
 

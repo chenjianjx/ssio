@@ -23,41 +23,74 @@ public class SheetToBeansParamBuilder<BEAN> {
     private char cellSeparator = SsioConstants.DEFAULT_CSV_CELL_SEPARATOR;
     private SpreadsheetFileType fileType;
     private SsSheetLocator sheetLocator = SsSheetLocator.byIndexLocator(0);
+    private boolean sheetHasHeader = true;
 
 
+    /**
+     * not nullable
+     */
     public SheetToBeansParamBuilder<BEAN> setBeanClass(Class<BEAN> beanClass) {
         this.beanClass = beanClass;
         return this;
     }
 
+    /**
+     * not nullable. Default is by column name
+     */
     public SheetToBeansParamBuilder<BEAN> setPropFromColumnMappingMode(PropFromColumnMappingMode propFromColumnMappingMode) {
         this.propFromColumnMappingMode = propFromColumnMappingMode;
         return this;
     }
 
+    /**
+     * not nullable
+     */
     public SheetToBeansParamBuilder<BEAN> setSpreadsheetInput(InputStream spreadsheetInput) {
         this.spreadsheetInput = spreadsheetInput;
         return this;
     }
 
+
+    /**
+     * not nullable
+     */
     public SheetToBeansParamBuilder<BEAN> setFileType(SpreadsheetFileType fileType) {
         this.fileType = fileType;
         return this;
     }
 
+
+    /**
+     * which sheet to load the data ?  By default it's the sheet at index 0
+     */
     public SheetToBeansParamBuilder<BEAN> setSheetLocator(SsSheetLocator sheetLocator) {
         this.sheetLocator = sheetLocator;
         return this;
     }
 
+
+    /**
+     * Required for CSV input.  Ignored by office(Excel) input
+     */
     public SheetToBeansParamBuilder<BEAN> setInputCharset(String inputCharset) {
         this.inputCharset = inputCharset;
         return this;
     }
 
+
+    /**
+     * Only used for CSV.  Default is ","
+     */
     public SheetToBeansParamBuilder<BEAN> setCellSeparator(char cellSeparator) {
         this.cellSeparator = cellSeparator;
         return this;
+    }
+
+    /**
+     * The sheet has a header. default true.
+     */
+    public void setSheetHasHeader(boolean sheetHasHeader) {
+        this.sheetHasHeader = sheetHasHeader;
     }
 
     private List<String> validate() {
@@ -91,7 +124,7 @@ public class SheetToBeansParamBuilder<BEAN> {
         if (errors.size() > 0) {
             throw new IllegalArgumentException("Cannot build an object because of the following errors: \n" + StringUtils.join(errors, "\n"));
         }
-        return new SheetToBeansParam(beanClass, propFromColumnMappingMode, spreadsheetInput, inputCharset, fileType, cellSeparator, sheetLocator);
+        return new SheetToBeansParam(beanClass, propFromColumnMappingMode, spreadsheetInput, inputCharset, fileType, cellSeparator, sheetLocator, sheetHasHeader);
     }
 
     @Override

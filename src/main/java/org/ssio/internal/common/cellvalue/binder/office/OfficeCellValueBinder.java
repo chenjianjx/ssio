@@ -9,8 +9,8 @@ public abstract class OfficeCellValueBinder implements SsCellValueBinder<OfficeC
 
 
     @Override
-    public void setNonNullValue(OfficeCell cell, Object value) {
-        this.setNonNullValueToPoiCell(cell.getPoiCell(), value);
+    public void setNonNullValue(OfficeCell cell, String format, Object value) {
+        this.setNonNullValueToPoiCell(cell.getPoiCell(), format, value);
     }
 
     @Override
@@ -28,11 +28,11 @@ public abstract class OfficeCellValueBinder implements SsCellValueBinder<OfficeC
 
     /**
      * set value to a cell
-     *
-     * @param poiCell
+     *  @param poiCell
+     * @param format
      * @param value   the java type of the value must be the curated type of the binder
      */
-    protected abstract void setNonNullValueToPoiCell(Cell poiCell, Object value);
+    protected abstract void setNonNullValueToPoiCell(Cell poiCell, String format, Object value);
 
     /**
      * @param poiCell not null

@@ -7,8 +7,8 @@ import org.ssio.internal.common.cellvalue.binder.SsCellValueBinder;
 public abstract class CsvCellValueBinder implements SsCellValueBinder<CsvCell> {
 
     @Override
-    public void setNonNullValue(CsvCell cell, Object value) {
-        cell.setContent(this.convertNonNullValueToCellText(value));
+    public void setNonNullValue(CsvCell cell, String format, Object value) {
+        cell.setContent(this.convertNonNullValueToCellText(format, value));
     }
 
     @Override
@@ -21,7 +21,7 @@ public abstract class CsvCellValueBinder implements SsCellValueBinder<CsvCell> {
         return this.parseFromCellText(cell.getContent());
     }
 
-    protected abstract String convertNonNullValueToCellText(Object value);
+    protected abstract String convertNonNullValueToCellText(String format, Object value);
 
 
     /**

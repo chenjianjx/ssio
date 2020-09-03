@@ -4,11 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinder;
 
-import java.math.BigDecimal;
-
 public class DoubleOfficeCellValueBinder extends OfficeCellValueBinder {
     @Override
-    protected void setNonNullValueToPoiCell(Cell poiCell, Object value) {
+    protected void setNonNullValueToPoiCell(Cell poiCell, String format, Object value) {
         poiCell.setCellValue(((Double)value));
     }
 

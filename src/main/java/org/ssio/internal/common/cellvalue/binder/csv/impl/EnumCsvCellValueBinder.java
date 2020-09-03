@@ -11,7 +11,7 @@ public class EnumCsvCellValueBinder<T extends Enum<T>> extends CsvCellValueBinde
     }
 
     @Override
-    protected String convertNonNullValueToCellText(Object value) {
+    protected String convertNonNullValueToCellText(String format, Object value) {
         return value.toString();
     }
 

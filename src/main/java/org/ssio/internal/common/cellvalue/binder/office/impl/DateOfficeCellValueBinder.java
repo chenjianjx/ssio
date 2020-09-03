@@ -13,9 +13,9 @@ import java.util.Date;
 
 public class DateOfficeCellValueBinder extends OfficeCellValueBinder {
     @Override
-    protected void setNonNullValueToPoiCell(Cell poiCell, Object value) {
+    protected void setNonNullValueToPoiCell(Cell poiCell, String format, Object value) {
         poiCell.setCellValue(((Date) value));
-        PoiSupport.setDateCellStyle(poiCell, SsioConstants.DEFAULT_LOCAL_DATE_TIME_PATTERN_FOR_SPREADSHEET);
+        PoiSupport.setDateCellStyle(poiCell, PoiSupport.adaptSimpleDateFormatForPoi(format));
     }
 
     @Override

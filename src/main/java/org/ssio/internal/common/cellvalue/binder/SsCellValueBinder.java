@@ -10,11 +10,11 @@ public interface SsCellValueBinder<T extends SsCell> {
 
     /**
      * set value to a cell
-     *
-     * @param cell
+     *  @param cell
+     * @param format
      * @param value the java type of the value must be the curated type of the binder
      */
-    void setNonNullValue(T cell, Object value);
+    void setNonNullValue(T cell, String format, Object value);
 
     /**
      * set null value to a cell

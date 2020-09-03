@@ -22,10 +22,11 @@ public interface SsCell {
      *
      * @param valueType
      * @param valueEnumClassIfEnum
+     * @param format only for some value types that involves a format
      * @param value
      * @throws RuntimeException
      */
-    default void writeValueAsType(SsCellValueJavaType valueType, Class<Enum<?>> valueEnumClassIfEnum, Object value) throws RuntimeException {
+    default void writeValueAsType(SsCellValueJavaType valueType, Class<Enum<?>> valueEnumClassIfEnum, String format, Object value) throws RuntimeException {
         SsCellValueBinder cellValueBinder = this.getCellValueBinder(valueType, valueEnumClassIfEnum);
         if (cellValueBinder == null) {
             throw new IllegalStateException();
@@ -34,7 +35,7 @@ public interface SsCell {
         if (value == null) {
             cellValueBinder.setNullValue(this);
         } else {
-            cellValueBinder.setNonNullValue(this, value);
+            cellValueBinder.setNonNullValue(this, format, value);
         }
     }
 

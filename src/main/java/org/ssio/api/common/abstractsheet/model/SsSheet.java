@@ -6,9 +6,7 @@ import org.slf4j.Logger;
 import org.ssio.api.b2s.DatumError;
 import org.ssio.api.common.mapping.PropAndColumn;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 import static org.ssio.internal.util.SsioReflectionHelper.getPropertyEnumClassIfEnum;
@@ -39,7 +37,7 @@ public interface SsSheet {
         for (PropAndColumn pac : propAndColumnList) {
             String headerText = StringUtils.defaultString(pac.getColumnName());
             SsCell cell = header.createCell(pac.getColumnIndex());
-            cell.writeValueAsType(SsCellValueJavaType.String, null, headerText);
+            cell.writeValueAsType(SsCellValueJavaType.String, null, null, headerText);
             cell.styleAsHeader();
             this.autoSizeColumn(pac.getColumnIndex());
         }
@@ -72,7 +70,7 @@ public interface SsSheet {
                 SsCellValueJavaType javaType = SsCellValueHelper.resolveJavaTypeOfPropertyOrThrow(bean, propName);
                 Class<Enum<?>> enumClassIfEnum = getPropertyEnumClassIfEnum(bean, propName);
                 Object propValue = PropertyUtils.getProperty(bean, propName);
-                cell.writeValueAsType(javaType, enumClassIfEnum, propValue);
+                cell.writeValueAsType(javaType, enumClassIfEnum, propAndColumn.getFormat(), propValue);
             } catch (Exception e) {
                 this.getLogger().warn("Datum error", e);
 
@@ -85,7 +83,7 @@ public interface SsSheet {
                 if (datumErrDisplayFunction != null) {
                     String datumErrorDisplayText = datumErrDisplayFunction.apply(de);
                     try {
-                        cell.writeValueAsType(SsCellValueJavaType.String, null, datumErrorDisplayText);
+                        cell.writeValueAsType(SsCellValueJavaType.String, null, null, datumErrorDisplayText);
                     } catch (RuntimeException errDisplayException) {
                         this.getLogger().error("Failed to put datum error to a cell", errDisplayException);
                     }

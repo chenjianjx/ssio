@@ -15,11 +15,11 @@ import java.util.Date;
 
 public class LocalDateOfficeCellValueBinder extends OfficeCellValueBinder {
     @Override
-    protected void setNonNullValueToPoiCell(Cell poiCell, Object value) {
+    protected void setNonNullValueToPoiCell(Cell poiCell, String format, Object value) {
         poiCell.setCellValue((LocalDate) value);
 
 
-        PoiSupport.setDateCellStyle(poiCell, SsioConstants.DEFAULT_LOCAL_DATE_PATTERN);
+        PoiSupport.setDateCellStyle(poiCell, PoiSupport.adaptSimpleDateFormatForPoi(format));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.ssio.internal.common.office;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -15,4 +16,9 @@ public class PoiSupport {
         cell.setCellStyle(cellStyle);
     }
 
+    public static String adaptSimpleDateFormatForPoi(String simpleDateFormat) {
+        // single quote is not supported by office-like spreadsheets
+        // TODO: More may need to be done
+        return StringUtils.replace(simpleDateFormat, "'", "");
+    }
 }

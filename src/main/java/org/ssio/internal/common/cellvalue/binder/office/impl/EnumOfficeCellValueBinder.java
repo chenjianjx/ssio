@@ -12,7 +12,7 @@ public class EnumOfficeCellValueBinder<T extends Enum<T>> extends OfficeCellValu
     }
 
     @Override
-    protected void setNonNullValueToPoiCell(Cell poiCell, Object value) {
+    protected void setNonNullValueToPoiCell(Cell poiCell, String format, Object value) {
         poiCell.setCellValue(((Enum<?>) value).name());
     }
 

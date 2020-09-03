@@ -10,9 +10,9 @@ import java.time.format.DateTimeFormatter;
 public class LocalDateTimeCsvCellValueBinder extends CsvCellValueBinder {
 
     @Override
-    protected String convertNonNullValueToCellText(Object value) {
+    protected String convertNonNullValueToCellText(String format, Object value) {
         LocalDateTime date = (LocalDateTime) value;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SsioConstants.DEFAULT_LOCAL_DATE_TIME_PATTERN);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         return formatter.format(date);
     }
 

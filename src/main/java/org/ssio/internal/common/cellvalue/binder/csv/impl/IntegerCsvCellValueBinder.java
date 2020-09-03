@@ -6,7 +6,7 @@ import org.ssio.internal.common.cellvalue.binder.csv.CsvCellValueBinder;
 public class IntegerCsvCellValueBinder extends CsvCellValueBinder {
 
     @Override
-    protected String convertNonNullValueToCellText(Object value) {
+    protected String convertNonNullValueToCellText(String format, Object value) {
         return value.toString();
     }
 

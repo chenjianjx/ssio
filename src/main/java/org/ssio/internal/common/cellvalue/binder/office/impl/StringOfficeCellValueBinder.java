@@ -5,7 +5,7 @@ import org.ssio.internal.common.cellvalue.binder.office.OfficeCellValueBinder;
 
 public class StringOfficeCellValueBinder extends OfficeCellValueBinder {
     @Override
-    protected void setNonNullValueToPoiCell(Cell poiCell, Object value) {
+    protected void setNonNullValueToPoiCell(Cell poiCell, String format, Object value) {
         poiCell.setCellValue((String) value);
     }
 

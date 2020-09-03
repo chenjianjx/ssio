@@ -8,7 +8,7 @@ import java.math.BigInteger;
 public class BigIntegerCsvCellValueBinder extends CsvCellValueBinder {
 
     @Override
-    protected String convertNonNullValueToCellText(Object value) {
+    protected String convertNonNullValueToCellText(String format, Object value) {
         return value.toString();
     }
 

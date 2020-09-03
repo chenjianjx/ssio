@@ -8,7 +8,7 @@ import java.math.BigInteger;
 
 public class BigIntegerOfficeCellValueBinder extends OfficeCellValueBinder {
     @Override
-    protected void setNonNullValueToPoiCell(Cell poiCell, Object value) {
+    protected void setNonNullValueToPoiCell(Cell poiCell, String format, Object value) {
         poiCell.setCellValue(((BigInteger)value).doubleValue());
     }
 

@@ -48,7 +48,7 @@ public class BeanClassInspector {
                                                          List<String> errors) {
         //do some parameter check first
         if (ssioMode != SsioMode.BEANS_TO_SHEET && ssioMode != SsioMode.SHEET_TO_BEANS) {
-            throw new IllegalArgumentException("Unsupported ssioMode: " + ssioMode);
+            throw new IllegalArgumentException("Unsupported mode: " + ssioMode);
         }
 
 

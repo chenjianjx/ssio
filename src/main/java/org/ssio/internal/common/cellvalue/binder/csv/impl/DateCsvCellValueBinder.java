@@ -12,9 +12,9 @@ import java.util.Date;
 public class DateCsvCellValueBinder extends CsvCellValueBinder {
 
     @Override
-    protected String convertNonNullValueToCellText(Object value) {
+    protected String convertNonNullValueToCellText(String format, Object value) {
         Date date = (Date) value;
-        return DateFormatUtils.format(date, SsioConstants.DEFAULT_LOCAL_DATE_TIME_PATTERN);
+        return DateFormatUtils.format(date, format);
     }
 
     @Override

@@ -59,6 +59,12 @@ public class SheetToBeansWorker {
 
         //if map by name, find the column indexes
         if (param.getPropFromColumnMappingMode() == PropFromColumnMappingMode.BY_NAME) {
+
+            if (!param.isSheetHasHeader()) {
+                //shouldn't happen here. The validation has been done before here
+                throw new IllegalArgumentException();
+            }
+
             // key = columnName, value = columnIndex
             LinkedHashMap<String, Integer> headerColumnNameAndIndex = parseHeader(sheet.getRow(0));
             propAndColumnList.forEach(pac -> {
@@ -75,23 +81,24 @@ public class SheetToBeansWorker {
         }
 
 
+        int dataRowIndex = param.isSheetHasHeader() ? 1 : 0;
+
         // now do the data rows
         int numberOfRows = sheet.getNumberOfRows();
-        logger.info("There are " + (numberOfRows - 1) + " data rows in the spreadsheet");
-        for (int rowIndex = 1; rowIndex < numberOfRows; rowIndex++) {
-            int rowIndexForLogging = rowIndex + 1;
-            logger.debug("Parsing row " + rowIndexForLogging + "/" + numberOfRows);
+        logger.info("There are " + (numberOfRows - dataRowIndex) + " data rows in the spreadsheet");
+        for (int rowIndex = dataRowIndex; rowIndex < numberOfRows; rowIndex++) {
+            int rowIndexOneBased = rowIndex + 1;
+            logger.debug("Parsing row " + rowIndexOneBased + "/" + numberOfRows);
             SsRow row = sheet.getRow(rowIndex);
             if (row == null) {
-                logger.warn("Row " + rowIndexForLogging + " is a null row. No bean won't be created for it");
+                logger.warn("Row " + rowIndexOneBased + " is a null row. No bean will be created for it");
                 continue;
             }
 
             BEAN bean = parseDataRow(propAndColumnList, row, rowIndex, param.getBeanClass(), result.getCellErrors());
             result.getBeans().add(bean);
         }
-
-
+        
         return result;
     }
 

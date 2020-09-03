@@ -1,5 +1,7 @@
 package org.ssio.integrationtest.conversion;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -95,14 +97,19 @@ public class SheetToBeansITCase {
         public void setBar(String bar) {
             this.bar = bar;
         }
+
+        @Override
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        }
     }
 
 
     @ParameterizedTest
-    @EnumSource(SpreadsheetFileType.class)
-    void sheetToBeans_byIndex_allHit(SpreadsheetFileType spreadsheetFileType) throws IOException {
+    @MethodSource("sheetToBeans_byIndex_allHit_provider")
+    void sheetToBeans_byIndex_allHit(SpreadsheetFileType spreadsheetFileType, boolean sheetHasHeader) throws IOException {
 
-        String inputResourceClasspath = "/integration-test/just-a-plain-spreadsheet" + decideTargetFileExtension(spreadsheetFileType);
+        String inputResourceClasspath = "/integration-test/just-a-plain-spreadsheet" + (sheetHasHeader ? "" : "-no-header") + decideTargetFileExtension(spreadsheetFileType);
         try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
             SheetToBeansParam<PlainSpreadSheetByIndexBean> param =
                     new SheetToBeansParamBuilder<PlainSpreadSheetByIndexBean>()
@@ -111,9 +118,11 @@ public class SheetToBeansITCase {
                             .setSpreadsheetInput(input)
                             .setInputCharset("utf8") //for csv only
                             .setPropFromColumnMappingMode(PropFromColumnMappingMode.BY_INDEX)
+                            .setSheetHasHeader(sheetHasHeader)
                             .build();
 
             SheetToBeansResult<PlainSpreadSheetByIndexBean> result = manager.sheetToBeans(param);
+            printResult(result);
 
             assertEquals(1, result.getBeans().size());
             assertFalse(result.hasCellErrors());
@@ -123,6 +132,15 @@ public class SheetToBeansITCase {
 
         }
 
+    }
+
+    static Stream<Arguments> sheetToBeans_byIndex_allHit_provider() {
+        return Stream.of(
+                Arguments.of(SpreadsheetFileType.OFFICE, true),
+                Arguments.of(SpreadsheetFileType.CSV, true),
+                Arguments.of(SpreadsheetFileType.OFFICE, false),
+                Arguments.of(SpreadsheetFileType.CSV, false)
+        );
     }
 
 
@@ -176,7 +194,6 @@ public class SheetToBeansITCase {
         }
 
     }
-
 
 
     public static class PlainSpreadSheetByIndexPartiallyHitBean {
@@ -283,8 +300,6 @@ public class SheetToBeansITCase {
     }
 
 
-
-
     @ParameterizedTest
     @MethodSource("fileType_mappingMode_provider")
     void sheetToBeans_strangeAnnotationTest(SpreadsheetFileType spreadsheetFileType, PropFromColumnMappingMode propFromColumnMappingMode) throws IOException {
@@ -311,9 +326,6 @@ public class SheetToBeansITCase {
         }
 
     }
-
-
-
 
 
     @ParameterizedTest

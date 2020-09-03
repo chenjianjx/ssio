@@ -47,6 +47,7 @@ class SheetToBeansParamBuilderTest {
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
         assertTrue(e.getMessage().contains("If the sheet has no header, then propFromColumnMappingMode"));
+        assertTrue(e.getMessage().contains("If the propFromColumnMappingMode is BY_NAME"));
     }
 
 

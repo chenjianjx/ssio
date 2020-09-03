@@ -26,7 +26,7 @@ class SheetToBeansParamBuilderTest {
 
     @ParameterizedTest
     @ValueSource(classes = {OneArgumentConstructorBean.class, NonAccessibleConstructorBean.class})
-    void build_invalidBean(Class<?> beanClass){
+    void build_invalidBean(Class<?> beanClass) {
         SheetToBeansParamBuilder builder = new SheetToBeansParamBuilder().setBeanClass(beanClass);
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
         assertTrue(e.getMessage().contains("doesn't have an accessible zero-argument constructor"));
@@ -38,6 +38,15 @@ class SheetToBeansParamBuilderTest {
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
         assertTrue(e.getMessage().contains("the inputCharset is required"));
+    }
+
+    @Test
+    void build_sheetHasNoHeaderButModeIsByName() {
+        SheetToBeansParamBuilder builder = new SheetToBeansParamBuilder()
+                .setBeanClass(SimpleBean.class).setSheetHasHeader(false).setPropFromColumnMappingMode(PropFromColumnMappingMode.BY_NAME);
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
+        assertTrue(e.getMessage().contains("If the sheet has no header, then propFromColumnMappingMode"));
     }
 
 
@@ -52,6 +61,18 @@ class SheetToBeansParamBuilderTest {
     public static class NonAccessibleConstructorBean {
         private NonAccessibleConstructorBean() {
 
+        }
+    }
+
+    public static class SimpleBean {
+        private String str;
+
+        public void setStr(String str) {
+            this.str = str;
+        }
+
+        public String getStr() {
+            return str;
         }
     }
 

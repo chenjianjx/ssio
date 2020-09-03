@@ -88,9 +88,11 @@ public class SheetToBeansParamBuilder<BEAN> {
 
     /**
      * The sheet has a header. default true.
+     * @return
      */
-    public void setSheetHasHeader(boolean sheetHasHeader) {
+    public SheetToBeansParamBuilder<BEAN> setSheetHasHeader(boolean sheetHasHeader) {
         this.sheetHasHeader = sheetHasHeader;
+        return this;
     }
 
     private List<String> validate() {
@@ -109,6 +111,10 @@ public class SheetToBeansParamBuilder<BEAN> {
 
         if (fileType == SpreadsheetFileType.CSV && inputCharset == null) {
             errors.add("For CSV input the inputCharset is required");
+        }
+
+        if (!sheetHasHeader && propFromColumnMappingMode != PropFromColumnMappingMode.BY_INDEX) {
+            errors.add("If the sheet has no header, then propFromColumnMappingMode has to be " + PropFromColumnMappingMode.BY_INDEX);
         }
 
         if (beanClass != null && propFromColumnMappingMode != null) {

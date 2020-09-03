@@ -400,6 +400,35 @@ public class SheetToBeansITCase {
 
     }
 
+
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void sheetToBeans_formatTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        String inputResourceClasspath = "/integration-test/FormatTestBean" + decideTargetFileExtension(spreadsheetFileType);
+        try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
+            SheetToBeansParam<ConversionITFormatTestBean> param =
+                    new SheetToBeansParamBuilder<ConversionITFormatTestBean>()
+                            .setBeanClass(ConversionITFormatTestBean.class)
+                            .setFileType(spreadsheetFileType)
+                            .setSpreadsheetInput(input)
+                            .setInputCharset("utf8") //for csv only
+                            .build();
+
+            SheetToBeansResult<ConversionITFormatTestBean> result = manager.sheetToBeans(param);
+            printResult(result);
+
+            assertEquals(1, result.getBeans().size());
+            assertFalse(result.hasCellErrors());
+
+            assertEquals(ConversionITFormatTestBean.firstDayOfEveryMonthIn2020(), result.getBeans().get(0));
+
+
+            result.getBeans().forEach(b -> System.out.println(b));
+        }
+
+    }
+
     static Stream<SsSheetLocator> sheetToBeans_notTheFirstSheet_provider() {
         return Stream.of(
                 SsSheetLocator.byIndexLocator(1),

@@ -255,6 +255,41 @@ class BeansToSheetITCase {
     }
 
 
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void beansToSheet_formatTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        Collection<ConversionITFormatTestBean> beans = Arrays.asList(
+                ConversionITFormatTestBean.firstDayOfEveryMonthIn2020());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        BeansToSheetParam<ConversionITFormatTestBean> param =
+                new BeansToSheetParamBuilder<ConversionITFormatTestBean>()
+                        .setBeanClass(ConversionITFormatTestBean.class)
+                        .setBeans(beans)
+                        .setFileType(spreadsheetFileType)
+                        .setOutputTarget(outputStream)
+                        .build();
+
+
+        // save it
+        BeansToSheetResult result = manager.beansToSheet(param);
+
+        // do a save for human eye check
+        byte[] spreadsheet = outputStream.toByteArray();
+        assertTrue(spreadsheet.length > 0);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_formatTest", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+
+        if (result.hasDatumErrors()) {
+            for (DatumError datumError : result.getDatumErrors()) {
+                System.err.println(datumError);
+            }
+            fail("There should not be datum errors");
+        }
+
+    }
+
+
     /**
      * @param prefix
      * @param extension including the dot "."

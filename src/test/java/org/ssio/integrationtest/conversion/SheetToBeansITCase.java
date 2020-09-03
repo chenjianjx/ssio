@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.ssio.api.ConversionManager;
 import org.ssio.api.SpreadsheetFileType;
 import org.ssio.api.common.abstractsheet.helper.SsSheetLocator;
+import org.ssio.api.common.annotation.SsColumn;
 import org.ssio.api.s2b.CellError;
 import org.ssio.api.s2b.PropFromColumnMappingMode;
 import org.ssio.api.s2b.SheetToBeansParam;
@@ -69,6 +70,214 @@ public class SheetToBeansITCase {
             assertEquals(ConversionITBeanFactory.bigValues(), result.getBeans().get(2));
 
             result.getBeans().forEach(b -> System.out.println(b));
+        }
+
+    }
+
+    public static class PlainSpreadSheetByIndexBean {
+        @SsColumn(index = 0)
+        private String foo;
+        @SsColumn(index = 1)
+        private String bar;
+
+        public String getFoo() {
+            return foo;
+        }
+
+        public void setFoo(String foo) {
+            this.foo = foo;
+        }
+
+        public String getBar() {
+            return bar;
+        }
+
+        public void setBar(String bar) {
+            this.bar = bar;
+        }
+    }
+
+
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void sheetToBeans_byIndex_allHit(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        String inputResourceClasspath = "/integration-test/just-a-plain-spreadsheet" + decideTargetFileExtension(spreadsheetFileType);
+        try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
+            SheetToBeansParam<PlainSpreadSheetByIndexBean> param =
+                    new SheetToBeansParamBuilder<PlainSpreadSheetByIndexBean>()
+                            .setBeanClass(PlainSpreadSheetByIndexBean.class)
+                            .setFileType(spreadsheetFileType)
+                            .setSpreadsheetInput(input)
+                            .setInputCharset("utf8") //for csv only
+                            .setPropFromColumnMappingMode(PropFromColumnMappingMode.BY_INDEX)
+                            .build();
+
+            SheetToBeansResult<PlainSpreadSheetByIndexBean> result = manager.sheetToBeans(param);
+
+            assertEquals(1, result.getBeans().size());
+            assertFalse(result.hasCellErrors());
+
+            assertEquals("some foo", result.getBeans().get(0).getFoo());
+            assertEquals("some bar", result.getBeans().get(0).getBar());
+
+        }
+
+    }
+
+
+    public static class PlainSpreadSheetByNameBean {
+        @SsColumn(name = "foo header")
+        private String foo;
+        @SsColumn(name = "bar header")
+        private String bar;
+
+        public String getFoo() {
+            return foo;
+        }
+
+        public void setFoo(String foo) {
+            this.foo = foo;
+        }
+
+        public String getBar() {
+            return bar;
+        }
+
+        public void setBar(String bar) {
+            this.bar = bar;
+        }
+    }
+
+
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void sheetToBeans_byName_allHit(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        String inputResourceClasspath = "/integration-test/just-a-plain-spreadsheet" + decideTargetFileExtension(spreadsheetFileType);
+        try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
+            SheetToBeansParam<PlainSpreadSheetByNameBean> param =
+                    new SheetToBeansParamBuilder<PlainSpreadSheetByNameBean>()
+                            .setBeanClass(PlainSpreadSheetByNameBean.class)
+                            .setFileType(spreadsheetFileType)
+                            .setSpreadsheetInput(input)
+                            .setInputCharset("utf8") //for csv only
+                            .setPropFromColumnMappingMode(PropFromColumnMappingMode.BY_NAME)
+                            .build();
+
+            SheetToBeansResult<PlainSpreadSheetByNameBean> result = manager.sheetToBeans(param);
+
+            assertEquals(1, result.getBeans().size());
+            assertFalse(result.hasCellErrors());
+
+            assertEquals("some foo", result.getBeans().get(0).getFoo());
+            assertEquals("some bar", result.getBeans().get(0).getBar());
+
+        }
+
+    }
+
+
+
+    public static class PlainSpreadSheetByIndexPartiallyHitBean {
+        @SsColumn(index = 0)
+        private String foo;
+        @SsColumn(index = 3)
+        private String alien;
+
+        public String getFoo() {
+            return foo;
+        }
+
+        public void setFoo(String foo) {
+            this.foo = foo;
+        }
+
+        public String getAlien() {
+            return alien;
+        }
+
+        public void setAlien(String alien) {
+            this.alien = alien;
+        }
+    }
+
+
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void sheetToBeans_byIndex_partiallyHit(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        String inputResourceClasspath = "/integration-test/just-a-plain-spreadsheet" + decideTargetFileExtension(spreadsheetFileType);
+        try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
+            SheetToBeansParam<PlainSpreadSheetByIndexPartiallyHitBean> param =
+                    new SheetToBeansParamBuilder<PlainSpreadSheetByIndexPartiallyHitBean>()
+                            .setBeanClass(PlainSpreadSheetByIndexPartiallyHitBean.class)
+                            .setFileType(spreadsheetFileType)
+                            .setSpreadsheetInput(input)
+                            .setInputCharset("utf8") //for csv only
+                            .setPropFromColumnMappingMode(PropFromColumnMappingMode.BY_INDEX)
+                            .build();
+
+            SheetToBeansResult<PlainSpreadSheetByIndexPartiallyHitBean> result = manager.sheetToBeans(param);
+
+            assertEquals(1, result.getBeans().size());
+            assertFalse(result.hasCellErrors());
+
+            assertEquals("some foo", result.getBeans().get(0).getFoo());
+            assertEquals(null, result.getBeans().get(0).getAlien());
+
+        }
+
+    }
+
+
+    public static class PlainSpreadSheetByNamePartiallyHitBean {
+        @SsColumn(name = "foo header")
+        private String foo;
+        @SsColumn(name = "alien header")
+        private String alien;
+
+        public String getFoo() {
+            return foo;
+        }
+
+        public void setFoo(String foo) {
+            this.foo = foo;
+        }
+
+        public String getAlien() {
+            return alien;
+        }
+
+        public void setAlien(String alien) {
+            this.alien = alien;
+        }
+    }
+
+
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void sheetToBeans_byName_partiallyHit(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        String inputResourceClasspath = "/integration-test/just-a-plain-spreadsheet" + decideTargetFileExtension(spreadsheetFileType);
+        try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
+            SheetToBeansParam<PlainSpreadSheetByNamePartiallyHitBean> param =
+                    new SheetToBeansParamBuilder<PlainSpreadSheetByNamePartiallyHitBean>()
+                            .setBeanClass(PlainSpreadSheetByNamePartiallyHitBean.class)
+                            .setFileType(spreadsheetFileType)
+                            .setSpreadsheetInput(input)
+                            .setInputCharset("utf8") //for csv only
+                            .setPropFromColumnMappingMode(PropFromColumnMappingMode.BY_NAME)
+                            .build();
+
+            SheetToBeansResult<PlainSpreadSheetByNamePartiallyHitBean> result = manager.sheetToBeans(param);
+
+            assertEquals(1, result.getBeans().size());
+            assertFalse(result.hasCellErrors());
+
+            assertEquals("some foo", result.getBeans().get(0).getFoo());
+            assertEquals(null, result.getBeans().get(0).getAlien());
+
         }
 
     }
@@ -136,8 +345,6 @@ public class SheetToBeansITCase {
             assertEquals("unhealthyField", cellError.getPropName());
             assertEquals("Unhealthy Field", cellError.getColumnName());
         }
-
-
     }
 
 
@@ -166,8 +373,6 @@ public class SheetToBeansITCase {
             assertEquals("another string", bean.getStr());
             assertEquals(200, bean.getPrimInt());
         }
-
-
     }
 
 

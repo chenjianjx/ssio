@@ -5,19 +5,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ssio.api.impl.common.BeanClassInspector;
+import org.ssio.api.impl.common.PropAndColumn;
+import org.ssio.api.interfaces.parse.CellError;
+import org.ssio.api.interfaces.parse.ParseParam;
+import org.ssio.api.interfaces.parse.ParseResult;
+import org.ssio.api.interfaces.parse.PropFromColumnMappingMode;
+import org.ssio.api.interfaces.typing.ComplexTypeHandler;
+import org.ssio.api.interfaces.typing.SimpleTypeEnum;
+import org.ssio.spi.interfaces.abstractsheet.factory.SsWorkbookFactoryRegistry;
 import org.ssio.spi.interfaces.abstractsheet.model.DefaultSsFactory;
 import org.ssio.spi.interfaces.abstractsheet.model.SsCell;
-import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbookFactory;
 import org.ssio.spi.interfaces.abstractsheet.model.SsRow;
 import org.ssio.spi.interfaces.abstractsheet.model.SsSheet;
 import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbook;
-import org.ssio.api.impl.common.PropAndColumn;
-import org.ssio.api.interfaces.typing.ComplexTypeHandler;
-import org.ssio.api.interfaces.typing.SimpleTypeEnum;
-import org.ssio.api.interfaces.parse.CellError;
-import org.ssio.api.interfaces.parse.PropFromColumnMappingMode;
-import org.ssio.api.interfaces.parse.ParseParam;
-import org.ssio.api.interfaces.parse.ParseResult;
+import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbookFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +30,12 @@ import static org.ssio.util.lang.SsioReflectionUtils.createInstance;
 
 public class SheetParser {
     private static final Logger logger = LoggerFactory.getLogger(SheetParser.class);
+    private final SsWorkbookFactoryRegistry workbookFactoryRegistry;
     private BeanClassInspector beanClassInspector = new BeanClassInspector();
+
+    public SheetParser(SsWorkbookFactoryRegistry workbookFactoryRegistry) {
+        this.workbookFactoryRegistry = workbookFactoryRegistry;
+    }
 
     public <BEAN> ParseResult<BEAN> doWork(ParseParam<BEAN> param) throws IOException {
         ParseResult<BEAN> result = new ParseResult<>();

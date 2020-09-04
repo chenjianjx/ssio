@@ -1,23 +1,16 @@
 package org.ssio.spi.interfaces.abstractsheet.factory;
 
-import org.ssio.api.interfaces.save.SaveParam;
 import org.ssio.api.interfaces.parse.ParseParam;
+import org.ssio.api.interfaces.save.SaveParam;
 import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbook;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+public interface SsWorkbookFactoryRegistry {
 
-public class SsWorkbookFactoryRegistry {
+    <P extends SaveParam, W extends SsWorkbook> void registerWorkbookToSaveFactory(Class<P> saveParamClass, WorkbookToSaveFactory<P, W> factory);
 
-    private Map<Class<? extends SaveParam>, WorkbookToSaveFactory<? extends SaveParam, ?>> workbookToSaveFactories = new LinkedHashMap<>();
+    <P extends SaveParam, W extends SsWorkbook> WorkbookToSaveFactory<P, W> getWorkbookToSaveFactory(Class<P> saveParamClass);
 
-    private Map<Class<? extends ParseParam>, WorkbookToParseFactory<? extends ParseParam, ?>> workbookToParseFactories = new LinkedHashMap<>();
+    <P extends ParseParam, W extends SsWorkbook> void registerWorkbookToParseFactory(Class<P> parseParamClass, WorkbookToParseFactory<P, W> factory);
 
-    public <P extends SaveParam, W extends SsWorkbook> void registerWorkbookToSaveFactory(Class<P> saveParamClass, WorkbookToSaveFactory<P, W> factory) {
-        workbookToSaveFactories.put(saveParamClass, factory);
-    }
-
-    public <P extends ParseParam, W extends SsWorkbook> void registerWorkbookToParseFactory(Class<P> parseParamClass, WorkbookToParseFactory<P, W> factory) {
-        workbookToParseFactories.put(parseParamClass, factory);
-    }
+    <P extends ParseParam, W extends SsWorkbook> WorkbookToParseFactory<P, W> getWorkbookToParseFactory(Class<P> parseParamClass);
 }

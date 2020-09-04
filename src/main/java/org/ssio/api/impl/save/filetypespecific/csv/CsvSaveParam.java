@@ -17,7 +17,7 @@ public class CsvSaveParam<BEAN> extends SaveParam<BEAN> {
      * Please use the builder to create an instance
      *
      */
-    public CsvSaveParam(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget,
+    protected CsvSaveParam(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget,
                         boolean createHeader, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction,
                         char cellSeparator, String outputCharset) {
         super(beans, beanClass, outputTarget, createHeader, stillSaveIfDataError, datumErrDisplayFunction);

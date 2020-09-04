@@ -2,14 +2,14 @@ package org.ssio.api.impl.save;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.ssio.api.impl.common.BeanClassInspector;
+import org.ssio.api.impl.common.PropAndColumn;
 import org.ssio.api.interfaces.save.SaveParam;
 import org.ssio.api.interfaces.save.SaveResult;
-import org.ssio.api.impl.common.BeanClassInspector;
-import org.ssio.spi.interfaces.abstractsheet.model.DefaultSsFactory;
-import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbookFactory;
+import org.ssio.spi.interfaces.abstractsheet.factory.SsWorkbookFactoryRegistry;
+import org.ssio.spi.interfaces.abstractsheet.factory.WorkbookToSaveFactory;
 import org.ssio.spi.interfaces.abstractsheet.model.SsSheet;
 import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbook;
-import org.ssio.api.impl.common.PropAndColumn;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,10 +18,15 @@ import java.util.List;
 public class BeansSaver {
 
     private static final Logger logger = LoggerFactory.getLogger(BeansSaver.class);
+    private final SsWorkbookFactoryRegistry workbookFactoryRegistry;
 
     private BeanClassInspector beanClassInspector = new BeanClassInspector();
 
-    public <BEAN> SaveResult doWork(SaveParam<BEAN> param) throws IOException {
+    public BeansSaver(SsWorkbookFactoryRegistry workbookFactoryRegistry) {
+        this.workbookFactoryRegistry = workbookFactoryRegistry;
+    }
+
+    public <BEAN> SaveResult doSave(SaveParam<BEAN> param) throws IOException {
 
         List<String> beanClassErrors = new ArrayList<>();
         List<PropAndColumn> propAndColumnList = beanClassInspector.getPropAndColumnMappingsForSaveMode(param.getBeanClass(), beanClassErrors);
@@ -30,7 +35,11 @@ public class BeansSaver {
             throw new IllegalArgumentException(beanClassErrors.toString());
         }
 
-        SsWorkbookFactory ssFactory = new DefaultSsFactory();
+        WorkbookToSaveFactory<SaveParam<BEAN>, SsWorkbook> workbookFactory = (WorkbookToSaveFactory<SaveParam<BEAN>, SsWorkbook>) workbookFactoryRegistry.getWorkbookToSaveFactory(param.getClass());
+        if (workbookFactory == null) {
+            throw new IllegalStateException("There is no workbook factory registered for param class: " + param.getClass());
+        }
+        workbookFactory.newWorkbook(param);
 
         SsWorkbook workbook = null; //ssFactory.newWorkbook(param.getFileType(), param.getCellSeparator());
         SsSheet sheet = null; //workbook.createNewSheet(param.getSheetName());

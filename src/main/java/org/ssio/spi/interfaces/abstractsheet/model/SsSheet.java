@@ -3,10 +3,10 @@ package org.ssio.spi.interfaces.abstractsheet.model;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
-import org.ssio.api.interfaces.b2s.DatumError;
+import org.ssio.api.interfaces.save.DatumError;
 import org.ssio.api.impl.common.PropAndColumn;
-import org.ssio.api.interfaces.typing.SsioComplexTypeHandler;
-import org.ssio.api.interfaces.typing.SsioSimpleTypeEnum;
+import org.ssio.api.interfaces.typing.ComplexTypeHandler;
+import org.ssio.api.interfaces.typing.SimpleTypeEnum;
 
 import java.util.List;
 import java.util.function.Function;
@@ -39,7 +39,7 @@ public interface SsSheet {
         for (PropAndColumn pac : propAndColumnList) {
             String headerText = StringUtils.defaultString(pac.getColumnName());
             SsCell cell = header.createCell(pac.getColumnIndex());
-            cell.writeValueAsType(SsioSimpleTypeEnum.String, null, null, headerText);
+            cell.writeValueAsType(SimpleTypeEnum.String, null, null, headerText);
             cell.styleAsHeader();
             this.autoSizeColumn(pac.getColumnIndex());
         }
@@ -71,7 +71,7 @@ public interface SsSheet {
             try {
                 Object propValue = PropertyUtils.getProperty(bean, propName);
                 if (propAndColumn.getTypeHandlerClass() != null) {
-                    SsioComplexTypeHandler handler = createInstance(propAndColumn.getTypeHandlerClass());
+                    ComplexTypeHandler handler = createInstance(propAndColumn.getTypeHandlerClass());
                     if (propValue == null) {
                         propValue = handler.nullValueToSimple();
                     } else {
@@ -91,7 +91,7 @@ public interface SsSheet {
                 if (datumErrDisplayFunction != null) {
                     String datumErrorDisplayText = datumErrDisplayFunction.apply(de);
                     try {
-                        cell.writeValueAsType(SsioSimpleTypeEnum.String, null, null, datumErrorDisplayText);
+                        cell.writeValueAsType(SimpleTypeEnum.String, null, null, datumErrorDisplayText);
                     } catch (RuntimeException errDisplayException) {
                         this.getLogger().error("Failed to put datum error to a cell", errDisplayException);
                     }

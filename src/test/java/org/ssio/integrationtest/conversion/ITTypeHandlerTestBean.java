@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.interfaces.annotation.SsColumn;
-import org.ssio.api.interfaces.typing.SsioComplexTypeHandler;
+import org.ssio.api.interfaces.typing.ComplexTypeHandler;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -112,7 +112,7 @@ public class ITTypeHandlerTestBean {
 
     }
 
-    public static class NameTypeHandler implements SsioComplexTypeHandler<Name, String> {
+    public static class NameTypeHandler implements ComplexTypeHandler<Name, String> {
 
         @Override
         public Class<String> getTargetSimpleType() {
@@ -144,7 +144,7 @@ public class ITTypeHandlerTestBean {
         }
     }
 
-    public static class BirthDateTypeHandler implements SsioComplexTypeHandler<LocalDate, Long> {
+    public static class BirthDateTypeHandler implements ComplexTypeHandler<LocalDate, Long> {
 
         @Override
         public Class<Long> getTargetSimpleType() {

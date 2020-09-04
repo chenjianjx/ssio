@@ -8,7 +8,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.OfficeCellValueBinderRepo;
 import org.ssio.spi.interfaces.abstractsheet.model.SsCell;
-import org.ssio.api.interfaces.typing.SsioSimpleTypeEnum;
+import org.ssio.api.interfaces.typing.SimpleTypeEnum;
 import org.ssio.spi.interfaces.abstractsheet.cellvaluebinder.SsCellValueBinder;
 
 public class OfficeCell implements SsCell {
@@ -40,7 +40,7 @@ public class OfficeCell implements SsCell {
 
 
     @Override
-    public SsCellValueBinder getCellValueBinder(SsioSimpleTypeEnum javaType, Class<Enum<?>> enumClassIfEnum) {
+    public SsCellValueBinder getCellValueBinder(SimpleTypeEnum javaType, Class<Enum<?>> enumClassIfEnum) {
         return OfficeCellValueBinderRepo.getOfficeCellValueBinder(javaType, enumClassIfEnum);
     }
 

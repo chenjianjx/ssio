@@ -1,7 +1,7 @@
 package org.ssio.api.interfaces.annotation;
 
-import org.ssio.api.interfaces.typing.SsioComplexTypeHandler;
-import org.ssio.api.interfaces.typing.SsioSimpleTypeEnum;
+import org.ssio.api.interfaces.typing.ComplexTypeHandler;
+import org.ssio.api.interfaces.typing.SimpleTypeEnum;
 import org.ssio.api.interfaces.SsioApiConstants;
 
 import java.lang.annotation.ElementType;
@@ -25,8 +25,8 @@ public @interface SsColumn {
 
     /**
      * The column index in the sheet, 0-based.
-     * For beans2sheet:  the index is required.  Please provide one, and make sure the indexes don't duplicate in a single class hierarchy
-     * For sheet2beans:
+     * For save:  the index is required.  Please provide one, and make sure the indexes don't duplicate in a single class hierarchy
+     * For parse:
      * * If the column mapping mode is by index, then it is required.
      * * If the column mapping mode is not by index, the index here will be ignored
      *
@@ -37,8 +37,8 @@ public @interface SsColumn {
 
     /**
      * The column name in the sheet.
-     * For beans2sheet: If it is not supplied, the name will be derived from the java property name, e.g.  fooBar => Foo Bar
-     * For sheet2beans:
+     * For save: If it is not supplied, the name will be derived from the java property name, e.g.  fooBar => Foo Bar
+     * For parse:
      * * If the column mapping mode is by name and the name is not supplied here, the name the name will be derived from the java property name, e.g. column "Foo Bar" will be mapped to "fooBar"
      * * If the column mapping mode is not by name, the name here will be ignored
      *
@@ -62,11 +62,11 @@ public @interface SsColumn {
 
 
     /**
-     * If the property is not of a simple type supported by {@link SsioSimpleTypeEnum}, you need to provider a handler here to make conversions between your complex type and the supported simple types.
+     * If the property is not of a simple type supported by {@link SimpleTypeEnum}, you need to provider a handler here to make conversions between your complex type and the supported simple types.
      * You can also use it for simple-typed properties, for example, if you want handle a LocalDate as a number
      *
      * @return
      */
-    Class<? extends SsioComplexTypeHandler> typeHandlerClass() default SsioComplexTypeHandler.NO_HANDLING.class;
+    Class<? extends ComplexTypeHandler> typeHandlerClass() default ComplexTypeHandler.NO_HANDLING.class;
 
 }

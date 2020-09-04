@@ -1,6 +1,6 @@
 package org.ssio.spi.interfaces.abstractsheet.model;
 
-import org.ssio.api.interfaces.typing.SsioSimpleTypeEnum;
+import org.ssio.api.interfaces.typing.SimpleTypeEnum;
 import org.ssio.spi.interfaces.abstractsheet.cellvaluebinder.SsCellValueBinder;
 
 public interface SsCell {
@@ -10,7 +10,7 @@ public interface SsCell {
      *
      * @throws RuntimeException if the cell value and the java type are not compatible with each other
      */
-    default Object readValueAsType(SsioSimpleTypeEnum targetType, Class<Enum<?>> enumClassIfEnum, String format) throws RuntimeException {
+    default Object readValueAsType(SimpleTypeEnum targetType, Class<Enum<?>> enumClassIfEnum, String format) throws RuntimeException {
         SsCellValueBinder cellValueBinder = this.getCellValueBinder(targetType, enumClassIfEnum);
         if (cellValueBinder == null) {
             throw new IllegalStateException();
@@ -27,7 +27,7 @@ public interface SsCell {
      * @param value
      * @throws RuntimeException
      */
-    default void writeValueAsType(SsioSimpleTypeEnum valueType, Class<Enum<?>> valueEnumClassIfEnum, String format, Object value) throws RuntimeException {
+    default void writeValueAsType(SimpleTypeEnum valueType, Class<Enum<?>> valueEnumClassIfEnum, String format, Object value) throws RuntimeException {
         SsCellValueBinder cellValueBinder = this.getCellValueBinder(valueType, valueEnumClassIfEnum);
         if (cellValueBinder == null) {
             throw new IllegalStateException();
@@ -40,7 +40,7 @@ public interface SsCell {
         }
     }
 
-    SsCellValueBinder getCellValueBinder(SsioSimpleTypeEnum javaType, Class<Enum<?>> enumClassIfEnum);
+    SsCellValueBinder getCellValueBinder(SimpleTypeEnum javaType, Class<Enum<?>> enumClassIfEnum);
 
     void styleAsError();
 

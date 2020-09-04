@@ -2,8 +2,8 @@ package org.ssio.api.impl.common;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.ssio.api.interfaces.typing.SsioComplexTypeHandler;
-import org.ssio.api.interfaces.typing.SsioSimpleTypeEnum;
+import org.ssio.api.interfaces.typing.ComplexTypeHandler;
+import org.ssio.api.interfaces.typing.SimpleTypeEnum;
 
 import java.util.Objects;
 
@@ -31,12 +31,12 @@ public class PropAndColumn {
     /**
      * a real handler or null
      */
-    private Class<? extends SsioComplexTypeHandler> typeHandlerClass;
+    private Class<? extends ComplexTypeHandler> typeHandlerClass;
 
     /**
      * not null
      */
-    private SsioSimpleTypeEnum simpleTypeEnum;
+    private SimpleTypeEnum simpleTypeEnum;
 
     /**
      * only provided if the property is an enum
@@ -84,19 +84,19 @@ public class PropAndColumn {
         this.columnIndex = columnIndex;
     }
 
-    public Class<? extends SsioComplexTypeHandler> getTypeHandlerClass() {
+    public Class<? extends ComplexTypeHandler> getTypeHandlerClass() {
         return typeHandlerClass;
     }
 
-    public void setTypeHandlerClass(Class<? extends SsioComplexTypeHandler> typeHandlerClass) {
+    public void setTypeHandlerClass(Class<? extends ComplexTypeHandler> typeHandlerClass) {
         this.typeHandlerClass = typeHandlerClass;
     }
 
-    public SsioSimpleTypeEnum getSimpleTypeEnum() {
+    public SimpleTypeEnum getSimpleTypeEnum() {
         return simpleTypeEnum;
     }
 
-    public void setSimpleTypeEnum(SsioSimpleTypeEnum simpleTypeEnum) {
+    public void setSimpleTypeEnum(SimpleTypeEnum simpleTypeEnum) {
         this.simpleTypeEnum = simpleTypeEnum;
     }
 

@@ -4,9 +4,9 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.ssio.api.interfaces.annotation.SsColumn;
-import org.ssio.api.interfaces.typing.SsioComplexTypeHandler;
-import org.ssio.api.interfaces.typing.SsioSimpleTypeEnum;
-import org.ssio.api.interfaces.s2b.PropFromColumnMappingMode;
+import org.ssio.api.interfaces.typing.ComplexTypeHandler;
+import org.ssio.api.interfaces.typing.SimpleTypeEnum;
+import org.ssio.api.interfaces.parse.PropFromColumnMappingMode;
 import org.ssio.util.lang.SsioStringUtils;
 import org.ssio.util.lang.SsioReflectionUtils;
 
@@ -33,23 +33,23 @@ public class BeanClassInspector {
      * @param errors
      * @return
      */
-    public List<PropAndColumn> getPropAndColumnMappingsForBeans2Sheet(Class<?> beanClass, List<String> errors) {
-        return this.getPropAndColumnMappings(beanClass, SsioMode.BEANS_TO_SHEET, null, errors);
+    public List<PropAndColumn> getPropAndColumnMappingsForSaveMode(Class<?> beanClass, List<String> errors) {
+        return this.getPropAndColumnMappings(beanClass, SsioMode.SAVE, null, errors);
     }
 
     /**
      * Inspect the bean class to find mappings. Also, do validation
      */
-    public List<PropAndColumn> getPropAndColumnMappingsForSheet2Beans(Class<?> beanClass, PropFromColumnMappingMode propFromColumnMappingMode, List<String> errors) {
-        return this.getPropAndColumnMappings(beanClass, SsioMode.SHEET_TO_BEANS, propFromColumnMappingMode, errors);
+    public List<PropAndColumn> getPropAndColumnMappingsForParseMode(Class<?> beanClass, PropFromColumnMappingMode propFromColumnMappingMode, List<String> errors) {
+        return this.getPropAndColumnMappings(beanClass, SsioMode.PARSE, propFromColumnMappingMode, errors);
     }
 
 
     private List<PropAndColumn> getPropAndColumnMappings(Class<?> beanClass, SsioMode ssioMode,
-                                                         PropFromColumnMappingMode propFromColumnMappingModeIfSheet2Beans,
+                                                         PropFromColumnMappingMode propFromColumnMappingModeIfParse,
                                                          List<String> errors) {
         //do some parameter check first
-        if (ssioMode != SsioMode.BEANS_TO_SHEET && ssioMode != SsioMode.SHEET_TO_BEANS) {
+        if (ssioMode != SsioMode.SAVE && ssioMode != SsioMode.PARSE) {
             throw new IllegalArgumentException("Unsupported mode: " + ssioMode);
         }
 
@@ -96,39 +96,39 @@ public class BeanClassInspector {
             }
 
             //check property type
-            Class<? extends SsioComplexTypeHandler> typeHandler = annotation.typeHandlerClass();
-            if (typeHandler == SsioComplexTypeHandler.NO_HANDLING.class) {
+            Class<? extends ComplexTypeHandler> typeHandler = annotation.typeHandlerClass();
+            if (typeHandler == ComplexTypeHandler.NO_HANDLING.class) {
                 typeHandler = null;
             }
             Class<?> propTypeForSheet = typeHandler == null ? propType : createInstance(typeHandler).getTargetSimpleType();
-            SsioSimpleTypeEnum ssioSimpleTypeEnum = SsioSimpleTypeEnum.fromRealType(propTypeForSheet);
+            SimpleTypeEnum ssioSimpleTypeEnum = SimpleTypeEnum.fromRealType(propTypeForSheet);
             if (ssioSimpleTypeEnum == null) {
                 String suggestion = typeHandler == null ? "Please provide a typeHandler." : "Your typeHandler " + typeHandler.getName() + " should target a supported simple type.";
-                errors.add(String.format("The final type of property '%s', which is %s, is not supported. The list of supported types are defined in %s . %s", propName, propTypeForSheet.getName(), SsioSimpleTypeEnum.class.getName(), suggestion));
+                errors.add(String.format("The final type of property '%s', which is %s, is not supported. The list of supported types are defined in %s . %s", propName, propTypeForSheet.getName(), SimpleTypeEnum.class.getName(), suggestion));
                 continue;
             }
 
 
             //check property validity
-            if (ssioMode == SsioMode.BEANS_TO_SHEET && !hasGetterMethodForProp(propertyDescriptors, propName)) {
+            if (ssioMode == SsioMode.SAVE && !hasGetterMethodForProp(propertyDescriptors, propName)) {
                 errors.add(String.format("'%s' is not a readable property. Does it have a public getter method? ", propName));
                 continue;
             }
 
-            if (ssioMode == SsioMode.SHEET_TO_BEANS && !hasSetterMethodForProp(propertyDescriptors, propName)) {
+            if (ssioMode == SsioMode.PARSE && !hasSetterMethodForProp(propertyDescriptors, propName)) {
                 errors.add(String.format("'%s' is not a writable property. Does it have a public setter method? ", propName));
                 continue;
             }
 
             //check annotation
-            if (ssioMode == SsioMode.BEANS_TO_SHEET) {
+            if (ssioMode == SsioMode.SAVE) {
                 boolean valid = validateAnnotationIndexNotNegative(errors, annotation);
                 if (!valid) {
                     continue;
                 }
             }
-            if (ssioMode == SsioMode.SHEET_TO_BEANS) {
-                switch (propFromColumnMappingModeIfSheet2Beans) {
+            if (ssioMode == SsioMode.PARSE) {
+                switch (propFromColumnMappingModeIfParse) {
                     case BY_NAME: {
                         //nothing to do
                         break;
@@ -141,7 +141,7 @@ public class BeanClassInspector {
                         break;
                     }
                     default:
-                        throw new IllegalArgumentException("Unsupported propFromColumnMappingMode: " + propFromColumnMappingModeIfSheet2Beans);
+                        throw new IllegalArgumentException("Unsupported propFromColumnMappingMode: " + propFromColumnMappingModeIfParse);
                 }
             }
 
@@ -166,7 +166,7 @@ public class BeanClassInspector {
 
             //build a pac
             String columnName = StringUtils.trimToNull(annotation.name());
-            if (columnName == null || columnName.equals(SsColumn.NAME_UNKNOWN)) { //falls back to "foobar => Foo Bar" in both beans2sheet and sheet2beans modes
+            if (columnName == null || columnName.equals(SsColumn.NAME_UNKNOWN)) { //falls back to "foobar => Foo Bar" in both save and parse modes
                 columnName = SsioStringUtils.camelCaseToCapitalizedWords(propName);
             }
 
@@ -183,7 +183,7 @@ public class BeanClassInspector {
 
         }
 
-        if (ssioMode == SsioMode.BEANS_TO_SHEET) {
+        if (ssioMode == SsioMode.SAVE) {
             //check collision among the members
             List<Integer> duplicateIndexes =
                     pacList.stream().collect(Collectors.groupingBy(PropAndColumn::getColumnIndex))

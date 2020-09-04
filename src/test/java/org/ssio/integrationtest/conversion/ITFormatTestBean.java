@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
-public class ConversionITFormatTestBean {
+public class ITFormatTestBean {
 
 
     private static final String AMERICAN_DATE_TIME_PATTERN = "MM/dd/yyyy HH:mm:ss";
@@ -134,8 +134,8 @@ public class ConversionITFormatTestBean {
     }
 
 
-    public static ConversionITFormatTestBean firstDayOfEveryMonthIn2020() {
-        ConversionITFormatTestBean bean = new ConversionITFormatTestBean();
+    public static ITFormatTestBean firstDayOfEveryMonthIn2020() {
+        ITFormatTestBean bean = new ITFormatTestBean();
 
         try {
             bean.setAmericanDate(DateUtils.parseDate("2020/01/01 00:00:00", OTHER_DATE_TIME_PATTERN));
@@ -161,7 +161,7 @@ public class ConversionITFormatTestBean {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ConversionITFormatTestBean that = (ConversionITFormatTestBean) o;
+        ITFormatTestBean that = (ITFormatTestBean) o;
         return americanDate.equals(that.americanDate) &&
                 britishDate.equals(that.britishDate) &&
                 otherDate.equals(that.otherDate) &&

@@ -36,7 +36,7 @@ public class SheetToBeansWorker {
         ArrayList<String> beanClassErrors = new ArrayList<>();
         List<PropAndColumn> propAndColumnList = beanClassInspector.getPropAndColumnMappingsForSheet2Beans(param.getBeanClass(), param.getPropFromColumnMappingMode(), beanClassErrors);
         if (beanClassErrors.size() > 0) {
-            //shouldn't happen here. The validation has been done before this is executed
+            //shouldn't happen here. The validation has been done before here
             throw new IllegalArgumentException(beanClassErrors.toString());
         }
 

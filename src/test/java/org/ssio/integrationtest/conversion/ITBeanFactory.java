@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class ConversionITBeanFactory {
+public class ITBeanFactory {
 
     private static Date dateNormal = parseDate("2011-11-11T11:11:11");
     private static LocalDate localDateNormal = LocalDate.parse("2020-12-12");
@@ -22,12 +22,12 @@ public class ConversionITBeanFactory {
     private static LocalDateTime localDateTimeEndOfWorld = LocalDateTime.parse("3000-10-10T10:10:10");
 
 
-    public static ConversionITBean allEmpty() {
-        return new ConversionITBean();
+    public static ITBean allEmpty() {
+        return new ITBean();
     }
 
-    public static ConversionITBean bigValues() {
-        ConversionITBean bean = new ConversionITBean();
+    public static ITBean bigValues() {
+        ITBean bean = new ITBean();
 
         bean.setPrimBoolean(true);
         bean.setPrimShort(Short.MAX_VALUE);
@@ -49,14 +49,14 @@ public class ConversionITBeanFactory {
         bean.setLocalDate(localDateEndOfWorld);
         bean.setLocalDateTime(localDateTimeEndOfWorld);
         bean.setStr("A very very very very very very very very very very very very \n very very very very very very very very very very long string with line breaks");
-        bean.setEnumeration(ConversionITEnum.ENUM_VALUE_A);
+        bean.setEnumeration(ITEnum.ENUM_VALUE_A);
 
         return bean;
     }
 
 
-    public static ConversionITBean normalValues() {
-        ConversionITBean bean = new ConversionITBean();
+    public static ITBean normalValues() {
+        ITBean bean = new ITBean();
 
         bean.setPrimBoolean(true);
         bean.setPrimShort((short) 123);
@@ -78,7 +78,7 @@ public class ConversionITBeanFactory {
         bean.setLocalDateTime(localDateTimeNormal);
 
         bean.setStr("A normal string");
-        bean.setEnumeration(ConversionITEnum.ENUM_VALUE_A);
+        bean.setEnumeration(ITEnum.ENUM_VALUE_A);
 
         return bean;
     }

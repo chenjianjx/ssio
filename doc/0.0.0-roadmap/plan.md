@@ -5,13 +5,14 @@
   * Basic features  ✔
   * optional header   ✔
   * csv seperator    ✔
+  * csv charset
 * parsing using header map instead of annotations (default format for date/number in excel and csv)
   * Basic features including negative cases ✔
   * enum problem at last ✔
   * Test about non-0 sheet ✔ 
 * annotations (default format for date/number in excel and csv)
   * beans2sheet ✔
-  * sheet2beans ✔
+  * sheet2beans ✔  
 * type reducer for every type of property  
 * format for date in excel and csv ✔ 
 * optional header during parsing ✔

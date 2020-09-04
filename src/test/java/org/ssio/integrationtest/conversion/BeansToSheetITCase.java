@@ -38,15 +38,15 @@ class BeansToSheetITCase {
     @EnumSource(SpreadsheetFileType.class)
     void beansToSheet_positiveTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
 
-        Collection<ConversionITBean> beans = Arrays.asList(
-                ConversionITBeanFactory.allEmpty(),
-                ConversionITBeanFactory.normalValues(),
-                ConversionITBeanFactory.bigValues());
+        Collection<ITBean> beans = Arrays.asList(
+                ITBeanFactory.allEmpty(),
+                ITBeanFactory.normalValues(),
+                ITBeanFactory.bigValues());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        BeansToSheetParam<ConversionITBean> param =
-                new BeansToSheetParamBuilder<ConversionITBean>()
-                        .setBeanClass(ConversionITBean.class)
+        BeansToSheetParam<ITBean> param =
+                new BeansToSheetParamBuilder<ITBean>()
+                        .setBeanClass(ITBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
                         .setOutputTarget(outputStream)
@@ -60,7 +60,7 @@ class BeansToSheetITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_positiveTest", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_positiveTest", ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasDatumErrors()) {
             for (DatumError datumError : result.getDatumErrors()) {
@@ -76,12 +76,12 @@ class BeansToSheetITCase {
     @EnumSource(SpreadsheetFileType.class)
     void beansToSheet_strangeAnnotationTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
 
-        Collection<ConversionITStrangeAnnotationBean> beans = Arrays.asList(new ConversionITStrangeAnnotationBean());
+        Collection<ITStrangeAnnotationBean> beans = Arrays.asList(new ITStrangeAnnotationBean());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        BeansToSheetParam<ConversionITStrangeAnnotationBean> param =
-                new BeansToSheetParamBuilder<ConversionITStrangeAnnotationBean>()
-                        .setBeanClass(ConversionITStrangeAnnotationBean.class)
+        BeansToSheetParam<ITStrangeAnnotationBean> param =
+                new BeansToSheetParamBuilder<ITStrangeAnnotationBean>()
+                        .setBeanClass(ITStrangeAnnotationBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
                         .setOutputTarget(outputStream)
@@ -95,7 +95,7 @@ class BeansToSheetITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_strangeAnnotationTest", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_strangeAnnotationTest", ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasDatumErrors()) {
             for (DatumError datumError : result.getDatumErrors()) {
@@ -111,13 +111,13 @@ class BeansToSheetITCase {
     @MethodSource("beansToSheet_datumError_provider")
     void beansToSheet_datumError(SpreadsheetFileType spreadsheetFileType, Function<DatumError, String> datumErrDisplayFunction, String datumErrDisplayFunctionName) throws IOException {
 
-        Collection<ConversionITSickBean> beans = Arrays.asList(
-                new ConversionITSickBean(), new ConversionITSickBean());
+        Collection<ITSickBean> beans = Arrays.asList(
+                new ITSickBean(), new ITSickBean());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        BeansToSheetParam<ConversionITSickBean> param =
-                new BeansToSheetParamBuilder<ConversionITSickBean>()
-                        .setBeanClass(ConversionITSickBean.class)
+        BeansToSheetParam<ITSickBean> param =
+                new BeansToSheetParamBuilder<ITSickBean>()
+                        .setBeanClass(ITSickBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
                         .setOutputTarget(outputStream)
@@ -132,7 +132,7 @@ class BeansToSheetITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_datumError_" + datumErrDisplayFunctionName, ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_datumError_" + datumErrDisplayFunctionName, ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasNoDatumErrors()) {
             fail("There should be datum errors");
@@ -157,12 +157,12 @@ class BeansToSheetITCase {
     @EnumSource(SpreadsheetFileType.class)
     void beansToSheet_datumError_noSave(SpreadsheetFileType spreadsheetFileType) throws IOException {
 
-        Collection<ConversionITSickBean> beans = Arrays.asList(new ConversionITSickBean());
+        Collection<ITSickBean> beans = Arrays.asList(new ITSickBean());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        BeansToSheetParam<ConversionITSickBean> param =
-                new BeansToSheetParamBuilder<ConversionITSickBean>()
-                        .setBeanClass(ConversionITSickBean.class)
+        BeansToSheetParam<ITSickBean> param =
+                new BeansToSheetParamBuilder<ITSickBean>()
+                        .setBeanClass(ITSickBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
                         .setOutputTarget(outputStream)
@@ -185,12 +185,12 @@ class BeansToSheetITCase {
     @ValueSource(chars = {',', '\t'})
     void beansToSheet_csvSeparator(char cellSeparator) throws IOException {
 
-        Collection<ConversionITSimpleBean> beans = Arrays.asList(new ConversionITSimpleBean());
+        Collection<ITSimpleBean> beans = Arrays.asList(new ITSimpleBean());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        BeansToSheetParam<ConversionITSimpleBean> param =
-                new BeansToSheetParamBuilder<ConversionITSimpleBean>()
-                        .setBeanClass(ConversionITSimpleBean.class)
+        BeansToSheetParam<ITSimpleBean> param =
+                new BeansToSheetParamBuilder<ITSimpleBean>()
+                        .setBeanClass(ITSimpleBean.class)
                         .setBeans(beans)
                         .setFileType(SpreadsheetFileType.CSV)
                         .setCellSeparator(cellSeparator)
@@ -204,7 +204,7 @@ class BeansToSheetITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_csvSeparator_" + getSeparatorName(cellSeparator), ConversionITTestHelper.decideTargetFileExtension(SpreadsheetFileType.CSV)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_csvSeparator_" + getSeparatorName(cellSeparator), ITTestHelper.decideTargetFileExtension(SpreadsheetFileType.CSV)), spreadsheet);
 
         if (result.hasDatumErrors()) {
             fail("There should be no datum errors");
@@ -227,12 +227,12 @@ class BeansToSheetITCase {
     @EnumSource(SpreadsheetFileType.class)
     void beansToSheet_noHeader(SpreadsheetFileType spreadsheetFileType) throws IOException {
 
-        Collection<ConversionITSimpleBean> beans = Arrays.asList(new ConversionITSimpleBean(), new ConversionITSimpleBean());
+        Collection<ITSimpleBean> beans = Arrays.asList(new ITSimpleBean(), new ITSimpleBean());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        BeansToSheetParam<ConversionITSimpleBean> param =
-                new BeansToSheetParamBuilder<ConversionITSimpleBean>()
-                        .setBeanClass(ConversionITSimpleBean.class)
+        BeansToSheetParam<ITSimpleBean> param =
+                new BeansToSheetParamBuilder<ITSimpleBean>()
+                        .setBeanClass(ITSimpleBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
                         .setOutputTarget(outputStream)
@@ -246,7 +246,7 @@ class BeansToSheetITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_noHeader", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_noHeader", ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasDatumErrors()) {
             fail("There should be no datum errors");
@@ -259,13 +259,13 @@ class BeansToSheetITCase {
     @EnumSource(SpreadsheetFileType.class)
     void beansToSheet_formatTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
 
-        Collection<ConversionITFormatTestBean> beans = Arrays.asList(
-                ConversionITFormatTestBean.firstDayOfEveryMonthIn2020());
+        Collection<ITFormatTestBean> beans = Arrays.asList(
+                ITFormatTestBean.firstDayOfEveryMonthIn2020());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        BeansToSheetParam<ConversionITFormatTestBean> param =
-                new BeansToSheetParamBuilder<ConversionITFormatTestBean>()
-                        .setBeanClass(ConversionITFormatTestBean.class)
+        BeansToSheetParam<ITFormatTestBean> param =
+                new BeansToSheetParamBuilder<ITFormatTestBean>()
+                        .setBeanClass(ITFormatTestBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
                         .setOutputTarget(outputStream)
@@ -278,7 +278,7 @@ class BeansToSheetITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_formatTest", ConversionITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_formatTest", ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
 
         if (result.hasDatumErrors()) {
             for (DatumError datumError : result.getDatumErrors()) {
@@ -288,6 +288,41 @@ class BeansToSheetITCase {
         }
 
     }
+
+
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void beansToSheet_typeHandlerTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        Collection<ITTypeHandlerTestBean> beans = Arrays.asList(ITTypeHandlerTestBean.beckham(), ITTypeHandlerTestBean.nobody());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        BeansToSheetParam<ITTypeHandlerTestBean> param =
+                new BeansToSheetParamBuilder<ITTypeHandlerTestBean>()
+                        .setBeanClass(ITTypeHandlerTestBean.class)
+                        .setBeans(beans)
+                        .setFileType(spreadsheetFileType)
+                        .setOutputTarget(outputStream)
+                        .build();
+
+
+        // save it
+        BeansToSheetResult result = manager.beansToSheet(param);
+
+        // do a save for human eye check
+        byte[] spreadsheet = outputStream.toByteArray();
+        assertTrue(spreadsheet.length > 0);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("beansToSheet_typeHandlerTest", ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+
+        if (result.hasDatumErrors()) {
+            for (DatumError datumError : result.getDatumErrors()) {
+                System.err.println(datumError);
+            }
+            fail("There should not be datum errors");
+        }
+
+    }
+
 
 
     /**

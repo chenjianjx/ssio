@@ -66,6 +66,6 @@ public @interface SsColumn {
      *
      * @return
      */
-    Class<? extends SsioComplexTypeHandler> typeHandler() default SsioComplexTypeHandler.NO_HANDLING.class;
+    Class<? extends SsioComplexTypeHandler> typeHandlerClass() default SsioComplexTypeHandler.NO_HANDLING.class;
 
 }

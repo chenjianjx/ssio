@@ -7,7 +7,7 @@ import org.ssio.api.common.annotation.SsColumn;
 /**
  * A bean that throws exceptions when properties are accessed
  */
-public class ConversionITSickBean {
+public class ITSickBean {
 
     @SsColumn(index = 0)
     private String healthyField = "defaultHealthyField";

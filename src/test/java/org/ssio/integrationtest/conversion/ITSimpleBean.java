@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.common.annotation.SsColumn;
 
-public class ConversionITSimpleBean {
+public class ITSimpleBean {
 
     @SsColumn(index = 0)
     private String str = "some string";

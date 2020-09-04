@@ -7,7 +7,7 @@ import org.ssio.api.common.annotation.SsColumn;
 import java.util.Objects;
 
 
-public class ConversionITStrangeAnnotationBean {
+public class ITStrangeAnnotationBean {
 
     @SsColumn(index = 4, name = "Strange")
     private String foo = "foo";
@@ -36,7 +36,7 @@ public class ConversionITStrangeAnnotationBean {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ConversionITStrangeAnnotationBean that = (ConversionITStrangeAnnotationBean) o;
+        ITStrangeAnnotationBean that = (ITStrangeAnnotationBean) o;
         return Objects.equals(foo, that.foo) &&
                 Objects.equals(bar, that.bar);
     }

@@ -93,7 +93,7 @@ public class BeanClassInspector {
             }
 
             //check property type
-            Class<? extends SsioComplexTypeHandler> typeHandler = annotation.typeHandler();
+            Class<? extends SsioComplexTypeHandler> typeHandler = annotation.typeHandlerClass();
             if (typeHandler == SsioComplexTypeHandler.NO_HANDLING.class) {
                 typeHandler = null;
             }

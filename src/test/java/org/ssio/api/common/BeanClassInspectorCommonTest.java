@@ -34,13 +34,13 @@ class BeanClassInspectorCommonTest {
     public static class PropTypeHandlerTestBean {
         @SsColumn(index = 0)
         private Date justDate;
-        @SsColumn(index = 1, typeHandler = DateAsPrimitiveLongHandler.class)
+        @SsColumn(index = 1, typeHandlerClass = DateAsPrimitiveLongHandler.class)
         private long dateAsPrimitiveLong;
-        @SsColumn(index = 2, typeHandler = CompositeFieldTypeHandler.class)
+        @SsColumn(index = 2, typeHandlerClass = CompositeFieldTypeHandler.class)
         private CompositeField compositeFieldWithHandler;
         @SsColumn(index = 3)
         private CompositeField compositeFieldWithoutHandler;
-        @SsColumn(index = 4, typeHandler = CompositeFieldIllegalHandler.class)
+        @SsColumn(index = 4, typeHandlerClass = CompositeFieldIllegalHandler.class)
         private CompositeField compositeFieldWithIllegalHandler;
 
 

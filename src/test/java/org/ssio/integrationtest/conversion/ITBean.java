@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
-public class ConversionITBean {
+public class ITBean {
 
     @SsColumn(index = 0, name = "Primitive Boolean")
     private boolean primBoolean;
@@ -54,7 +54,7 @@ public class ConversionITBean {
     @SsColumn(index = 17, name = "String")
     private String str;
     @SsColumn(index = 18)
-    private ConversionITEnum enumeration;
+    private ITEnum enumeration;
 
 
 
@@ -203,11 +203,11 @@ public class ConversionITBean {
         this.str = str;
     }
 
-    public ConversionITEnum getEnumeration() {
+    public ITEnum getEnumeration() {
         return enumeration;
     }
 
-    public void setEnumeration(ConversionITEnum enumeration) {
+    public void setEnumeration(ITEnum enumeration) {
         this.enumeration = enumeration;
     }
 
@@ -222,7 +222,7 @@ public class ConversionITBean {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ConversionITBean that = (ConversionITBean) o;
+        ITBean that = (ITBean) o;
         return primBoolean == that.primBoolean &&
                 primShort == that.primShort &&
                 primInt == that.primInt &&

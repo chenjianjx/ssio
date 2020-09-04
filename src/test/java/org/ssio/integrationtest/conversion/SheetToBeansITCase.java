@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.ssio.integrationtest.conversion.ConversionITTestHelper.decideTargetFileExtension;
+import static org.ssio.integrationtest.conversion.ITTestHelper.decideTargetFileExtension;
 
 public class SheetToBeansITCase {
     ConversionManager manager = new ConversionManager();
@@ -52,24 +52,24 @@ public class SheetToBeansITCase {
 
         String inputResourceClasspath = "/integration-test/ITBeans-empty-normal-bigValue" + decideTargetFileExtension(spreadsheetFileType);
         try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
-            SheetToBeansParam<ConversionITBean> param =
-                    new SheetToBeansParamBuilder<ConversionITBean>()
-                            .setBeanClass(ConversionITBean.class)
+            SheetToBeansParam<ITBean> param =
+                    new SheetToBeansParamBuilder<ITBean>()
+                            .setBeanClass(ITBean.class)
                             .setFileType(spreadsheetFileType)
                             .setSpreadsheetInput(input)
                             .setInputCharset("utf8") //for csv only
                             .setPropFromColumnMappingMode(propFromColumnMappingMode)
                             .build();
 
-            SheetToBeansResult<ConversionITBean> result = manager.sheetToBeans(param);
+            SheetToBeansResult<ITBean> result = manager.sheetToBeans(param);
             printResult(result);
 
             assertEquals(3, result.getBeans().size());
             assertFalse(result.hasCellErrors());
 
-            assertEquals(ConversionITBeanFactory.allEmpty(), result.getBeans().get(0));
-            assertEquals(ConversionITBeanFactory.normalValues(), result.getBeans().get(1));
-            assertEquals(ConversionITBeanFactory.bigValues(), result.getBeans().get(2));
+            assertEquals(ITBeanFactory.allEmpty(), result.getBeans().get(0));
+            assertEquals(ITBeanFactory.normalValues(), result.getBeans().get(1));
+            assertEquals(ITBeanFactory.bigValues(), result.getBeans().get(2));
 
             result.getBeans().forEach(b -> System.out.println(b));
         }
@@ -306,22 +306,22 @@ public class SheetToBeansITCase {
 
         String inputResourceClasspath = "/integration-test/StrangeAnnotationBean" + decideTargetFileExtension(spreadsheetFileType);
         try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
-            SheetToBeansParam<ConversionITStrangeAnnotationBean> param =
-                    new SheetToBeansParamBuilder<ConversionITStrangeAnnotationBean>()
-                            .setBeanClass(ConversionITStrangeAnnotationBean.class)
+            SheetToBeansParam<ITStrangeAnnotationBean> param =
+                    new SheetToBeansParamBuilder<ITStrangeAnnotationBean>()
+                            .setBeanClass(ITStrangeAnnotationBean.class)
                             .setFileType(spreadsheetFileType)
                             .setSpreadsheetInput(input)
                             .setInputCharset("utf8") //for csv only
                             .setPropFromColumnMappingMode(propFromColumnMappingMode)
                             .build();
 
-            SheetToBeansResult<ConversionITStrangeAnnotationBean> result = manager.sheetToBeans(param);
+            SheetToBeansResult<ITStrangeAnnotationBean> result = manager.sheetToBeans(param);
             printResult(result);
 
             assertEquals(1, result.getBeans().size());
             assertFalse(result.hasCellErrors());
 
-            assertEquals(new ConversionITStrangeAnnotationBean(), result.getBeans().get(0));
+            assertEquals(new ITStrangeAnnotationBean(), result.getBeans().get(0));
             result.getBeans().forEach(b -> System.out.println(b));
         }
 
@@ -334,19 +334,19 @@ public class SheetToBeansITCase {
 
         String inputResourceClasspath = "/integration-test/SickBean" + decideTargetFileExtension(spreadsheetFileType);
         try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
-            SheetToBeansParam<ConversionITSickBean> param =
-                    new SheetToBeansParamBuilder<ConversionITSickBean>()
-                            .setBeanClass(ConversionITSickBean.class)
+            SheetToBeansParam<ITSickBean> param =
+                    new SheetToBeansParamBuilder<ITSickBean>()
+                            .setBeanClass(ITSickBean.class)
                             .setFileType(spreadsheetFileType)
                             .setSpreadsheetInput(input)
                             .setInputCharset("utf8") //for csv only
                             .build();
 
-            SheetToBeansResult<ConversionITSickBean> result = manager.sheetToBeans(param);
+            SheetToBeansResult<ITSickBean> result = manager.sheetToBeans(param);
             printResult(result);
 
             assertEquals(1, result.getBeans().size());
-            ConversionITSickBean bean = result.getBeans().get(0);
+            ITSickBean bean = result.getBeans().get(0);
             assertEquals("random text", bean.getHealthyField());
             assertEquals("defaultUnhealthyField", bean.unhealthyField);
 
@@ -366,22 +366,22 @@ public class SheetToBeansITCase {
 
         String inputResourceClasspath = "/integration-test/SimpleBean-separated-by-" + getSeparatorName(cellSeparator) + ".csv";
         try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
-            SheetToBeansParam<ConversionITSimpleBean> param =
-                    new SheetToBeansParamBuilder<ConversionITSimpleBean>()
-                            .setBeanClass(ConversionITSimpleBean.class)
+            SheetToBeansParam<ITSimpleBean> param =
+                    new SheetToBeansParamBuilder<ITSimpleBean>()
+                            .setBeanClass(ITSimpleBean.class)
                             .setFileType(SpreadsheetFileType.CSV)
                             .setSpreadsheetInput(input)
                             .setInputCharset("utf8")
                             .setCellSeparator(cellSeparator)
                             .build();
 
-            SheetToBeansResult<ConversionITSimpleBean> result = manager.sheetToBeans(param);
+            SheetToBeansResult<ITSimpleBean> result = manager.sheetToBeans(param);
             printResult(result);
 
             assertEquals(1, result.getBeans().size());
             assertFalse(result.hasCellErrors());
 
-            ConversionITSimpleBean bean = result.getBeans().get(0);
+            ITSimpleBean bean = result.getBeans().get(0);
             assertEquals("another string", bean.getStr());
             assertEquals(200, bean.getPrimInt());
         }
@@ -394,15 +394,15 @@ public class SheetToBeansITCase {
 
         String inputResourceClasspath = "/integration-test/SimpleBean-content-not-in-first-sheet.xlsx";
         try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
-            SheetToBeansParam<ConversionITSimpleBean> param =
-                    new SheetToBeansParamBuilder<ConversionITSimpleBean>()
-                            .setBeanClass(ConversionITSimpleBean.class)
+            SheetToBeansParam<ITSimpleBean> param =
+                    new SheetToBeansParamBuilder<ITSimpleBean>()
+                            .setBeanClass(ITSimpleBean.class)
                             .setFileType(SpreadsheetFileType.OFFICE)
                             .setSpreadsheetInput(input)
                             .setSheetLocator(sheetLocator)
                             .build();
 
-            SheetToBeansResult<ConversionITSimpleBean> result = manager.sheetToBeans(param);
+            SheetToBeansResult<ITSimpleBean> result = manager.sheetToBeans(param);
             printResult(result);
 
             assertEquals(1, result.getBeans().size());
@@ -419,21 +419,21 @@ public class SheetToBeansITCase {
 
         String inputResourceClasspath = "/integration-test/FormatTestBean" + decideTargetFileExtension(spreadsheetFileType);
         try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
-            SheetToBeansParam<ConversionITFormatTestBean> param =
-                    new SheetToBeansParamBuilder<ConversionITFormatTestBean>()
-                            .setBeanClass(ConversionITFormatTestBean.class)
+            SheetToBeansParam<ITFormatTestBean> param =
+                    new SheetToBeansParamBuilder<ITFormatTestBean>()
+                            .setBeanClass(ITFormatTestBean.class)
                             .setFileType(spreadsheetFileType)
                             .setSpreadsheetInput(input)
                             .setInputCharset("utf8") //for csv only
                             .build();
 
-            SheetToBeansResult<ConversionITFormatTestBean> result = manager.sheetToBeans(param);
+            SheetToBeansResult<ITFormatTestBean> result = manager.sheetToBeans(param);
             printResult(result);
 
             assertEquals(1, result.getBeans().size());
             assertFalse(result.hasCellErrors());
 
-            assertEquals(ConversionITFormatTestBean.firstDayOfEveryMonthIn2020(), result.getBeans().get(0));
+            assertEquals(ITFormatTestBean.firstDayOfEveryMonthIn2020(), result.getBeans().get(0));
 
 
             result.getBeans().forEach(b -> System.out.println(b));

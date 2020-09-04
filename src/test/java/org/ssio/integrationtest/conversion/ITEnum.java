@@ -1,5 +1,5 @@
 package org.ssio.integrationtest.conversion;
 
-enum ConversionITEnum {
+enum ITEnum {
     ENUM_VALUE_A, ENUM_VALUE_B
 }

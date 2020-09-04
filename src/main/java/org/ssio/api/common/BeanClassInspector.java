@@ -3,9 +3,10 @@ package org.ssio.api.common;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.ssio.api.common.abstractsheet.model.SsCellValueJavaType;
 import org.ssio.api.common.annotation.SsColumn;
 import org.ssio.api.common.mapping.PropAndColumn;
+import org.ssio.api.common.typing.SsioComplexTypeHandler;
+import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 import org.ssio.api.s2b.PropFromColumnMappingMode;
 import org.ssio.internal.temp.SepStringHelper;
 import org.ssio.internal.util.SsioReflectionHelper;
@@ -89,14 +90,19 @@ public class BeanClassInspector {
                 annotation = method.getAnnotation(SsColumn.class);
             }
 
-            SsCellValueJavaType cellValueJavaType = SsCellValueJavaType.fromRealType(propType);
-            if (cellValueJavaType == null) {
-                errors.add(String.format("The type of Property '%s', %s, is not supported. The list of supported types are defined in %s . ", propName, propType.getName(), SsCellValueJavaType.class.getName()));
+            //check property type
+            Class<? extends SsioComplexTypeHandler> typeHandler = annotation.typeHandler();
+            if (typeHandler == SsioComplexTypeHandler.NO_HANDLING.class) {
+                typeHandler = null;
+            }
+            SsioSimpleTypeEnum ssioSimpleType = SsioSimpleTypeEnum.fromRealType(propType);
+            if (ssioSimpleType == null && typeHandler == null) {
+                errors.add(String.format("The type of Property '%s', which is %s, is not directly supported unless you provide a typeHandler. The list of directly supported types are defined in %s . ", propName, propType.getName(), SsioSimpleTypeEnum.class.getName()));
                 continue;
             }
 
 
-            //check property
+            //check property validity
             if (ssioMode == SsioMode.BEANS_TO_SHEET && !hasGetterMethodForProp(propertyDescriptors, propName)) {
                 errors.add(String.format("'%s' is not a readable property. Does it have a public getter method? ", propName));
                 continue;
@@ -135,9 +141,9 @@ public class BeanClassInspector {
 
             ////check format in annotation
             String format = StringUtils.trimToNull(annotation.format());
-            if (cellValueJavaType.isDateRelated()) {
+            if (ssioSimpleType.isDateRelated()) {
                 if (format == null || format.equals(SsColumn.FORMAT_UNKNOWN)) {
-                    format = cellValueJavaType.getDefaultDateFormat();
+                    format = ssioSimpleType.getDefaultDateFormat();
                 } else {
                     try {
                         new SimpleDateFormat(format);
@@ -162,6 +168,7 @@ public class BeanClassInspector {
             pac.setColumnName(columnName);
             pac.setColumnIndex(annotation.index());
             pac.setFormat(format);
+            pac.setTypeHandler(typeHandler);
 
             pacList.add(pac);
 

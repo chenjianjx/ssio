@@ -57,6 +57,8 @@ public class ConversionITBean {
     private ConversionITEnum enumeration;
 
 
+
+
     public boolean isPrimBoolean() {
         return primBoolean;
     }

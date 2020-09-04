@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.ssio.api.b2s.DatumError;
 import org.ssio.api.common.mapping.PropAndColumn;
+import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 
 import java.util.List;
 import java.util.function.Function;
@@ -37,7 +38,7 @@ public interface SsSheet {
         for (PropAndColumn pac : propAndColumnList) {
             String headerText = StringUtils.defaultString(pac.getColumnName());
             SsCell cell = header.createCell(pac.getColumnIndex());
-            cell.writeValueAsType(SsCellValueJavaType.String, null, null, headerText);
+            cell.writeValueAsType(SsioSimpleTypeEnum.String, null, null, headerText);
             cell.styleAsHeader();
             this.autoSizeColumn(pac.getColumnIndex());
         }
@@ -67,7 +68,7 @@ public interface SsSheet {
             String propName = propAndColumn.getPropName();
 
             try {
-                SsCellValueJavaType javaType = SsCellValueHelper.resolveJavaTypeOfPropertyOrThrow(bean, propName);
+                SsioSimpleTypeEnum javaType = SsCellValueHelper.resolveJavaTypeOfPropertyOrThrow(bean, propName);
                 Class<Enum<?>> enumClassIfEnum = getPropertyEnumClassIfEnum(bean, propName);
                 Object propValue = PropertyUtils.getProperty(bean, propName);
                 cell.writeValueAsType(javaType, enumClassIfEnum, propAndColumn.getFormat(), propValue);
@@ -83,7 +84,7 @@ public interface SsSheet {
                 if (datumErrDisplayFunction != null) {
                     String datumErrorDisplayText = datumErrDisplayFunction.apply(de);
                     try {
-                        cell.writeValueAsType(SsCellValueJavaType.String, null, null, datumErrorDisplayText);
+                        cell.writeValueAsType(SsioSimpleTypeEnum.String, null, null, datumErrorDisplayText);
                     } catch (RuntimeException errDisplayException) {
                         this.getLogger().error("Failed to put datum error to a cell", errDisplayException);
                     }

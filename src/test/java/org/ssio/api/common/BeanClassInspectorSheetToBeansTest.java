@@ -18,18 +18,6 @@ class BeanClassInspectorSheetToBeansTest {
 
     BeanClassInspector inspector = new BeanClassInspector();
 
-    public static class NoColumnBean {
-        private String foo;
-
-        public String getFoo() {
-            return foo;
-        }
-
-        public void setFoo(String foo) {
-            this.foo = foo;
-        }
-    }
-
 
     public static class ParentBean {
 
@@ -117,15 +105,6 @@ class BeanClassInspectorSheetToBeansTest {
         /*generated setters */
     }
 
-    @ParameterizedTest
-    @EnumSource(PropFromColumnMappingMode.class)
-    void getMappingsForSheet2Beans_noColumn(PropFromColumnMappingMode mappingMode) {
-        List<String> errors = new ArrayList<>();
-        List<PropAndColumn> pacList = inspector.getPropAndColumnMappingsForSheet2Beans(NoColumnBean.class, mappingMode, errors);
-        System.out.println(errors);
-        assertEquals(0, pacList.size());
-        assertTrue(errors.get(0).contains("at least one"));
-    }
 
 
     @Test

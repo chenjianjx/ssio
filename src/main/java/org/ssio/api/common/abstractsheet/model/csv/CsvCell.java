@@ -1,7 +1,7 @@
 package org.ssio.api.common.abstractsheet.model.csv;
 
 import org.ssio.api.common.abstractsheet.model.SsCell;
-import org.ssio.api.common.abstractsheet.model.SsCellValueJavaType;
+import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 import org.ssio.internal.common.cellvalue.binder.SsCellValueBinder;
 import org.ssio.internal.common.cellvalue.binder.csv.CsvCellValueBinderRepo;
 
@@ -34,7 +34,7 @@ public class CsvCell implements SsCell {
     }
 
     @Override
-    public SsCellValueBinder getCellValueBinder(SsCellValueJavaType javaType, Class<Enum<?>> enumClassIfEnum) {
+    public SsCellValueBinder getCellValueBinder(SsioSimpleTypeEnum javaType, Class<Enum<?>> enumClassIfEnum) {
         return CsvCellValueBinderRepo.getCsvCellValueBinder(javaType, enumClassIfEnum);
     }
 

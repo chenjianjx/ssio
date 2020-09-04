@@ -1,4 +1,4 @@
-package org.ssio.api.common.abstractsheet.model;
+package org.ssio.api.common.typing;
 
 import org.ssio.api.common.SsioConstants;
 
@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * only these types can be written to a cell.  If your field value is not in here, you need to convert it to one of these
  */
-public enum SsCellValueJavaType {
+public enum SsioSimpleTypeEnum {
 
 
     PrimitiveBoolean(boolean.class),
@@ -45,7 +45,7 @@ public enum SsCellValueJavaType {
     private Class<?> realType;
 
 
-    SsCellValueJavaType(Class<?> realType) {
+    SsioSimpleTypeEnum(Class<?> realType) {
         this.realType = realType;
     }
 
@@ -59,11 +59,11 @@ public enum SsCellValueJavaType {
      * @param realType
      * @return
      */
-    public static SsCellValueJavaType fromRealType(Class<?> realType) {
+    public static SsioSimpleTypeEnum fromRealType(Class<?> realType) {
         if (realType.isEnum()) {
             return Enum;
         }
-        return Arrays.stream(SsCellValueJavaType.values()).filter(t -> t.getRealType().equals(realType)).findFirst().orElse(null);
+        return Arrays.stream(SsioSimpleTypeEnum.values()).filter(t -> t.getRealType().equals(realType)).findFirst().orElse(null);
     }
 
 

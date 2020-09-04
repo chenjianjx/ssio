@@ -2,6 +2,7 @@ package org.ssio.api.common.mapping;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.ssio.api.common.typing.SsioComplexTypeHandler;
 
 import java.util.Objects;
 
@@ -22,9 +23,14 @@ public class PropAndColumn {
     private int columnIndex;
 
     /**
-     * a valid format
+     * a valid format or null
      */
     private String format;
+
+    /**
+     * a real handler or null
+     */
+    private Class<? extends SsioComplexTypeHandler> typeHandler;
 
 
     public PropAndColumn() {
@@ -68,6 +74,13 @@ public class PropAndColumn {
         this.columnIndex = columnIndex;
     }
 
+    public Class<? extends SsioComplexTypeHandler> getTypeHandler() {
+        return typeHandler;
+    }
+
+    public void setTypeHandler(Class<? extends SsioComplexTypeHandler> typeHandler) {
+        this.typeHandler = typeHandler;
+    }
 
     @Override
     public boolean equals(Object o) {

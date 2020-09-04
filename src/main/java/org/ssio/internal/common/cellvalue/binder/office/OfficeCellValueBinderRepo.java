@@ -1,6 +1,6 @@
 package org.ssio.internal.common.cellvalue.binder.office;
 
-import org.ssio.api.common.abstractsheet.model.SsCellValueJavaType;
+import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 import org.ssio.internal.common.cellvalue.binder.office.impl.BigDecimalOfficeCellValueBinder;
 import org.ssio.internal.common.cellvalue.binder.office.impl.BigIntegerOfficeCellValueBinder;
 import org.ssio.internal.common.cellvalue.binder.office.impl.BooleanOfficeCellValueBinder;
@@ -27,38 +27,38 @@ import java.util.Map;
 
 
 public final class OfficeCellValueBinderRepo {
-    private static Map<SsCellValueJavaType, Class<? extends OfficeCellValueBinder>> javaTypeToBinderType = new LinkedHashMap<>();
+    private static Map<SsioSimpleTypeEnum, Class<? extends OfficeCellValueBinder>> javaTypeToBinderType = new LinkedHashMap<>();
 
 
     static {
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveBoolean, PrimitiveBooleanOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveShort, PrimitiveShortOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveInt, PrimitiveIntOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveLong, PrimitiveLongOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveFloat, PrimitiveFloatOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveDouble, PrimitiveDoubleOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveBoolean, PrimitiveBooleanOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveShort, PrimitiveShortOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveInt, PrimitiveIntOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveLong, PrimitiveLongOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveFloat, PrimitiveFloatOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveDouble, PrimitiveDoubleOfficeCellValueBinder.class);
 
-        javaTypeToBinderType.put(SsCellValueJavaType.Boolean, BooleanOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.Short, ShortOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.Integer, IntegerOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.Long, LongOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.Float, FloatOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.Double, DoubleOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Boolean, BooleanOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Short, ShortOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Integer, IntegerOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Long, LongOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Float, FloatOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Double, DoubleOfficeCellValueBinder.class);
 
-        javaTypeToBinderType.put(SsCellValueJavaType.BigInteger, BigIntegerOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.BigDecimal, BigDecimalOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.BigInteger, BigIntegerOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.BigDecimal, BigDecimalOfficeCellValueBinder.class);
 
 
-        javaTypeToBinderType.put(SsCellValueJavaType.Date, DateOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.LocalDate, LocalDateOfficeCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.LocalDateTime, LocalDateTimeOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Date, DateOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.LocalDate, LocalDateOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.LocalDateTime, LocalDateTimeOfficeCellValueBinder.class);
 
-        javaTypeToBinderType.put(SsCellValueJavaType.String, StringOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.String, StringOfficeCellValueBinder.class);
 
-        javaTypeToBinderType.put(SsCellValueJavaType.Enum, EnumOfficeCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Enum, EnumOfficeCellValueBinder.class);
     }
 
-    public static OfficeCellValueBinder getOfficeCellValueBinder(SsCellValueJavaType javaType, Class<Enum<?>> enumClassIfEnum) {
+    public static OfficeCellValueBinder getOfficeCellValueBinder(SsioSimpleTypeEnum javaType, Class<Enum<?>> enumClassIfEnum) {
         Class<? extends OfficeCellValueBinder> binderType = javaTypeToBinderType.get(javaType);
         if (binderType == null) {
             return null;

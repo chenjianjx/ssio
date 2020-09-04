@@ -8,7 +8,7 @@ import org.ssio.api.common.BeanClassInspector;
 import org.ssio.api.common.abstractsheet.model.DefaultSsFactory;
 import org.ssio.api.common.abstractsheet.model.SsCell;
 import org.ssio.api.common.abstractsheet.model.SsCellValueHelper;
-import org.ssio.api.common.abstractsheet.model.SsCellValueJavaType;
+import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 import org.ssio.api.common.abstractsheet.model.SsFactory;
 import org.ssio.api.common.abstractsheet.model.SsRow;
 import org.ssio.api.common.abstractsheet.model.SsSheet;
@@ -113,7 +113,7 @@ public class SheetToBeansWorker {
         for (int columnIndex = 0; columnIndex < row.getNumberOfCells(); columnIndex++) {
             SsCell cell = row.getCell(columnIndex);
 
-            String headerText = StringUtils.trimToNull((String) cell.readValueAsType(SsCellValueJavaType.String, null, null));
+            String headerText = StringUtils.trimToNull((String) cell.readValueAsType(SsioSimpleTypeEnum.String, null, null));
             if (headerText == null) {
                 continue;
             }
@@ -144,7 +144,7 @@ public class SheetToBeansWorker {
             SsCell cell = row.getCell(columnIndex);
 
             try {
-                SsCellValueJavaType javaType = SsCellValueHelper.resolveJavaTypeOfPropertyOrThrow(bean, propName);
+                SsioSimpleTypeEnum javaType = SsCellValueHelper.resolveJavaTypeOfPropertyOrThrow(bean, propName);
                 Class<Enum<?>> enumClassIfEnum = getPropertyEnumClassIfEnum(bean, propName);
                 Object value = cell.readValueAsType(javaType, enumClassIfEnum, propAndColumn.getFormat());
                 PropertyUtils.setProperty(bean, propName, value);

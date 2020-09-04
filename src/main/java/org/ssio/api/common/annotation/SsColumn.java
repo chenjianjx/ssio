@@ -1,6 +1,7 @@
 package org.ssio.api.common.annotation;
 
-import org.ssio.api.common.abstractsheet.model.SsCellValueJavaType;
+import org.ssio.api.common.typing.SsioComplexTypeHandler;
+import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,7 +14,6 @@ import java.util.Date;
 /**
  * The annotation to map a java bean property <=> a column in the sheet.
  * Please put it on a field, or on a getter/setter method.
- * Not every type of property is supported.  A list of supported java types can be found in {@link SsCellValueJavaType}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
@@ -58,4 +58,14 @@ public @interface SsColumn {
      * @return
      */
     String format() default "";
+
+
+    /**
+     * If the property is not of a simple type supported by {@link SsioSimpleTypeEnum}, you need to provider a handler here to make conversions between your complex type and the supported simple types.
+     * You can also use it for simple-typed properties, for example, if you want handle a LocalDate as a number
+     *
+     * @return
+     */
+    Class<? extends SsioComplexTypeHandler> typeHandler() default SsioComplexTypeHandler.NO_HANDLING.class;
+
 }

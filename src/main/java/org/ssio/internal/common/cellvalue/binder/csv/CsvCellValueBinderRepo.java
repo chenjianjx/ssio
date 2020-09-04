@@ -1,6 +1,6 @@
 package org.ssio.internal.common.cellvalue.binder.csv;
 
-import org.ssio.api.common.abstractsheet.model.SsCellValueJavaType;
+import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 import org.ssio.internal.common.cellvalue.binder.csv.impl.BigDecimalCsvCellValueBinder;
 import org.ssio.internal.common.cellvalue.binder.csv.impl.BigIntegerCsvCellValueBinder;
 import org.ssio.internal.common.cellvalue.binder.csv.impl.BooleanCsvCellValueBinder;
@@ -27,38 +27,38 @@ import java.util.Map;
 
 
 public final class CsvCellValueBinderRepo {
-    private static Map<SsCellValueJavaType, Class<? extends CsvCellValueBinder>> javaTypeToBinderType = new LinkedHashMap<>();
+    private static Map<SsioSimpleTypeEnum, Class<? extends CsvCellValueBinder>> javaTypeToBinderType = new LinkedHashMap<>();
 
 
     static {
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveBoolean, PrimitiveBooleanCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveShort, PrimitiveShortCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveInt, PrimitiveIntCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveLong, PrimitiveLongCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveFloat, PrimitiveFloatCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.PrimitiveDouble, PrimitiveDoubleCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveBoolean, PrimitiveBooleanCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveShort, PrimitiveShortCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveInt, PrimitiveIntCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveLong, PrimitiveLongCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveFloat, PrimitiveFloatCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.PrimitiveDouble, PrimitiveDoubleCsvCellValueBinder.class);
 
-        javaTypeToBinderType.put(SsCellValueJavaType.Boolean, BooleanCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.Short, ShortCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.Integer, IntegerCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.Long, LongCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.Float, FloatCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.Double, DoubleCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Boolean, BooleanCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Short, ShortCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Integer, IntegerCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Long, LongCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Float, FloatCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Double, DoubleCsvCellValueBinder.class);
 
-        javaTypeToBinderType.put(SsCellValueJavaType.BigInteger, BigIntegerCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.BigDecimal, BigDecimalCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.BigInteger, BigIntegerCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.BigDecimal, BigDecimalCsvCellValueBinder.class);
 
 
-        javaTypeToBinderType.put(SsCellValueJavaType.Date, DateCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.LocalDate, LocalDateCsvCellValueBinder.class);
-        javaTypeToBinderType.put(SsCellValueJavaType.LocalDateTime, LocalDateTimeCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Date, DateCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.LocalDate, LocalDateCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.LocalDateTime, LocalDateTimeCsvCellValueBinder.class);
 
-        javaTypeToBinderType.put(SsCellValueJavaType.String, StringCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.String, StringCsvCellValueBinder.class);
 
-        javaTypeToBinderType.put(SsCellValueJavaType.Enum, EnumCsvCellValueBinder.class);
+        javaTypeToBinderType.put(SsioSimpleTypeEnum.Enum, EnumCsvCellValueBinder.class);
     }
 
-    public static CsvCellValueBinder getCsvCellValueBinder(SsCellValueJavaType javaType, Class<Enum<?>> enumClassIfEnum) {
+    public static CsvCellValueBinder getCsvCellValueBinder(SsioSimpleTypeEnum javaType, Class<Enum<?>> enumClassIfEnum) {
         Class<? extends CsvCellValueBinder> binderType = javaTypeToBinderType.get(javaType);
         if (binderType == null) {
             return null;

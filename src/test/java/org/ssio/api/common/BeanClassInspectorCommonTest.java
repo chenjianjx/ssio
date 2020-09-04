@@ -33,28 +33,31 @@ class BeanClassInspectorCommonTest {
 
     public static class PropTypeHandlerTestBean {
         @SsColumn(index = 0)
-        private LocalDate justLocalDate;
-        @SsColumn(index = 1)
-        private long localDateAsNumber;
-        @SsColumn(index = 2)
+        private Date justDate;
+        @SsColumn(index = 1, typeHandler = DateAsPrimitiveLongHandler.class)
+        private long dateAsPrimitiveLong;
+        @SsColumn(index = 2, typeHandler = CompositeFieldTypeHandler.class)
         private CompositeField compositeFieldWithHandler;
         @SsColumn(index = 3)
         private CompositeField compositeFieldWithoutHandler;
+        @SsColumn(index = 4, typeHandler = CompositeFieldIllegalHandler.class)
+        private CompositeField compositeFieldWithIllegalHandler;
 
-        public LocalDate getJustLocalDate() {
-            return justLocalDate;
+
+        public Date getJustDate() {
+            return justDate;
         }
 
-        public void setJustLocalDate(LocalDate justLocalDate) {
-            this.justLocalDate = justLocalDate;
+        public void setJustDate(Date justDate) {
+            this.justDate = justDate;
         }
 
-        public long getLocalDateAsNumber() {
-            return localDateAsNumber;
+        public long getDateAsPrimitiveLong() {
+            return dateAsPrimitiveLong;
         }
 
-        public void setLocalDateAsNumber(long localDateAsNumber) {
-            this.localDateAsNumber = localDateAsNumber;
+        public void setDateAsPrimitiveLong(long dateAsPrimitiveLong) {
+            this.dateAsPrimitiveLong = dateAsPrimitiveLong;
         }
 
         public CompositeField getCompositeFieldWithHandler() {
@@ -71,6 +74,14 @@ class BeanClassInspectorCommonTest {
 
         public void setCompositeFieldWithoutHandler(CompositeField compositeFieldWithoutHandler) {
             this.compositeFieldWithoutHandler = compositeFieldWithoutHandler;
+        }
+
+        public CompositeField getCompositeFieldWithIllegalHandler() {
+            return compositeFieldWithIllegalHandler;
+        }
+
+        public void setCompositeFieldWithIllegalHandler(CompositeField compositeFieldWithIllegalHandler) {
+            this.compositeFieldWithIllegalHandler = compositeFieldWithIllegalHandler;
         }
 
         public static class CompositeField {
@@ -96,6 +107,9 @@ class BeanClassInspectorCommonTest {
 
             @Override
             public CompositeField fromSimpleTypeValue(Object simpleTypeValue) {
+                if (simpleTypeValue == null) {
+                    return null;
+                }
                 String stv = (String) simpleTypeValue;
                 CompositeField cf = new CompositeField();
                 cf.foo = StringUtils.split(stv, ",")[0];
@@ -104,7 +118,7 @@ class BeanClassInspectorCommonTest {
             }
         }
 
-        public static class DateAsLongHandler implements SsioComplexTypeHandler<Date> {
+        public static class DateAsPrimitiveLongHandler implements SsioComplexTypeHandler<Date> {
 
             @Override
             public Class getTargetSimpleType() {
@@ -114,7 +128,7 @@ class BeanClassInspectorCommonTest {
             @Override
             public Object toSimpleTypeValue(Date originalValue) {
                 if (originalValue == null) {
-                    return 0;
+                    return -1;
                 } else {
                     return originalValue.getTime();
                 }
@@ -122,7 +136,30 @@ class BeanClassInspectorCommonTest {
 
             @Override
             public Date fromSimpleTypeValue(Object simpleTypeValue) {
-                return new Date((long) simpleTypeValue);
+                long stv = (long) simpleTypeValue;
+                if (stv < 0) {
+                    return null;
+                }
+                return new Date(stv);
+            }
+        }
+
+
+        public static class CompositeFieldIllegalHandler implements SsioComplexTypeHandler<CompositeField> {
+
+            @Override
+            public Class<Object> getTargetSimpleType() {
+                return Object.class;
+            }
+
+            @Override
+            public Object toSimpleTypeValue(CompositeField originalValue) {
+                return originalValue;
+            }
+
+            @Override
+            public CompositeField fromSimpleTypeValue(Object simpleTypeValue) {
+                return (CompositeField) simpleTypeValue;
             }
         }
     }
@@ -183,12 +220,19 @@ class BeanClassInspectorCommonTest {
     }
 
     @Test
-    void getMappings_unsupportedPropType() {
+    void getMappings_typeHandling() {
         List<String> errors = new ArrayList<>();
         List<PropAndColumn> pacList = inspector.getPropAndColumnMappingsForBeans2Sheet(PropTypeHandlerTestBean.class, errors);
-        System.out.println(errors);
-        assertEquals(0, pacList.size());
-        assertTrue(havingErrorContains(errors, "not supported", "java.lang.Object", "foo"));
+        errors.forEach(e -> System.err.println(e));
+
+        assertEquals(3, pacList.size());
+        assertEquals(null, pacList.get(0).getTypeHandler());
+        assertEquals(PropTypeHandlerTestBean.DateAsPrimitiveLongHandler.class, pacList.get(1).getTypeHandler());
+        assertEquals(PropTypeHandlerTestBean.CompositeFieldTypeHandler.class, pacList.get(2).getTypeHandler());
+
+        assertTrue(havingErrorContains(errors, "compositeFieldWithoutHandler", "is not supported"));
+        assertTrue(havingErrorContains(errors, "compositeFieldWithIllegalHandler", "is not supported"));
+
     }
 
 

@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.ssio.internal.util.SsioReflectionHelper.createInstance;
+
 public class BeanClassInspector {
 
 
@@ -95,9 +97,11 @@ public class BeanClassInspector {
             if (typeHandler == SsioComplexTypeHandler.NO_HANDLING.class) {
                 typeHandler = null;
             }
-            SsioSimpleTypeEnum ssioSimpleType = SsioSimpleTypeEnum.fromRealType(propType);
-            if (ssioSimpleType == null && typeHandler == null) {
-                errors.add(String.format("The type of Property '%s', which is %s, is not directly supported unless you provide a typeHandler. The list of directly supported types are defined in %s . ", propName, propType.getName(), SsioSimpleTypeEnum.class.getName()));
+            Class<?> propTypeForSheet = typeHandler == null ? propType : createInstance(typeHandler).getTargetSimpleType();
+            SsioSimpleTypeEnum ssioSimpleTypeEnum = SsioSimpleTypeEnum.fromRealType(propTypeForSheet);
+            if (ssioSimpleTypeEnum == null) {
+                String suggestion = typeHandler == null ? "Please provide a typeHandler.": "Your typeHandler " + typeHandler.getName() + " should target a supported simple type.";
+                errors.add(String.format("The final type of property '%s', which is %s, is not supported. The list of supported types are defined in %s . %s", propName, propTypeForSheet.getName(), SsioSimpleTypeEnum.class.getName(), suggestion));
                 continue;
             }
 
@@ -141,9 +145,9 @@ public class BeanClassInspector {
 
             ////check format in annotation
             String format = StringUtils.trimToNull(annotation.format());
-            if (ssioSimpleType.isDateRelated()) {
+            if (ssioSimpleTypeEnum.isDateRelated()) {
                 if (format == null || format.equals(SsColumn.FORMAT_UNKNOWN)) {
-                    format = ssioSimpleType.getDefaultDateFormat();
+                    format = ssioSimpleTypeEnum.getDefaultDateFormat();
                 } else {
                     try {
                         new SimpleDateFormat(format);

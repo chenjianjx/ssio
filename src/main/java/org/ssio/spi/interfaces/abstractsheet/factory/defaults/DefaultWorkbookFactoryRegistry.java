@@ -14,18 +14,18 @@ import java.util.Map;
  */
 public class DefaultWorkbookFactoryRegistry implements SsWorkbookFactoryRegistry {
 
-    private Map<Class<SaveParam>, WorkbookToSaveFactory> saveFactories = new LinkedHashMap<>();
+    private Map<Class<? extends SaveParam>, WorkbookToSaveFactory> saveFactories = new LinkedHashMap<>();
 
     private Map<Class<ParseParam>, WorkbookToParseFactory> parseFactories = new LinkedHashMap<>();
 
     @Override
-    public void registerWorkbookToSaveFactory(Class<SaveParam> saveParamClass, WorkbookToSaveFactory factory) {
-
+    public void registerWorkbookToSaveFactory(Class<? extends SaveParam> saveParamClass, WorkbookToSaveFactory factory) {
+        saveFactories.put(saveParamClass, factory);
     }
 
     @Override
     public WorkbookToSaveFactory getWorkbookToSaveFactory(Class<? extends SaveParam> saveParamClass) {
-        return null;
+        return saveFactories.get(saveParamClass);
     }
 
     @Override
@@ -38,16 +38,9 @@ public class DefaultWorkbookFactoryRegistry implements SsWorkbookFactoryRegistry
         return null;
     }
 
-//    @Override
-//    public void registerWorkbookToSaveFactory(Class<SaveParam> saveParamClass, WorkbookToSaveFactory factory) {
-//        saveFactories.put(saveParamClass, factory);
-//    }
-//
-//    @Override
-//    public WorkbookToSaveFactory getWorkbookToSaveFactory(Class<SaveParam> saveParamClass) {
-//        return saveFactories.get(saveParamClass);
-//    }
-//
+
+
+
 //    @Override
 //    public void registerWorkbookToParseFactory(Class<ParseParam> parseParamClass, WorkbookToParseFactory factory) {
 //        parseFactories.put(parseParamClass, factory);

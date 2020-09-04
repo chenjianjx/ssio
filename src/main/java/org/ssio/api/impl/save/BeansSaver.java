@@ -31,7 +31,7 @@ public class BeansSaver {
         List<String> beanClassErrors = new ArrayList<>();
         List<PropAndColumn> propAndColumnList = beanClassInspector.getPropAndColumnMappingsForSaveMode(param.getBeanClass(), beanClassErrors);
         if (beanClassErrors.size() > 0) {
-            //shouldn't happen here. The validation has been done before this is executed
+            //shouldn't happen here. The validation has been done before here
             throw new IllegalArgumentException(beanClassErrors.toString());
         }
 

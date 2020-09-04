@@ -6,8 +6,8 @@ import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbook;
 /**
  * create a new workbook to save beans
  *
- *
+ * @param <W>
  */
-public interface WorkbookToSaveFactory {
-    SsWorkbook newWorkbook(SaveParam param);
+public interface WorkbookToSaveFactory<P extends SaveParam, W extends SsWorkbook> {
+    W newWorkbook(P param);
 }

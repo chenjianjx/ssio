@@ -8,15 +8,15 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.ssio.api.ConversionManager;
-import org.ssio.api.SpreadsheetFileType;
-import org.ssio.api.common.abstractsheet.helper.SsSheetLocator;
-import org.ssio.api.common.annotation.SsColumn;
-import org.ssio.api.s2b.CellError;
-import org.ssio.api.s2b.PropFromColumnMappingMode;
-import org.ssio.api.s2b.SheetToBeansParam;
-import org.ssio.api.s2b.SheetToBeansParamBuilder;
-import org.ssio.api.s2b.SheetToBeansResult;
+import org.ssio.api.impl.ConversionManagerImpl;
+import org.ssio.api.interfaces.SpreadsheetFileType;
+import org.ssio.api.impl.common.sheetlocate.SsSheetLocator;
+import org.ssio.api.interfaces.annotation.SsColumn;
+import org.ssio.api.interfaces.s2b.CellError;
+import org.ssio.api.interfaces.s2b.PropFromColumnMappingMode;
+import org.ssio.api.interfaces.s2b.SheetToBeansParam;
+import org.ssio.api.interfaces.s2b.SheetToBeansParamBuilder;
+import org.ssio.api.interfaces.s2b.SheetToBeansResult;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.ssio.integrationtest.conversion.ITTestHelper.decideTargetFileExtension;
 
 public class SheetToBeansITCase {
-    ConversionManager manager = new ConversionManager();
+    ConversionManagerImpl manager = new ConversionManagerImpl();
 
 
     @BeforeAll

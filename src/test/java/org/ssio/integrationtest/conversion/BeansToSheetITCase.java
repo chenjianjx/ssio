@@ -7,12 +7,12 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.ssio.api.ConversionManager;
-import org.ssio.api.SpreadsheetFileType;
-import org.ssio.api.b2s.BeansToSheetParam;
-import org.ssio.api.b2s.BeansToSheetParamBuilder;
-import org.ssio.api.b2s.BeansToSheetResult;
-import org.ssio.api.b2s.DatumError;
+import org.ssio.api.impl.ConversionManagerImpl;
+import org.ssio.api.interfaces.SpreadsheetFileType;
+import org.ssio.api.interfaces.b2s.BeansToSheetParam;
+import org.ssio.api.interfaces.b2s.BeansToSheetParamBuilder;
+import org.ssio.api.interfaces.b2s.BeansToSheetResult;
+import org.ssio.api.interfaces.b2s.DatumError;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class BeansToSheetITCase {
-    ConversionManager manager = new ConversionManager();
+    ConversionManagerImpl manager = new ConversionManagerImpl();
 
     @BeforeAll
     public static void init() {

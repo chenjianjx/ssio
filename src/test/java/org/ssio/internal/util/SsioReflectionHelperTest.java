@@ -2,6 +2,7 @@ package org.ssio.internal.util;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
+import org.ssio.util.lang.SsioReflectionUtils;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -57,15 +58,15 @@ class SsioReflectionHelperTest {
 
     @Test
     void extractPropertyName() {
-        assertEquals(Pair.of("boolean", boolean.class), SsioReflectionHelper.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("isBoolean")));
-        assertEquals(Pair.of(null, null), SsioReflectionHelper.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("isBooleanWithParam")));
-        assertEquals(Pair.of(null, null), SsioReflectionHelper.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("isBooleanNotReturningBoolean")));
-        assertEquals(Pair.of("something", String.class), SsioReflectionHelper.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("getSomething")));
-        assertEquals(Pair.of(null, null), SsioReflectionHelper.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("getSomethingWithParam")));
-        assertEquals(Pair.of(null, null), SsioReflectionHelper.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("getSomethingReturningBoolean")));
-        assertEquals(Pair.of(null, null), SsioReflectionHelper.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("getSomethingReturningVoid")));
-        assertEquals(Pair.of("something", String.class), SsioReflectionHelper.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("setSomething")));
-        assertEquals(Pair.of(null, null), SsioReflectionHelper.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("setSomethingWithoutParam")));
+        assertEquals(Pair.of("boolean", boolean.class), SsioReflectionUtils.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("isBoolean")));
+        assertEquals(Pair.of(null, null), SsioReflectionUtils.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("isBooleanWithParam")));
+        assertEquals(Pair.of(null, null), SsioReflectionUtils.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("isBooleanNotReturningBoolean")));
+        assertEquals(Pair.of("something", String.class), SsioReflectionUtils.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("getSomething")));
+        assertEquals(Pair.of(null, null), SsioReflectionUtils.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("getSomethingWithParam")));
+        assertEquals(Pair.of(null, null), SsioReflectionUtils.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("getSomethingReturningBoolean")));
+        assertEquals(Pair.of(null, null), SsioReflectionUtils.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("getSomethingReturningVoid")));
+        assertEquals(Pair.of("something", String.class), SsioReflectionUtils.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("setSomething")));
+        assertEquals(Pair.of(null, null), SsioReflectionUtils.extractPropertyNameAndType(ExtractPropertyNameTestBean.getMethodByName("setSomethingWithoutParam")));
 
 
     }

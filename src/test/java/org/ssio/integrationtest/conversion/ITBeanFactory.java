@@ -1,7 +1,7 @@
 package org.ssio.integrationtest.conversion;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.ssio.api.common.SsioConstants;
+import org.ssio.api.interfaces.SsioApiConstants;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -85,7 +85,7 @@ public class ITBeanFactory {
 
     private static Date parseDate(String ddd) {
         try {
-            return DateUtils.parseDate(ddd, SsioConstants.DEFAULT_LOCAL_DATE_TIME_PATTERN);
+            return DateUtils.parseDate(ddd, SsioApiConstants.DEFAULT_LOCAL_DATE_TIME_PATTERN);
         } catch (ParseException e) {
             throw new IllegalArgumentException(e);
         }

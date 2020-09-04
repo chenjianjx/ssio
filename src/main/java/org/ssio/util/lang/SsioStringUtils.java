@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * @author chenjianjx@gmail.com
  *
  */
-public class SsioStringHelper {
+public class SsioStringUtils {
 
 	/**
 	 * firstName => First Name

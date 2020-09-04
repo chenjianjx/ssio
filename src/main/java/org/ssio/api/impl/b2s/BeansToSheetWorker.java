@@ -6,7 +6,7 @@ import org.ssio.api.interfaces.b2s.BeansToSheetParam;
 import org.ssio.api.interfaces.b2s.BeansToSheetResult;
 import org.ssio.api.impl.common.BeanClassInspector;
 import org.ssio.spi.interfaces.abstractsheet.model.DefaultSsFactory;
-import org.ssio.spi.interfaces.abstractsheet.model.SsFactory;
+import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbookFactory;
 import org.ssio.spi.interfaces.abstractsheet.model.SsSheet;
 import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbook;
 import org.ssio.api.impl.common.PropAndColumn;
@@ -30,7 +30,7 @@ public class BeansToSheetWorker {
             throw new IllegalArgumentException(beanClassErrors.toString());
         }
 
-        SsFactory ssFactory = new DefaultSsFactory();
+        SsWorkbookFactory ssFactory = new DefaultSsFactory();
 
         SsWorkbook workbook = ssFactory.newWorkbook(param.getFileType(), param.getCellSeparator());
         SsSheet sheet = workbook.createNewSheet(param.getSheetName());

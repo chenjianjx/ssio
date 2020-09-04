@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class DefaultSsFactory implements SsFactory {
+public class DefaultSsFactory implements SsWorkbookFactory {
 
     @Override
     public SsWorkbook newWorkbook(SpreadsheetFileType fileType, char cellSeparator) {

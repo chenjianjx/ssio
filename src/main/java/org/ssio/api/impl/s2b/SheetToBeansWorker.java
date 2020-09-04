@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.ssio.api.impl.common.BeanClassInspector;
 import org.ssio.spi.interfaces.abstractsheet.model.DefaultSsFactory;
 import org.ssio.spi.interfaces.abstractsheet.model.SsCell;
-import org.ssio.spi.interfaces.abstractsheet.model.SsFactory;
+import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbookFactory;
 import org.ssio.spi.interfaces.abstractsheet.model.SsRow;
 import org.ssio.spi.interfaces.abstractsheet.model.SsSheet;
 import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbook;
@@ -42,7 +42,7 @@ public class SheetToBeansWorker {
         }
 
 
-        SsFactory ssFactory = new DefaultSsFactory();
+        SsWorkbookFactory ssFactory = new DefaultSsFactory();
         SsWorkbook workbook = ssFactory.createWorkbookFromInput(param.getFileType(), param.getSpreadsheetInput(), param.getInputCharset(), param.getCellSeparator());
         if (workbook.getNumberOfSheets() <= 0) {
             logger.warn("There are no sheets in the spreadsheet");

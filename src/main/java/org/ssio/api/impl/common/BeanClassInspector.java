@@ -7,7 +7,7 @@ import org.ssio.api.interfaces.annotation.SsColumn;
 import org.ssio.api.interfaces.typing.SsioComplexTypeHandler;
 import org.ssio.api.interfaces.typing.SsioSimpleTypeEnum;
 import org.ssio.api.interfaces.s2b.PropFromColumnMappingMode;
-import org.ssio.util.lang.SsioStringHelper;
+import org.ssio.util.lang.SsioStringUtils;
 import org.ssio.util.lang.SsioReflectionUtils;
 
 import java.beans.PropertyDescriptor;
@@ -167,7 +167,7 @@ public class BeanClassInspector {
             //build a pac
             String columnName = StringUtils.trimToNull(annotation.name());
             if (columnName == null || columnName.equals(SsColumn.NAME_UNKNOWN)) { //falls back to "foobar => Foo Bar" in both beans2sheet and sheet2beans modes
-                columnName = SsioStringHelper.camelCaseToCapitalizedWords(propName);
+                columnName = SsioStringUtils.camelCaseToCapitalizedWords(propName);
             }
 
             PropAndColumn pac = new PropAndColumn();

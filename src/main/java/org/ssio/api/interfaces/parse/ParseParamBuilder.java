@@ -3,10 +3,10 @@ package org.ssio.api.interfaces.parse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.ssio.api.impl.filetypespecific.csv.CsvConstants;
 import org.ssio.api.interfaces.SpreadsheetFileType;
 import org.ssio.api.impl.common.BeanClassInspector;
 import org.ssio.util.code.BuilderPatternHelper;
-import org.ssio.api.interfaces.SsioApiConstants;
 import org.ssio.api.impl.common.sheetlocate.SsSheetLocator;
 
 import java.io.InputStream;
@@ -20,7 +20,7 @@ public class ParseParamBuilder<BEAN> {
     private PropFromColumnMappingMode propFromColumnMappingMode = PropFromColumnMappingMode.BY_NAME;
     private InputStream spreadsheetInput;
     private String inputCharset;
-    private char cellSeparator = SsioApiConstants.DEFAULT_CSV_CELL_SEPARATOR;
+    private char cellSeparator = CsvConstants.DEFAULT_CSV_CELL_SEPARATOR;
     private SpreadsheetFileType fileType;
     private SsSheetLocator sheetLocator = SsSheetLocator.byIndexLocator(0);
     private boolean sheetHasHeader = true;

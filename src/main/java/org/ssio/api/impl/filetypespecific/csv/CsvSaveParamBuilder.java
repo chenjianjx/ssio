@@ -1,6 +1,5 @@
-package org.ssio.api.impl.save.filetypespecific.csv;
+package org.ssio.api.impl.filetypespecific.csv;
 
-import org.ssio.api.interfaces.SsioApiConstants;
 import org.ssio.api.interfaces.save.SaveParamBuilder;
 import org.ssio.api.interfaces.save.DatumError;
 
@@ -12,7 +11,7 @@ import java.util.function.Function;
 public class CsvSaveParamBuilder<BEAN> extends SaveParamBuilder<BEAN, CsvSaveParam<BEAN>, CsvSaveParamBuilder> {
 
     private String outputCharset;
-    private char cellSeparator = SsioApiConstants.DEFAULT_CSV_CELL_SEPARATOR;
+    private char cellSeparator = CsvConstants.DEFAULT_CSV_CELL_SEPARATOR;
 
     /**
      * required for csv, ignored by office-like spreadsheet

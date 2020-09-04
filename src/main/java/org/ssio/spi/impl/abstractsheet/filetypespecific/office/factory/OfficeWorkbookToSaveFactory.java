@@ -1,6 +1,6 @@
 package org.ssio.spi.impl.abstractsheet.filetypespecific.office.factory;
 
-import org.ssio.api.impl.save.filetypespecific.office.OfficeSaveParam;
+import org.ssio.api.impl.filetypespecific.office.OfficeSaveParam;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.model.OfficeWorkbook;
 import org.ssio.spi.interfaces.abstractsheet.factory.WorkbookToSaveFactory;
 

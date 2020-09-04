@@ -1,4 +1,4 @@
-package org.ssio.api.impl.save.filetypespecific.csv;
+package org.ssio.api.impl.filetypespecific.csv;
 
 import org.ssio.api.interfaces.save.SaveParam;
 import org.ssio.api.interfaces.save.DatumError;

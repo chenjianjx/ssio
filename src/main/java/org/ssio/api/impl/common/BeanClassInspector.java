@@ -4,11 +4,11 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.ssio.api.interfaces.annotation.SsColumn;
+import org.ssio.api.interfaces.parse.PropFromColumnMappingMode;
 import org.ssio.api.interfaces.typing.ComplexTypeHandler;
 import org.ssio.api.interfaces.typing.SimpleTypeEnum;
-import org.ssio.api.interfaces.parse.PropFromColumnMappingMode;
-import org.ssio.util.lang.SsioStringUtils;
 import org.ssio.util.lang.SsioReflectionUtils;
+import org.ssio.util.lang.SsioStringUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -45,9 +45,9 @@ public class BeanClassInspector {
     }
 
 
-    private List<PropAndColumn> getPropAndColumnMappings(Class<?> beanClass, SsioMode ssioMode,
-                                                         PropFromColumnMappingMode propFromColumnMappingModeIfParse,
-                                                         List<String> errors) {
+    List<PropAndColumn> getPropAndColumnMappings(Class<?> beanClass, SsioMode ssioMode,
+                                                 PropFromColumnMappingMode propFromColumnMappingModeIfParse,
+                                                 List<String> errors) {
         //do some parameter check first
         if (ssioMode != SsioMode.SAVE && ssioMode != SsioMode.PARSE) {
             throw new IllegalArgumentException("Unsupported mode: " + ssioMode);

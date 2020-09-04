@@ -124,7 +124,7 @@ class BeanClassInspectorTest_Common {
         public static class DateAsLongHandler implements ComplexTypeHandler<Date, Long> {
 
             @Override
-            public Class getTargetSimpleType() {
+            public Class<Long> getTargetSimpleType() {
                 return Long.class;
             }
 
@@ -228,7 +228,7 @@ class BeanClassInspectorTest_Common {
     @Test
     void getMappings_noColumn() {
         List<String> errors = new ArrayList<>();
-        List<PropAndColumn> pacList = inspector.getPropAndColumnMappingsForSaveMode(NoColumnBean.class, errors);
+        List<PropAndColumn> pacList = inspector.getPropAndColumnMappings(NoColumnBean.class, SsioMode.SAVE, null, errors);
         System.out.println(errors);
         assertEquals(0, pacList.size());
         assertTrue(errors.get(0).contains("at least one"));
@@ -237,7 +237,7 @@ class BeanClassInspectorTest_Common {
     @Test
     void getMappings_typeHandling() {
         List<String> errors = new ArrayList<>();
-        List<PropAndColumn> pacList = inspector.getPropAndColumnMappingsForSaveMode(PropTypeHandlerTestBean.class, errors);
+        List<PropAndColumn> pacList = inspector.getPropAndColumnMappings(PropTypeHandlerTestBean.class, SsioMode.SAVE, null, errors);
         errors.forEach(e -> System.err.println(e));
 
         assertEquals(3, pacList.size());
@@ -254,7 +254,7 @@ class BeanClassInspectorTest_Common {
     @Test
     void getMappings_formatTest() {
         List<String> errors = new ArrayList<>();
-        List<PropAndColumn> pacList = inspector.getPropAndColumnMappingsForSaveMode(FormatTestBean.class, errors);
+        List<PropAndColumn> pacList = inspector.getPropAndColumnMappings(FormatTestBean.class, SsioMode.SAVE, null, errors);
         System.out.println(errors);
 
         assertEquals(3, pacList.size());

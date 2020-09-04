@@ -7,7 +7,7 @@ import java.io.OutputStream;
  * file-type-independent workbook
  */
 public interface SsWorkbook {
-    SsSheet createNewSheet(String sheetName);
+    SsSheet createNewSheet();
     
     int getNumberOfSheets();
 
@@ -24,5 +24,5 @@ public interface SsWorkbook {
      */
     SsSheet getSheetAt(int sheetIndex);
 
-    void write(OutputStream outputTarget, String charset) throws IOException;
+    void write(OutputStream outputTarget) throws IOException;
 }

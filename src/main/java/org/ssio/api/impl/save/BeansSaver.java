@@ -35,14 +35,14 @@ public class BeansSaver {
             throw new IllegalArgumentException(beanClassErrors.toString());
         }
 
-        WorkbookToSaveFactory<SaveParam<BEAN>, SsWorkbook> workbookFactory = (WorkbookToSaveFactory<SaveParam<BEAN>, SsWorkbook>) workbookFactoryRegistry.getWorkbookToSaveFactory(param.getClass());
+        WorkbookToSaveFactory workbookFactory = workbookFactoryRegistry.getWorkbookToSaveFactory(param.getClass());
         if (workbookFactory == null) {
             throw new IllegalStateException("There is no workbook factory registered for param class: " + param.getClass());
         }
-        workbookFactory.newWorkbook(param);
 
-        SsWorkbook workbook = null; //ssFactory.newWorkbook(param.getFileType(), param.getCellSeparator());
-        SsSheet sheet = null; //workbook.createNewSheet(param.getSheetName());
+
+        SsWorkbook workbook = workbookFactory.newWorkbook(param);
+        SsSheet sheet =  workbook.createNewSheet();
 
         int numOfBeans = param.getBeans().size();
         logger.info(numOfBeans + " beans will be written to a spreadsheet");
@@ -67,7 +67,7 @@ public class BeansSaver {
 
 
         if (shouldWriteToTarget(param, result)) {
-            workbook.write(param.getOutputTarget(), null); // param.getOutputCharset()
+            workbook.write(param.getOutputTarget()); //
             logger.info("Beans written to target spreadsheet. " + result.getStats());
         } else {
             logger.warn("Beans won't be written." + result.getStats());

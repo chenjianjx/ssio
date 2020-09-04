@@ -16,14 +16,17 @@ public class OfficeWorkbook implements SsWorkbook {
     private Workbook poiBook;
     private List<OfficeSheet> sheets = new ArrayList<>();
 
+    private String sheetNameForSave;
+
     private OfficeWorkbook() {
 
     }
 
-    public static OfficeWorkbook createNewWorkbook() {
+    public static OfficeWorkbook createNewWorkbook(String sheetNameForSave) {
         Workbook poiBook = new XSSFWorkbook();
         OfficeWorkbook workbook = new OfficeWorkbook();
         workbook.poiBook = poiBook;
+        workbook.sheetNameForSave = sheetNameForSave;
         return workbook;
     }
 
@@ -38,14 +41,14 @@ public class OfficeWorkbook implements SsWorkbook {
     }
 
     @Override
-    public SsSheet createNewSheet(String sheetName) {
-        OfficeSheet sheet = OfficeSheet.createEmptySheet(poiBook, sheetName);
+    public SsSheet createNewSheet() {
+        OfficeSheet sheet = OfficeSheet.createEmptySheet(poiBook, sheetNameForSave);
         sheets.add(sheet);
         return sheet;
     }
 
     @Override
-    public void write(OutputStream outputTarget, String charset) throws IOException {
+    public void write(OutputStream outputTarget) throws IOException {
         poiBook.write(outputTarget);
     }
 

@@ -2,15 +2,14 @@ package org.ssio.spi.interfaces.abstractsheet.factory;
 
 import org.ssio.api.interfaces.parse.ParseParam;
 import org.ssio.api.interfaces.save.SaveParam;
-import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbook;
 
 public interface SsWorkbookFactoryRegistry {
 
-    <P extends SaveParam, W extends SsWorkbook> void registerWorkbookToSaveFactory(Class<P> saveParamClass, WorkbookToSaveFactory<P, W> factory);
+    void registerWorkbookToSaveFactory(Class<? extends SaveParam> saveParamClass, WorkbookToSaveFactory factory);
 
-    <P extends SaveParam, W extends SsWorkbook> WorkbookToSaveFactory<P, W> getWorkbookToSaveFactory(Class<P> saveParamClass);
+    WorkbookToSaveFactory getWorkbookToSaveFactory(Class<? extends SaveParam> saveParamClass);
 
-    <P extends ParseParam, W extends SsWorkbook> void registerWorkbookToParseFactory(Class<P> parseParamClass, WorkbookToParseFactory<P, W> factory);
+    void registerWorkbookToParseFactory(Class<ParseParam> parseParamClass, WorkbookToParseFactory factory);
 
-    <P extends ParseParam, W extends SsWorkbook> WorkbookToParseFactory<P, W> getWorkbookToParseFactory(Class<P> parseParamClass);
+    WorkbookToParseFactory getWorkbookToParseFactory(Class<ParseParam> parseParamClass);
 }

@@ -18,6 +18,8 @@ public class CsvWorkbook implements SsWorkbook {
     private CSVPrinter csvPrinterForOutput;
     private CsvSheet sheet;
 
+    private String charsetForSave;
+
     private CsvWorkbook() {
 
     }
@@ -28,7 +30,7 @@ public class CsvWorkbook implements SsWorkbook {
      * @param cellSeparator
      * @return
      */
-    public static CsvWorkbook createNewWorkbook(char cellSeparator) {
+    public static CsvWorkbook createNewWorkbook(char cellSeparator, String charsetForSave) {
         CsvWorkbook workbook = new CsvWorkbook();
 
         StringWriter out = new StringWriter();
@@ -40,6 +42,7 @@ public class CsvWorkbook implements SsWorkbook {
             throw new IllegalStateException(e);
         }
 
+        workbook.charsetForSave = charsetForSave;
         return workbook;
     }
 
@@ -56,18 +59,18 @@ public class CsvWorkbook implements SsWorkbook {
     }
 
     @Override
-    public SsSheet createNewSheet(String sheetName) {
+    public SsSheet createNewSheet() {
         this.sheet = CsvSheet.createEmptySheet();
         return this.sheet;
     }
 
     @Override
-    public void write(OutputStream outputTarget, String charset) throws IOException {
+    public void write(OutputStream outputTarget) throws IOException {
         sheet.acceptPrinting(this.csvPrinterForOutput);
 
         StringWriter out = (StringWriter) this.csvPrinterForOutput.getOut();
         StringReader reader = new StringReader(out.toString());
-        IOUtils.copy(reader, outputTarget, charset);
+        IOUtils.copy(reader, outputTarget, charsetForSave);
     }
 
     @Override

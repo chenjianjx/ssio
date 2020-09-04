@@ -20,7 +20,7 @@ class SaveParamBuilderTest {
     }
 
 
-    public static class TestParamBuilder<BEAN> extends SaveParamBuilder<BEAN, TestParam<BEAN>, TestParamBuilder> {
+    public static class TestParamBuilder<BEAN> extends SaveParamBuilder<BEAN, TestParam<BEAN>, TestParamBuilder<BEAN>> {
 
         @Override
         protected void fileTypeSpecificValidate(List errors) {
@@ -35,7 +35,7 @@ class SaveParamBuilderTest {
 
     @Test
     void build_allNull() {
-        TestParamBuilder<String> builder = new TestParamBuilder<String>().setDatumErrDisplayFunction(null);
+        TestParamBuilder<String> builder = new TestParamBuilder<String>().setDatumErrDisplayFunction(null).setDatumErrDisplayFunction(null);
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
         assertTrue(e.getMessage().contains("beans cannot be null"));

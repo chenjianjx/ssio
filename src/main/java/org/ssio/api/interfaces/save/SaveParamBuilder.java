@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Function;
 
 
-public abstract class SaveParamBuilder<BEAN, PARAM extends SaveParam<BEAN>, BUILDER extends SaveParamBuilder> {
+public abstract class SaveParamBuilder<BEAN, PARAM extends SaveParam<BEAN>, BUILDER extends SaveParamBuilder<BEAN, PARAM, BUILDER>> {
     private Collection<BEAN> beans;
     private Class<BEAN> beanClass;
     private OutputStream outputTarget;

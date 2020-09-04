@@ -12,6 +12,7 @@ import org.ssio.api.common.abstractsheet.model.SsRow;
 import org.ssio.api.common.abstractsheet.model.SsSheet;
 import org.ssio.api.common.abstractsheet.model.SsWorkbook;
 import org.ssio.api.common.mapping.PropAndColumn;
+import org.ssio.api.common.typing.SsioComplexTypeHandler;
 import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 import org.ssio.api.s2b.CellError;
 import org.ssio.api.s2b.PropFromColumnMappingMode;
@@ -144,7 +145,12 @@ public class SheetToBeansWorker {
             try {
                 Object value = cell.readValueAsType(propAndColumn.getSimpleTypeEnum(), propAndColumn.getEnumClassIfEnum(), propAndColumn.getFormat());
                 if (propAndColumn.getTypeHandlerClass() != null) {
-                    value = createInstance(propAndColumn.getTypeHandlerClass()).fromSimpleTypeValue(value);
+                    SsioComplexTypeHandler typeHandler = createInstance(propAndColumn.getTypeHandlerClass());
+                    if (value == null) {
+                        value = typeHandler.fromNullSimpleTypeValue();
+                    } else {
+                        value = typeHandler.fromNonNullSimpleTypeValue(value);
+                    }
                 }
                 PropertyUtils.setProperty(bean, propName, value);
             } catch (Exception e) {

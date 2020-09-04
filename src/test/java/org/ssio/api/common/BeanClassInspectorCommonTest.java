@@ -34,8 +34,8 @@ class BeanClassInspectorCommonTest {
     public static class PropTypeHandlerTestBean {
         @SsColumn(index = 0)
         private Date justDate;
-        @SsColumn(index = 1, typeHandlerClass = DateAsPrimitiveLongHandler.class)
-        private long dateAsPrimitiveLong;
+        @SsColumn(index = 1, typeHandlerClass = DateAsLongHandler.class)
+        private Long dateAsLong;
         @SsColumn(index = 2, typeHandlerClass = CompositeFieldTypeHandler.class)
         private CompositeField compositeFieldWithHandler;
         @SsColumn(index = 3)
@@ -52,12 +52,12 @@ class BeanClassInspectorCommonTest {
             this.justDate = justDate;
         }
 
-        public long getDateAsPrimitiveLong() {
-            return dateAsPrimitiveLong;
+        public Long getDateAsLong() {
+            return dateAsLong;
         }
 
-        public void setDateAsPrimitiveLong(long dateAsPrimitiveLong) {
-            this.dateAsPrimitiveLong = dateAsPrimitiveLong;
+        public void setDateAsLong(Long dateAsLong) {
+            this.dateAsLong = dateAsLong;
         }
 
         public CompositeField getCompositeFieldWithHandler() {
@@ -89,7 +89,7 @@ class BeanClassInspectorCommonTest {
             public String bar;
         }
 
-        public static class CompositeFieldTypeHandler implements SsioComplexTypeHandler<CompositeField> {
+        public static class CompositeFieldTypeHandler implements SsioComplexTypeHandler<CompositeField, String> {
 
             @Override
             public Class<String> getTargetSimpleType() {
@@ -97,55 +97,60 @@ class BeanClassInspectorCommonTest {
             }
 
             @Override
-            public String toSimpleTypeValue(CompositeField originalValue) {
-                if (originalValue == null) {
-                    return null;
-                }
-
-                return originalValue.foo + "," + originalValue.bar;
+            public String nonNullValueToSimple(CompositeField complexTypeValue) {
+                return complexTypeValue.foo + "," + complexTypeValue.bar;
             }
 
             @Override
-            public CompositeField fromSimpleTypeValue(Object simpleTypeValue) {
-                if (simpleTypeValue == null) {
-                    return null;
-                }
-                String stv = (String) simpleTypeValue;
+            public String nullValueToSimple() {
+                return null;
+            }
+
+
+            @Override
+            public CompositeField fromNullSimpleTypeValue() {
+                return null;
+            }
+
+            @Override
+            public CompositeField fromNonNullSimpleTypeValue(String simpleTypeValue) {
                 CompositeField cf = new CompositeField();
-                cf.foo = StringUtils.split(stv, ",")[0];
-                cf.bar = StringUtils.split(stv, ",")[1];
+                cf.foo = StringUtils.split(simpleTypeValue, ",")[0];
+                cf.bar = StringUtils.split(simpleTypeValue, ",")[1];
                 return cf;
             }
         }
 
-        public static class DateAsPrimitiveLongHandler implements SsioComplexTypeHandler<Date> {
+        public static class DateAsLongHandler implements SsioComplexTypeHandler<Date, Long> {
 
             @Override
             public Class getTargetSimpleType() {
-                return long.class;
+                return Long.class;
             }
 
             @Override
-            public Object toSimpleTypeValue(Date originalValue) {
-                if (originalValue == null) {
-                    return -1;
-                } else {
-                    return originalValue.getTime();
-                }
+            public Long nonNullValueToSimple(Date complexTypeValue) {
+                return complexTypeValue.getTime();
             }
 
             @Override
-            public Date fromSimpleTypeValue(Object simpleTypeValue) {
-                long stv = (long) simpleTypeValue;
-                if (stv < 0) {
-                    return null;
-                }
-                return new Date(stv);
+            public Long nullValueToSimple() {
+                return null;
+            }
+
+            @Override
+            public Date fromNonNullSimpleTypeValue(Long simpleTypeValue) {
+                return new Date(simpleTypeValue);
+            }
+
+            @Override
+            public Date fromNullSimpleTypeValue() {
+                return null;
             }
         }
 
 
-        public static class CompositeFieldIllegalHandler implements SsioComplexTypeHandler<CompositeField> {
+        public static class CompositeFieldIllegalHandler implements SsioComplexTypeHandler<CompositeField, Object> {
 
             @Override
             public Class<Object> getTargetSimpleType() {
@@ -153,13 +158,23 @@ class BeanClassInspectorCommonTest {
             }
 
             @Override
-            public Object toSimpleTypeValue(CompositeField originalValue) {
-                return originalValue;
+            public Object nonNullValueToSimple(CompositeField complexTypeValue) {
+                return complexTypeValue;
             }
 
             @Override
-            public CompositeField fromSimpleTypeValue(Object simpleTypeValue) {
+            public Object nullValueToSimple() {
+                return null;
+            }
+
+            @Override
+            public CompositeField fromNonNullSimpleTypeValue(Object simpleTypeValue) {
                 return (CompositeField) simpleTypeValue;
+            }
+
+            @Override
+            public CompositeField fromNullSimpleTypeValue() {
+                return null;
             }
         }
     }
@@ -227,7 +242,7 @@ class BeanClassInspectorCommonTest {
 
         assertEquals(3, pacList.size());
         assertEquals(null, pacList.get(0).getTypeHandlerClass());
-        assertEquals(PropTypeHandlerTestBean.DateAsPrimitiveLongHandler.class, pacList.get(1).getTypeHandlerClass());
+        assertEquals(PropTypeHandlerTestBean.DateAsLongHandler.class, pacList.get(1).getTypeHandlerClass());
         assertEquals(PropTypeHandlerTestBean.CompositeFieldTypeHandler.class, pacList.get(2).getTypeHandlerClass());
 
         assertTrue(havingErrorContains(errors, "compositeFieldWithoutHandler", "is not supported"));

@@ -3,24 +3,28 @@ package org.ssio.api.common.typing;
 /**
  * Note:  please make the implementation classes "light-weighted", which means initialisation should be very quick.
  *
- * @param <T>
+ * @param <C> The complex type
+ * @param <S> The simplified type
  */
-public interface SsioComplexTypeHandler<T> {
+public interface SsioComplexTypeHandler<C, S> {
 
     /**
      * The complex type will be reduced to this simple type, so that it can be handled by ssio
      *
      * @return
      */
-    Class<?> getTargetSimpleType();
+    Class<S> getTargetSimpleType();
+
 
     /**
-     * Reduce the original value to a simple-typed value so that it can be saved onto a sheet. Make an empty implementation if you don't need beans2Sheet
+     * Convert the complex value to a simple-typed value so that it can be saved onto a sheet. Make an empty implementation if you don't need beans2Sheet
      *
-     * @param originalValue keep in mind this can be null
+     * @param complexTypeValue keep in mind this can be null
      * @return The type of the value must be consistent with the return type of {@link #getTargetSimpleType()}
      */
-    Object toSimpleTypeValue(T originalValue);
+    S nonNullValueToSimple(C complexTypeValue);
+
+    S nullValueToSimple();
 
 
     /**
@@ -29,23 +33,36 @@ public interface SsioComplexTypeHandler<T> {
      * @param simpleTypeValue keep in mind this can be null
      * @return
      */
-    T fromSimpleTypeValue(Object simpleTypeValue);
+    C fromNonNullSimpleTypeValue(S simpleTypeValue);
+
+    C fromNullSimpleTypeValue();
 
 
-    class NO_HANDLING implements SsioComplexTypeHandler<Object> {
+    class NO_HANDLING implements SsioComplexTypeHandler<Object, Object> {
+
 
         @Override
-        public Class<?> getTargetSimpleType() {
+        public Class<Object> getTargetSimpleType() {
             return null;
         }
 
         @Override
-        public Object toSimpleTypeValue(Object originalValue) {
+        public Object nonNullValueToSimple(Object complexTypeValue) {
             return null;
         }
 
         @Override
-        public Object fromSimpleTypeValue(Object simpleTypeValue) {
+        public Object nullValueToSimple() {
+            return null;
+        }
+
+        @Override
+        public Object fromNonNullSimpleTypeValue(Object simpleTypeValue) {
+            return null;
+        }
+
+        @Override
+        public Object fromNullSimpleTypeValue() {
             return null;
         }
     }

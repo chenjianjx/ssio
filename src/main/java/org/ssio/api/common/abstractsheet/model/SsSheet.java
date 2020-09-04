@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.ssio.api.b2s.DatumError;
 import org.ssio.api.common.mapping.PropAndColumn;
+import org.ssio.api.common.typing.SsioComplexTypeHandler;
 import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 
 import java.util.List;
@@ -70,7 +71,12 @@ public interface SsSheet {
             try {
                 Object propValue = PropertyUtils.getProperty(bean, propName);
                 if (propAndColumn.getTypeHandlerClass() != null) {
-                    propValue = createInstance(propAndColumn.getTypeHandlerClass()).toSimpleTypeValue(propValue);
+                    SsioComplexTypeHandler handler = createInstance(propAndColumn.getTypeHandlerClass());
+                    if (propValue == null) {
+                        propValue = handler.nullValueToSimple();
+                    } else {
+                        propValue = handler.nonNullValueToSimple(propValue);
+                    }
                 }
                 cell.writeValueAsType(propAndColumn.getSimpleTypeEnum(), propAndColumn.getEnumClassIfEnum(), propAndColumn.getFormat(), propValue);
             } catch (Exception e) {

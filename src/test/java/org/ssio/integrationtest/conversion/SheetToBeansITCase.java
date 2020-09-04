@@ -449,6 +449,37 @@ public class SheetToBeansITCase {
     }
 
 
+
+    @ParameterizedTest
+    @EnumSource(SpreadsheetFileType.class)
+    void sheetToBeans_typeHandlerTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
+
+        String inputResourceClasspath = "/integration-test/TypeHandlerTestBean-beckham-nobody" + decideTargetFileExtension(spreadsheetFileType);
+        try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
+            SheetToBeansParam<ITTypeHandlerTestBean> param =
+                    new SheetToBeansParamBuilder<ITTypeHandlerTestBean>()
+                            .setBeanClass(ITTypeHandlerTestBean.class)
+                            .setFileType(spreadsheetFileType)
+                            .setSpreadsheetInput(input)
+                            .setInputCharset("utf8") //for csv only
+                            .build();
+
+            SheetToBeansResult<ITTypeHandlerTestBean> result = manager.sheetToBeans(param);
+            printResult(result);
+
+            assertEquals(2, result.getBeans().size());
+            assertFalse(result.hasCellErrors());
+
+            assertEquals(ITTypeHandlerTestBean.beckham(), result.getBeans().get(0));
+            assertEquals(ITTypeHandlerTestBean.nobody(), result.getBeans().get(1));
+
+
+
+        }
+
+    }
+
+
     private void printResult(SheetToBeansResult<?> result) {
         result.getBeans().forEach(b -> System.out.println(b));
         result.getCellErrors().forEach(e -> System.err.println(e));

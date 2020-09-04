@@ -6,6 +6,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.common.annotation.SsColumn;
 import org.ssio.api.common.typing.SsioComplexTypeHandler;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Objects;
+
 public class ITTypeHandlerTestBean {
     @SsColumn(index = 0, typeHandlerClass = NameTypeHandler.class)
     private Name name;
@@ -13,19 +19,15 @@ public class ITTypeHandlerTestBean {
     @SsColumn(index = 1)
     private String nickName;
 
-    /**
-     * unit is cm , we be saved as "1.85m" in the sheet
-     * a negative number means unknown
-     */
-    @SsColumn(index = 2, typeHandlerClass = HeightTypeHandler.class)
-    private int height = -1;
+    @SsColumn(index = 2, typeHandlerClass = BirthDateTypeHandler.class)
+    private LocalDate birthDate;
 
 
     public static ITTypeHandlerTestBean beckham() {
         ITTypeHandlerTestBean beckham = new ITTypeHandlerTestBean();
         beckham.setName(new Name("David", "Beckham"));
-        beckham.setHeight(180);
         beckham.setNickName("Golden Balls");
+        beckham.setBirthDate(LocalDate.of(1975, 5, 2));
         return beckham;
     }
 
@@ -51,12 +53,13 @@ public class ITTypeHandlerTestBean {
         this.nickName = nickName;
     }
 
-    public int getHeight() {
-        return height;
+
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public static class Name {
@@ -88,63 +91,103 @@ public class ITTypeHandlerTestBean {
         }
 
         @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Name name = (Name) o;
+            return Objects.equals(firstName, name.firstName) &&
+                    Objects.equals(lastName, name.lastName);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(firstName, lastName);
+        }
+
+        @Override
         public String toString() {
             return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
         }
+
+
     }
 
-    public static class NameTypeHandler implements SsioComplexTypeHandler<Name> {
+    public static class NameTypeHandler implements SsioComplexTypeHandler<Name, String> {
 
         @Override
-        public Class<?> getTargetSimpleType() {
+        public Class<String> getTargetSimpleType() {
             return String.class;
         }
 
         @Override
-        public String toSimpleTypeValue(Name originalValue) {
-            if (originalValue == null) {
-                return null;
-            }
-            return originalValue.getFirstName() + " " + originalValue.getLastName();
+        public String nonNullValueToSimple(Name complexTypeValue) {
+
+            return complexTypeValue.getFirstName() + " " + complexTypeValue.getLastName();
         }
 
         @Override
-        public Name fromSimpleTypeValue(Object simpleTypeValue) {
-            if (simpleTypeValue == null) {
-                return null;
-            }
-            String stv = (String) simpleTypeValue;
+        public String nullValueToSimple() {
+            return null;
+        }
+
+        @Override
+        public Name fromNonNullSimpleTypeValue(String simpleTypeValue) {
             Name name = new Name();
-            name.setFirstName(StringUtils.split(stv)[0]);
-            name.setLastName(StringUtils.split(stv)[1]);
+            name.setFirstName(StringUtils.split(simpleTypeValue)[0]);
+            name.setLastName(StringUtils.split(simpleTypeValue)[1]);
             return name;
+        }
+
+        @Override
+        public Name fromNullSimpleTypeValue() {
+            return null;
         }
     }
 
-    public static class HeightTypeHandler implements SsioComplexTypeHandler<String> {
+    public static class BirthDateTypeHandler implements SsioComplexTypeHandler<LocalDate, Long> {
 
         @Override
-        public Class<?> getTargetSimpleType() {
-            return int.class;
+        public Class<Long> getTargetSimpleType() {
+            return Long.class;
         }
 
         @Override
-        public Object toSimpleTypeValue(String originalValue) {
-            if (originalValue == null) {
-                return -1;
-            }
-            double meter = Double.parseDouble(originalValue.substring(0, originalValue.indexOf("cm")));
-            return (int) (meter * 100);
+        public Long nonNullValueToSimple(LocalDate complexTypeValue) {
+            return complexTypeValue.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
         }
 
         @Override
-        public String fromSimpleTypeValue(Object simpleTypeValue) {
-            int stv = (int) simpleTypeValue;
-            if (stv < 0) {
-                return null;
-            }
-            return (((double) stv) / 100) + "cm";
+        public Long nullValueToSimple() {
+            return null;
         }
+
+        @Override
+        public LocalDate fromNonNullSimpleTypeValue(Long simpleTypeValue) {
+            return
+                    Instant.ofEpochMilli(simpleTypeValue)
+                            .atZone(ZoneId.of("UTC"))
+                            .toLocalDate();
+        }
+
+        @Override
+        public LocalDate fromNullSimpleTypeValue() {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ITTypeHandlerTestBean that = (ITTypeHandlerTestBean) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(nickName, that.nickName) &&
+                Objects.equals(birthDate, that.birthDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, nickName, birthDate);
     }
 
     @Override

@@ -1,7 +1,8 @@
 package org.ssio.api.common.abstractsheet.model;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.ssio.api.common.typing.SsioSimpleTypeEnum;
+import org.ssio.api.interfaces.typing.SsioSimpleTypeEnum;
+
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;

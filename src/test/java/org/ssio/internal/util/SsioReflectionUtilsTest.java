@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class SsioReflectionHelperTest {
+class SsioReflectionUtilsTest {
 
     public static class ExtractPropertyNameTestBean {
 

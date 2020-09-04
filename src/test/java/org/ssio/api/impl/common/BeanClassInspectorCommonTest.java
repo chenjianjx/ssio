@@ -2,11 +2,9 @@ package org.ssio.api.impl.common;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
-import org.ssio.api.impl.common.BeanClassInspector;
 import org.ssio.api.interfaces.SsioApiConstants;
 import org.ssio.api.interfaces.annotation.SsColumn;
-import org.ssio.api.impl.common.PropAndColumn;
-import org.ssio.api.interfaces.SsioComplexTypeHandler;
+import org.ssio.api.interfaces.typing.SsioComplexTypeHandler;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.interfaces.annotation.SsColumn;
-import org.ssio.api.interfaces.SsioComplexTypeHandler;
+import org.ssio.api.interfaces.typing.SsioComplexTypeHandler;
 
 import java.time.Instant;
 import java.time.LocalDate;

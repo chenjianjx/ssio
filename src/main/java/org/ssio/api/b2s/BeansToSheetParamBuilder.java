@@ -21,6 +21,7 @@ public class BeansToSheetParamBuilder<BEAN> {
     private Class<BEAN> beanClass;
     private OutputStream outputTarget;
     private SpreadsheetFileType fileType;
+    private String outputCharset;
     private char cellSeparator = SsioConstants.DEFAULT_CSV_CELL_SEPARATOR;
     private boolean createHeader = true;
     private String sheetName;
@@ -57,6 +58,16 @@ public class BeansToSheetParamBuilder<BEAN> {
      */
     public BeansToSheetParamBuilder setFileType(SpreadsheetFileType fileType) {
         this.fileType = fileType;
+        return this;
+    }
+
+    /**
+     * required for csv, ignored by office-like spreadsheet
+     *
+     * @return
+     */
+    public BeansToSheetParamBuilder<BEAN> setOutputCharset(String outputCharset) {
+        this.outputCharset = outputCharset;
         return this;
     }
 
@@ -113,7 +124,14 @@ public class BeansToSheetParamBuilder<BEAN> {
         builderHelper.validateFieldNotNull("fileType", fileType, errors);
         builderHelper.validateFieldNotNull("datumErrDisplayFunction", datumErrDisplayFunction, errors);
 
-        new BeanClassInspector().getPropAndColumnMappingsForBeans2Sheet(beanClass, errors);
+        if (fileType == SpreadsheetFileType.CSV && outputCharset == null) {
+            errors.add("For CSV output the outputCharset is required");
+        }
+
+        if (beanClass != null) {
+            new BeanClassInspector().getPropAndColumnMappingsForBeans2Sheet(beanClass, errors);
+        }
+
 
         return errors;
     }
@@ -123,7 +141,7 @@ public class BeansToSheetParamBuilder<BEAN> {
         if (errors.size() > 0) {
             throw new IllegalArgumentException("Cannot build an object because of the following errors: \n" + StringUtils.join(errors, "\n"));
         }
-        return new BeansToSheetParam(beans, beanClass, outputTarget, fileType, cellSeparator, createHeader, sheetName, stillSaveIfDataError, datumErrDisplayFunction);
+        return new BeansToSheetParam(beans, beanClass, outputTarget, fileType, outputCharset, cellSeparator, createHeader, sheetName, stillSaveIfDataError, datumErrDisplayFunction);
     }
 
 

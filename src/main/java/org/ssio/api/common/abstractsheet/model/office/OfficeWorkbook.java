@@ -45,7 +45,7 @@ public class OfficeWorkbook implements SsWorkbook {
     }
 
     @Override
-    public void write(OutputStream outputTarget) throws IOException {
+    public void write(OutputStream outputTarget, String charset) throws IOException {
         poiBook.write(outputTarget);
     }
 

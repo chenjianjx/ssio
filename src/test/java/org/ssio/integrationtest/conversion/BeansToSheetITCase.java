@@ -49,6 +49,7 @@ class BeansToSheetITCase {
                         .setBeanClass(ITBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
+                        .setOutputCharset("utf8") //for csv only
                         .setOutputTarget(outputStream)
                         .setSheetName("first sheet")
                         .build();
@@ -84,6 +85,7 @@ class BeansToSheetITCase {
                         .setBeanClass(ITStrangeAnnotationBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
+                        .setOutputCharset("utf8") //for csv only
                         .setOutputTarget(outputStream)
                         .setSheetName("first sheet")
                         .build();
@@ -120,6 +122,7 @@ class BeansToSheetITCase {
                         .setBeanClass(ITSickBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
+                        .setOutputCharset("utf8") //for csv only
                         .setOutputTarget(outputStream)
                         .setSheetName("sick sheet")
                         .setDatumErrDisplayFunction(datumErrDisplayFunction)
@@ -165,6 +168,7 @@ class BeansToSheetITCase {
                         .setBeanClass(ITSickBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
+                        .setOutputCharset("utf8") //for csv only
                         .setOutputTarget(outputStream)
                         .setSheetName("no save")
                         .setStillSaveIfDataError(false)
@@ -193,6 +197,7 @@ class BeansToSheetITCase {
                         .setBeanClass(ITSimpleBean.class)
                         .setBeans(beans)
                         .setFileType(SpreadsheetFileType.CSV)
+                        .setOutputCharset("utf8") //for csv only
                         .setCellSeparator(cellSeparator)
                         .setOutputTarget(outputStream)
                         .build();
@@ -235,6 +240,7 @@ class BeansToSheetITCase {
                         .setBeanClass(ITSimpleBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
+                        .setOutputCharset("utf8") //for csv only
                         .setOutputTarget(outputStream)
                         .setCreateHeader(false)
                         .build();
@@ -268,6 +274,7 @@ class BeansToSheetITCase {
                         .setBeanClass(ITFormatTestBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
+                        .setOutputCharset("utf8") //for csv only
                         .setOutputTarget(outputStream)
                         .build();
 
@@ -302,6 +309,7 @@ class BeansToSheetITCase {
                         .setBeanClass(ITTypeHandlerTestBean.class)
                         .setBeans(beans)
                         .setFileType(spreadsheetFileType)
+                        .setOutputCharset("utf8") //for csv only
                         .setOutputTarget(outputStream)
                         .build();
 

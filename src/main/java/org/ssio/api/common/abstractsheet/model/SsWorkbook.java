@@ -24,5 +24,5 @@ public interface SsWorkbook {
      */
     SsSheet getSheetAt(int sheetIndex);
 
-    void write(OutputStream outputTarget) throws IOException;
+    void write(OutputStream outputTarget, String charset) throws IOException;
 }

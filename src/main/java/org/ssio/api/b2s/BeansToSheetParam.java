@@ -25,23 +25,14 @@ public class BeansToSheetParam<BEAN> {
 
     /**
      * Please use the builder to create an instance
-     *
-     * @param beans
-     * @param beanClass
-     * @param outputTarget
-     * @param fileType
-     * @param cellSeparator
-     * @param createHeader
-     * @param sheetName
-     * @param stillSaveIfDataError
-     * @param datumErrDisplayFunction
      */
-    public BeansToSheetParam(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget, SpreadsheetFileType fileType, char cellSeparator, boolean createHeader,
+    public BeansToSheetParam(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget, SpreadsheetFileType fileType, String outputCharset, char cellSeparator, boolean createHeader,
                              String sheetName, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction) {
         this.beans = beans;
         this.beanClass = beanClass;
         this.outputTarget = outputTarget;
         this.fileType = fileType;
+        this.outputCharset = outputCharset;
         this.cellSeparator = cellSeparator;
         this.createHeader = createHeader;
         this.sheetName = sheetName;
@@ -59,6 +50,7 @@ public class BeansToSheetParam<BEAN> {
 
     private SpreadsheetFileType fileType;
 
+    private String outputCharset;
 
     private char cellSeparator;
 
@@ -109,6 +101,10 @@ public class BeansToSheetParam<BEAN> {
 
     public boolean isCreateHeader() {
         return createHeader;
+    }
+
+    public String getOutputCharset() {
+        return outputCharset;
     }
 
     @Override

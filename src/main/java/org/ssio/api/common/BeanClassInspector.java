@@ -56,7 +56,11 @@ public class BeanClassInspector {
 
 
         List<Field> fields = SsioReflectionHelper.getDeclaredFieldsFromClassAndAncestors(beanClass).stream().filter(f -> f.isAnnotationPresent(SsColumn.class)).collect(Collectors.toList());
-        List<Method> methods = Arrays.stream(beanClass.getMethods()).filter(m -> m.isAnnotationPresent(SsColumn.class)).collect(Collectors.toList());
+        Method[] methodArray = beanClass.getMethods();
+        if (methodArray == null) {
+            methodArray = new Method[0];
+        }
+        List<Method> methods = Arrays.stream(methodArray).filter(m -> m.isAnnotationPresent(SsColumn.class)).collect(Collectors.toList());
         List<Object> fieldsAndMethods = new ArrayList<>();
         fieldsAndMethods.addAll(fields);
         fieldsAndMethods.addAll(methods);

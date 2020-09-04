@@ -58,7 +58,7 @@ public class BeansToSheetWorker {
 
 
         if (shouldWriteToTarget(param, result)) {
-            workbook.write(param.getOutputTarget());
+            workbook.write(param.getOutputTarget(), param.getOutputCharset());
             logger.info("Beans written to target spreadsheet. " + result.getStats());
         } else {
             logger.warn("Beans won't be written." + result.getStats());

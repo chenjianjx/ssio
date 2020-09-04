@@ -62,12 +62,12 @@ public class CsvWorkbook implements SsWorkbook {
     }
 
     @Override
-    public void write(OutputStream outputTarget) throws IOException {
+    public void write(OutputStream outputTarget, String charset) throws IOException {
         sheet.acceptPrinting(this.csvPrinterForOutput);
 
         StringWriter out = (StringWriter) this.csvPrinterForOutput.getOut();
         StringReader reader = new StringReader(out.toString());
-        IOUtils.copy(reader, outputTarget, "utf8");
+        IOUtils.copy(reader, outputTarget, charset);
     }
 
     @Override

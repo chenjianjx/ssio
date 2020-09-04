@@ -1,8 +1,8 @@
 package org.ssio.spi.interfaces.abstractsheet.model;
 
 import org.ssio.api.interfaces.SpreadsheetFileType;
-import org.ssio.spi.impl.abstractsheet.csv.model.CsvWorkbook;
-import org.ssio.spi.impl.abstractsheet.office.model.OfficeWorkbook;
+import org.ssio.spi.impl.abstractsheet.filetypespecific.csv.model.CsvWorkbook;
+import org.ssio.spi.impl.abstractsheet.filetypespecific.office.model.OfficeWorkbook;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -32,8 +32,8 @@ public class BeansToSheetWorker {
 
         SsWorkbookFactory ssFactory = new DefaultSsFactory();
 
-        SsWorkbook workbook = ssFactory.newWorkbook(param.getFileType(), param.getCellSeparator());
-        SsSheet sheet = workbook.createNewSheet(param.getSheetName());
+        SsWorkbook workbook = null; //ssFactory.newWorkbook(param.getFileType(), param.getCellSeparator());
+        SsSheet sheet = null; //workbook.createNewSheet(param.getSheetName());
 
         int numOfBeans = param.getBeans().size();
         logger.info(numOfBeans + " beans will be written to a spreadsheet");
@@ -58,7 +58,7 @@ public class BeansToSheetWorker {
 
 
         if (shouldWriteToTarget(param, result)) {
-            workbook.write(param.getOutputTarget(), param.getOutputCharset());
+            workbook.write(param.getOutputTarget(), null); // param.getOutputCharset()
             logger.info("Beans written to target spreadsheet. " + result.getStats());
         } else {
             logger.warn("Beans won't be written." + result.getStats());

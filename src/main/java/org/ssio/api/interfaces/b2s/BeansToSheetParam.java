@@ -2,13 +2,12 @@ package org.ssio.api.interfaces.b2s;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.ssio.api.interfaces.SpreadsheetFileType;
 
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.function.Function;
 
-public class BeansToSheetParam<BEAN> {
+public abstract class BeansToSheetParam<BEAN> {
 
     static final String DEFAULT_DATUM_ERR_PLACEHOLDER = "!!ERROR!!";
 
@@ -23,23 +22,6 @@ public class BeansToSheetParam<BEAN> {
         return datumError.getStackTrace();
     };
 
-    /**
-     * Please use the builder to create an instance
-     */
-    public BeansToSheetParam(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget, SpreadsheetFileType fileType, String outputCharset, char cellSeparator, boolean createHeader,
-                             String sheetName, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction) {
-        this.beans = beans;
-        this.beanClass = beanClass;
-        this.outputTarget = outputTarget;
-        this.fileType = fileType;
-        this.outputCharset = outputCharset;
-        this.cellSeparator = cellSeparator;
-        this.createHeader = createHeader;
-        this.sheetName = sheetName;
-        this.stillSaveIfDataError = stillSaveIfDataError;
-        this.datumErrDisplayFunction = datumErrDisplayFunction;
-    }
-
 
     private Collection<BEAN> beans;
 
@@ -48,23 +30,24 @@ public class BeansToSheetParam<BEAN> {
 
     private OutputStream outputTarget;
 
-    private SpreadsheetFileType fileType;
-
-    private String outputCharset;
-
-    private char cellSeparator;
-
 
     private boolean createHeader;
-
-
-    private String sheetName;
 
 
     private boolean stillSaveIfDataError;
 
 
     private Function<DatumError, String> datumErrDisplayFunction;
+
+
+    protected BeansToSheetParam(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget, boolean createHeader, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction) {
+        this.beans = beans;
+        this.beanClass = beanClass;
+        this.outputTarget = outputTarget;
+        this.createHeader = createHeader;
+        this.stillSaveIfDataError = stillSaveIfDataError;
+        this.datumErrDisplayFunction = datumErrDisplayFunction;
+    }
 
 
     public Collection<BEAN> getBeans() {
@@ -79,13 +62,6 @@ public class BeansToSheetParam<BEAN> {
         return outputTarget;
     }
 
-    public SpreadsheetFileType getFileType() {
-        return fileType;
-    }
-
-    public String getSheetName() {
-        return sheetName;
-    }
 
     public boolean isStillSaveIfDataError() {
         return stillSaveIfDataError;
@@ -95,17 +71,10 @@ public class BeansToSheetParam<BEAN> {
         return datumErrDisplayFunction;
     }
 
-    public char getCellSeparator() {
-        return cellSeparator;
-    }
-
     public boolean isCreateHeader() {
         return createHeader;
     }
 
-    public String getOutputCharset() {
-        return outputCharset;
-    }
 
     @Override
     public String toString() {

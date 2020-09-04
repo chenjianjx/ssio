@@ -1,12 +1,12 @@
 package org.ssio.api.impl;
 
+import org.ssio.api.impl.b2s.BeansToSheetWorker;
+import org.ssio.api.impl.s2b.SheetToBeansWorker;
 import org.ssio.api.interfaces.ConversionManager;
 import org.ssio.api.interfaces.b2s.BeansToSheetParam;
 import org.ssio.api.interfaces.b2s.BeansToSheetResult;
 import org.ssio.api.interfaces.s2b.SheetToBeansParam;
 import org.ssio.api.interfaces.s2b.SheetToBeansResult;
-import org.ssio.api.impl.b2s.BeansToSheetWorker;
-import org.ssio.api.impl.s2b.SheetToBeansWorker;
 
 import java.io.IOException;
 
@@ -16,7 +16,9 @@ import java.io.IOException;
  */
 public class ConversionManagerImpl implements ConversionManager {
 
+    private BeansToSheetWorker beansToSheetWorker;
 
+    private SheetToBeansWorker sheetToBeansWorker;
 
     @Override
     public <BEAN> BeansToSheetResult beansToSheet(BeansToSheetParam<BEAN> param) throws IOException {
@@ -24,8 +26,7 @@ public class ConversionManagerImpl implements ConversionManager {
             throw new IllegalArgumentException();
         }
 
-        BeansToSheetWorker worker = new BeansToSheetWorker();
-        return worker.doWork(param);
+        return beansToSheetWorker.doWork(param);
     }
 
 

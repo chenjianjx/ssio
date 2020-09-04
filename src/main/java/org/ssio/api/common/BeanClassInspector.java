@@ -100,7 +100,7 @@ public class BeanClassInspector {
             Class<?> propTypeForSheet = typeHandler == null ? propType : createInstance(typeHandler).getTargetSimpleType();
             SsioSimpleTypeEnum ssioSimpleTypeEnum = SsioSimpleTypeEnum.fromRealType(propTypeForSheet);
             if (ssioSimpleTypeEnum == null) {
-                String suggestion = typeHandler == null ? "Please provide a typeHandler.": "Your typeHandler " + typeHandler.getName() + " should target a supported simple type.";
+                String suggestion = typeHandler == null ? "Please provide a typeHandler." : "Your typeHandler " + typeHandler.getName() + " should target a supported simple type.";
                 errors.add(String.format("The final type of property '%s', which is %s, is not supported. The list of supported types are defined in %s . %s", propName, propTypeForSheet.getName(), SsioSimpleTypeEnum.class.getName(), suggestion));
                 continue;
             }
@@ -172,7 +172,9 @@ public class BeanClassInspector {
             pac.setColumnName(columnName);
             pac.setColumnIndex(annotation.index());
             pac.setFormat(format);
-            pac.setTypeHandler(typeHandler);
+            pac.setTypeHandlerClass(typeHandler);
+            pac.setSimpleTypeEnum(ssioSimpleTypeEnum);
+            pac.setEnumClassIfEnum(propTypeForSheet.isEnum() ? ((Class<Enum<?>>) propTypeForSheet) : null);
 
             pacList.add(pac);
 

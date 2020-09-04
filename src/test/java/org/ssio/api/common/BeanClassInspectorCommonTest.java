@@ -226,9 +226,9 @@ class BeanClassInspectorCommonTest {
         errors.forEach(e -> System.err.println(e));
 
         assertEquals(3, pacList.size());
-        assertEquals(null, pacList.get(0).getTypeHandler());
-        assertEquals(PropTypeHandlerTestBean.DateAsPrimitiveLongHandler.class, pacList.get(1).getTypeHandler());
-        assertEquals(PropTypeHandlerTestBean.CompositeFieldTypeHandler.class, pacList.get(2).getTypeHandler());
+        assertEquals(null, pacList.get(0).getTypeHandlerClass());
+        assertEquals(PropTypeHandlerTestBean.DateAsPrimitiveLongHandler.class, pacList.get(1).getTypeHandlerClass());
+        assertEquals(PropTypeHandlerTestBean.CompositeFieldTypeHandler.class, pacList.get(2).getTypeHandlerClass());
 
         assertTrue(havingErrorContains(errors, "compositeFieldWithoutHandler", "is not supported"));
         assertTrue(havingErrorContains(errors, "compositeFieldWithIllegalHandler", "is not supported"));

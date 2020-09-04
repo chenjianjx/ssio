@@ -7,18 +7,16 @@ import org.slf4j.LoggerFactory;
 import org.ssio.api.common.BeanClassInspector;
 import org.ssio.api.common.abstractsheet.model.DefaultSsFactory;
 import org.ssio.api.common.abstractsheet.model.SsCell;
-import org.ssio.api.common.abstractsheet.model.SsCellValueHelper;
-import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 import org.ssio.api.common.abstractsheet.model.SsFactory;
 import org.ssio.api.common.abstractsheet.model.SsRow;
 import org.ssio.api.common.abstractsheet.model.SsSheet;
 import org.ssio.api.common.abstractsheet.model.SsWorkbook;
 import org.ssio.api.common.mapping.PropAndColumn;
+import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 import org.ssio.api.s2b.CellError;
 import org.ssio.api.s2b.PropFromColumnMappingMode;
 import org.ssio.api.s2b.SheetToBeansParam;
 import org.ssio.api.s2b.SheetToBeansResult;
-import org.ssio.internal.util.SsioReflectionHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.ssio.internal.util.SsioReflectionHelper.getPropertyEnumClassIfEnum;
+import static org.ssio.internal.util.SsioReflectionHelper.createInstance;
 
 public class SheetToBeansWorker {
     private static final Logger logger = LoggerFactory.getLogger(SheetToBeansWorker.class);
@@ -98,7 +96,7 @@ public class SheetToBeansWorker {
             BEAN bean = parseDataRow(propAndColumnList, row, rowIndex, param.getBeanClass(), result.getCellErrors());
             result.getBeans().add(bean);
         }
-        
+
         return result;
     }
 
@@ -132,7 +130,7 @@ public class SheetToBeansWorker {
                                      List<CellError> cellErrors) {
 
 
-        BEAN bean = SsioReflectionHelper.createInstance(beanClass);
+        BEAN bean = createInstance(beanClass);
         for (PropAndColumn propAndColumn : propAndColumnList) {
             String propName = propAndColumn.getPropName();
             int columnIndex = propAndColumn.getColumnIndex();
@@ -144,9 +142,10 @@ public class SheetToBeansWorker {
             SsCell cell = row.getCell(columnIndex);
 
             try {
-                SsioSimpleTypeEnum javaType = SsCellValueHelper.resolveJavaTypeOfPropertyOrThrow(bean, propName);
-                Class<Enum<?>> enumClassIfEnum = getPropertyEnumClassIfEnum(bean, propName);
-                Object value = cell.readValueAsType(javaType, enumClassIfEnum, propAndColumn.getFormat());
+                Object value = cell.readValueAsType(propAndColumn.getSimpleTypeEnum(), propAndColumn.getEnumClassIfEnum(), propAndColumn.getFormat());
+                if (propAndColumn.getTypeHandlerClass() != null) {
+                    value = createInstance(propAndColumn.getTypeHandlerClass()).fromSimpleTypeValue(value);
+                }
                 PropertyUtils.setProperty(bean, propName, value);
             } catch (Exception e) {
                 if (cellErrors != null) {

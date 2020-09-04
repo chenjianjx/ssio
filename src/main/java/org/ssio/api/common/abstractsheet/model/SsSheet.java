@@ -10,7 +10,7 @@ import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 import java.util.List;
 import java.util.function.Function;
 
-import static org.ssio.internal.util.SsioReflectionHelper.getPropertyEnumClassIfEnum;
+import static org.ssio.internal.util.SsioReflectionHelper.createInstance;
 
 /**
  * file-type-independent sheet
@@ -60,18 +60,19 @@ public interface SsSheet {
     default <BEAN> SsRow createDataRow(List<PropAndColumn> propAndColumnList, BEAN bean, int recordIndex, int rowIndex, Function<DatumError, String> datumErrDisplayFunction, List<DatumError> datumErrors) {
         SsRow row = this.createNewRow(rowIndex);
 
-
         for (PropAndColumn propAndColumn : propAndColumnList) {
 
             SsCell cell = row.createCell(propAndColumn.getColumnIndex());
 
             String propName = propAndColumn.getPropName();
 
+
             try {
-                SsioSimpleTypeEnum javaType = SsCellValueHelper.resolveJavaTypeOfPropertyOrThrow(bean, propName);
-                Class<Enum<?>> enumClassIfEnum = getPropertyEnumClassIfEnum(bean, propName);
                 Object propValue = PropertyUtils.getProperty(bean, propName);
-                cell.writeValueAsType(javaType, enumClassIfEnum, propAndColumn.getFormat(), propValue);
+                if (propAndColumn.getTypeHandlerClass() != null) {
+                    propValue = createInstance(propAndColumn.getTypeHandlerClass()).toSimpleTypeValue(propValue);
+                }
+                cell.writeValueAsType(propAndColumn.getSimpleTypeEnum(), propAndColumn.getEnumClassIfEnum(), propAndColumn.getFormat(), propValue);
             } catch (Exception e) {
                 this.getLogger().warn("Datum error", e);
 

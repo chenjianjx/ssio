@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.ssio.testutil.SsioTestUtils.havingErrorContains;
 
-class BeanClassInspectorBeans2SheetTest {
+class BeanClassInspectorBeansToSheetTest {
 
     BeanClassInspector inspector = new BeanClassInspector();
 

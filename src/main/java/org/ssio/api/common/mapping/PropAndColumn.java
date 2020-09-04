@@ -3,6 +3,7 @@ package org.ssio.api.common.mapping;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.common.typing.SsioComplexTypeHandler;
+import org.ssio.api.common.typing.SsioSimpleTypeEnum;
 
 import java.util.Objects;
 
@@ -30,8 +31,17 @@ public class PropAndColumn {
     /**
      * a real handler or null
      */
-    private Class<? extends SsioComplexTypeHandler> typeHandler;
+    private Class<? extends SsioComplexTypeHandler> typeHandlerClass;
 
+    /**
+     * not null
+     */
+    private SsioSimpleTypeEnum simpleTypeEnum;
+
+    /**
+     * only provided if the property is an enum
+     */
+    private Class<Enum<?>> enumClassIfEnum;
 
     public PropAndColumn() {
     }
@@ -74,12 +84,28 @@ public class PropAndColumn {
         this.columnIndex = columnIndex;
     }
 
-    public Class<? extends SsioComplexTypeHandler> getTypeHandler() {
-        return typeHandler;
+    public Class<? extends SsioComplexTypeHandler> getTypeHandlerClass() {
+        return typeHandlerClass;
     }
 
-    public void setTypeHandler(Class<? extends SsioComplexTypeHandler> typeHandler) {
-        this.typeHandler = typeHandler;
+    public void setTypeHandlerClass(Class<? extends SsioComplexTypeHandler> typeHandlerClass) {
+        this.typeHandlerClass = typeHandlerClass;
+    }
+
+    public SsioSimpleTypeEnum getSimpleTypeEnum() {
+        return simpleTypeEnum;
+    }
+
+    public void setSimpleTypeEnum(SsioSimpleTypeEnum simpleTypeEnum) {
+        this.simpleTypeEnum = simpleTypeEnum;
+    }
+
+    public Class<Enum<?>> getEnumClassIfEnum() {
+        return enumClassIfEnum;
+    }
+
+    public void setEnumClassIfEnum(Class<Enum<?>> enumClassIfEnum) {
+        this.enumClassIfEnum = enumClassIfEnum;
     }
 
     @Override

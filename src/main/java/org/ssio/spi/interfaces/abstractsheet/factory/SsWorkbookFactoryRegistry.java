@@ -1,15 +1,15 @@
 package org.ssio.spi.interfaces.abstractsheet.factory;
 
-import org.ssio.api.interfaces.parse.ParseParam;
-import org.ssio.api.interfaces.save.SaveParam;
+import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbookFactory;
 
 public interface SsWorkbookFactoryRegistry {
 
-    void registerWorkbookToSaveFactory(Class<? extends SaveParam> saveParamClass, WorkbookToSaveFactory factory);
+    /**
+     * @param spreadSheetFileType Note: Some built-in types are defined on {@link org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes}
+     */
+    void registerWorkbook(String spreadSheetFileType, SsWorkbookFactory factory);
 
-    WorkbookToSaveFactory getWorkbookToSaveFactory(Class<? extends SaveParam> saveParamClass);
+    SsWorkbookFactory getWorkbookFactory(String spreadSheetFileType);
 
-    void registerWorkbookToParseFactory(Class<ParseParam> parseParamClass, WorkbookToParseFactory factory);
 
-    WorkbookToParseFactory getWorkbookToParseFactory(Class<ParseParam> parseParamClass);
 }

@@ -1,6 +1,6 @@
 package org.ssio.spi.interfaces.abstractsheet.model;
 
-import org.ssio.api.interfaces.SpreadsheetFileType;
+import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.csv.model.CsvWorkbook;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.model.OfficeWorkbook;
 
@@ -13,7 +13,7 @@ public class DefaultSsFactory implements SsWorkbookFactory {
 
 
     @Override
-    public SsWorkbook createWorkbookFromInput(SpreadsheetFileType fileType, InputStream spreadsheetInput, String inputCharset, char cellSeparator) throws IOException {
+    public SsWorkbook createWorkbookFromInput(String fileType, InputStream spreadsheetInput, String inputCharset, char cellSeparator) throws IOException {
         if (fileType == null) {
             throw new IllegalArgumentException();
         }

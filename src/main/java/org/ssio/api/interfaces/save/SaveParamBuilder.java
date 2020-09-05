@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Function;
 
 
-public abstract class SaveParamBuilder<BEAN, PARAM extends SaveParam<BEAN>, BUILDER extends SaveParamBuilder<BEAN, PARAM, BUILDER>> {
+public abstract class SaveParamBuilder<BEAN, BUILDER extends SaveParamBuilder<BEAN, BUILDER>> {
     private Collection<BEAN> beans;
     private Class<BEAN> beanClass;
     private OutputStream outputTarget;
@@ -98,7 +98,7 @@ public abstract class SaveParamBuilder<BEAN, PARAM extends SaveParam<BEAN>, BUIL
     }
 
 
-    public PARAM build() {
+    public SaveParam<BEAN> build() {
         List<String> errors = this.validate();
         if (errors.size() > 0) {
             throw new IllegalArgumentException("Cannot build an object because of the following errors: \n" + StringUtils.join(errors, "\n"));
@@ -108,7 +108,7 @@ public abstract class SaveParamBuilder<BEAN, PARAM extends SaveParam<BEAN>, BUIL
 
     protected abstract void fileTypeSpecificValidate(List<String> errors);
 
-    protected abstract PARAM fileTypeSpecificBuild(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget, boolean createHeader, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction);
+    protected abstract SaveParam<BEAN> fileTypeSpecificBuild(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget, boolean createHeader, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction);
 
 
     @Override

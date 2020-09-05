@@ -8,10 +8,9 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.ssio.api.impl.SsioManagerImpl;
-import org.ssio.api.impl.filetypespecific.csv.CsvSaveParam;
 import org.ssio.api.impl.filetypespecific.csv.CsvSaveParamBuilder;
 import org.ssio.api.impl.filetypespecific.office.OfficeSaveParamBuilder;
-import org.ssio.api.interfaces.SpreadsheetFileType;
+import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.interfaces.SsioManager;
 import org.ssio.api.interfaces.save.DatumError;
 import org.ssio.api.interfaces.save.SaveParam;
@@ -39,8 +38,8 @@ class BeansSaveITCase {
     }
 
     @ParameterizedTest
-    @EnumSource(SpreadsheetFileType.class)
-    void save_positiveTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
+    @EnumSource(SsBuiltInFileTypes.class)
+    void save_positiveTest(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
 
         Collection<ITBean> beans = Arrays.asList(
                 ITBeanFactory.allEmpty(),
@@ -75,8 +74,8 @@ class BeansSaveITCase {
 
 
     @ParameterizedTest
-    @EnumSource(SpreadsheetFileType.class)
-    void save_strangeAnnotationTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
+    @EnumSource(SsBuiltInFileTypes.class)
+    void save_strangeAnnotationTest(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
 
         Collection<ITStrangeAnnotationBean> beans = Arrays.asList(new ITStrangeAnnotationBean());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -109,7 +108,7 @@ class BeansSaveITCase {
 
     @ParameterizedTest
     @MethodSource("save_datumError_provider")
-    void save_datumError(SpreadsheetFileType spreadsheetFileType, Function<DatumError, String> datumErrDisplayFunction, String datumErrDisplayFunctionName) throws IOException {
+    void save_datumError(SsBuiltInFileTypes spreadsheetFileType, Function<DatumError, String> datumErrDisplayFunction, String datumErrDisplayFunctionName) throws IOException {
 
         Collection<ITSickBean> beans = Arrays.asList(
                 new ITSickBean(), new ITSickBean());
@@ -141,19 +140,19 @@ class BeansSaveITCase {
     static Stream<Arguments> save_datumError_provider() {
         return Stream.of(
 
-                Arguments.of(SpreadsheetFileType.OFFICE, SaveParam.DATUM_ERR_BLANK_DISPLAY_FUNCTION, "DATUM_ERR_BLANK_DISPLAY_FUNCTION"),
-                Arguments.of(SpreadsheetFileType.OFFICE, SaveParam.DEFAULT_DATUM_ERR_DISPLAY_FUNCTION, "DEFAULT_DATUM_ERR_DISPLAY_FUNCTION"),
-                Arguments.of(SpreadsheetFileType.OFFICE, SaveParam.DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION, "DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION"),
-                Arguments.of(SpreadsheetFileType.CSV, SaveParam.DATUM_ERR_BLANK_DISPLAY_FUNCTION, "DATUM_ERR_BLANK_DISPLAY_FUNCTION"),
-                Arguments.of(SpreadsheetFileType.CSV, SaveParam.DEFAULT_DATUM_ERR_DISPLAY_FUNCTION, "DEFAULT_DATUM_ERR_DISPLAY_FUNCTION"),
-                Arguments.of(SpreadsheetFileType.CSV, SaveParam.DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION, "DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION")
+                Arguments.of(SsBuiltInFileTypes.OFFICE, SaveParam.DATUM_ERR_BLANK_DISPLAY_FUNCTION, "DATUM_ERR_BLANK_DISPLAY_FUNCTION"),
+                Arguments.of(SsBuiltInFileTypes.OFFICE, SaveParam.DEFAULT_DATUM_ERR_DISPLAY_FUNCTION, "DEFAULT_DATUM_ERR_DISPLAY_FUNCTION"),
+                Arguments.of(SsBuiltInFileTypes.OFFICE, SaveParam.DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION, "DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION"),
+                Arguments.of(SsBuiltInFileTypes.CSV, SaveParam.DATUM_ERR_BLANK_DISPLAY_FUNCTION, "DATUM_ERR_BLANK_DISPLAY_FUNCTION"),
+                Arguments.of(SsBuiltInFileTypes.CSV, SaveParam.DEFAULT_DATUM_ERR_DISPLAY_FUNCTION, "DEFAULT_DATUM_ERR_DISPLAY_FUNCTION"),
+                Arguments.of(SsBuiltInFileTypes.CSV, SaveParam.DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION, "DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION")
         );
     }
 
 
     @ParameterizedTest
-    @EnumSource(SpreadsheetFileType.class)
-    void save_datumError_noSave(SpreadsheetFileType spreadsheetFileType) throws IOException {
+    @EnumSource(SsBuiltInFileTypes.class)
+    void save_datumError_noSave(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
 
         Collection<ITSickBean> beans = Arrays.asList(new ITSickBean());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -185,13 +184,13 @@ class BeansSaveITCase {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
 
-        SaveParam<ITSimpleBean> param =
-                newSaveParamBuilder(SpreadsheetFileType.CSV)
-                        .setBeanClass(ITSimpleBean.class)
-                        .setBeans(beans)
-                        //.setCellSeparator(cellSeparator)
-                        .setOutputTarget(outputStream)
-                        .build();
+        SaveParam<ITSimpleBean> param = new CsvSaveParamBuilder<ITSimpleBean>()
+                .setOutputCharset("utf8")
+                .setBeanClass(ITSimpleBean.class)
+                .setBeans(beans)
+                .setCellSeparator(cellSeparator)
+                .setOutputTarget(outputStream)
+                .build();
 
 
         // convert it
@@ -200,7 +199,7 @@ class BeansSaveITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_csvSeparator_" + getSeparatorName(cellSeparator), ITTestHelper.decideTargetFileExtension(SpreadsheetFileType.CSV)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_csvSeparator_" + getSeparatorName(cellSeparator), ITTestHelper.decideTargetFileExtension(SsBuiltInFileTypes.CSV)), spreadsheet);
 
         if (result.hasDatumErrors()) {
             fail("There should be no datum errors");
@@ -220,8 +219,8 @@ class BeansSaveITCase {
 
 
     @ParameterizedTest
-    @EnumSource(SpreadsheetFileType.class)
-    void save_noHeader(SpreadsheetFileType spreadsheetFileType) throws IOException {
+    @EnumSource(SsBuiltInFileTypes.class)
+    void save_noHeader(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
 
         Collection<ITSimpleBean> beans = Arrays.asList(new ITSimpleBean(), new ITSimpleBean());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -251,8 +250,8 @@ class BeansSaveITCase {
 
 
     @ParameterizedTest
-    @EnumSource(SpreadsheetFileType.class)
-    void save_formatTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
+    @EnumSource(SsBuiltInFileTypes.class)
+    void save_formatTest(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
 
         Collection<ITFormatTestBean> beans = Arrays.asList(
                 ITFormatTestBean.firstDayOfEveryMonthIn2020());
@@ -285,8 +284,8 @@ class BeansSaveITCase {
 
 
     @ParameterizedTest
-    @EnumSource(SpreadsheetFileType.class)
-    void save_typeHandlerTest(SpreadsheetFileType spreadsheetFileType) throws IOException {
+    @EnumSource(SsBuiltInFileTypes.class)
+    void save_typeHandlerTest(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
 
         Collection<ITTypeHandlerTestBean> beans = Arrays.asList(ITTypeHandlerTestBean.beckham(), ITTypeHandlerTestBean.nobody());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -317,7 +316,7 @@ class BeansSaveITCase {
     }
 
 
-    private SaveParamBuilder newSaveParamBuilder(SpreadsheetFileType fileType) {
+    private SaveParamBuilder newSaveParamBuilder(SsBuiltInFileTypes fileType) {
         switch (fileType) {
             case OFFICE: {
                 return new OfficeSaveParamBuilder().setSheetName("first sheet");

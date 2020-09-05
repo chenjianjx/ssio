@@ -1,10 +1,7 @@
 package org.ssio.spi.interfaces.abstractsheet.factory.defaults;
 
-import org.ssio.api.interfaces.parse.ParseParam;
-import org.ssio.api.interfaces.save.SaveParam;
 import org.ssio.spi.interfaces.abstractsheet.factory.SsWorkbookFactoryRegistry;
-import org.ssio.spi.interfaces.abstractsheet.factory.WorkbookToParseFactory;
-import org.ssio.spi.interfaces.abstractsheet.factory.WorkbookToSaveFactory;
+import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbookFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -14,42 +11,15 @@ import java.util.Map;
  */
 public class DefaultWorkbookFactoryRegistry implements SsWorkbookFactoryRegistry {
 
-    private Map<Class<? extends SaveParam>, WorkbookToSaveFactory> saveFactories = new LinkedHashMap<>();
-
-    private Map<Class<ParseParam>, WorkbookToParseFactory> parseFactories = new LinkedHashMap<>();
+    private Map<String, SsWorkbookFactory> factoryMap = new LinkedHashMap<>();
 
     @Override
-    public void registerWorkbookToSaveFactory(Class<? extends SaveParam> saveParamClass, WorkbookToSaveFactory factory) {
-        saveFactories.put(saveParamClass, factory);
+    public void registerWorkbook(String spreadSheetFileType, SsWorkbookFactory factory) {
+        factoryMap.put(spreadSheetFileType, factory);
     }
 
     @Override
-    public WorkbookToSaveFactory getWorkbookToSaveFactory(Class<? extends SaveParam> saveParamClass) {
-        return saveFactories.get(saveParamClass);
+    public SsWorkbookFactory getWorkbookFactory(String spreadSheetFileType) {
+        return factoryMap.get(spreadSheetFileType);
     }
-
-    @Override
-    public void registerWorkbookToParseFactory(Class<ParseParam> parseParamClass, WorkbookToParseFactory factory) {
-
-    }
-
-    @Override
-    public WorkbookToParseFactory getWorkbookToParseFactory(Class<ParseParam> parseParamClass) {
-        return null;
-    }
-
-
-
-
-//    @Override
-//    public void registerWorkbookToParseFactory(Class<ParseParam> parseParamClass, WorkbookToParseFactory factory) {
-//        parseFactories.put(parseParamClass, factory);
-//    }
-//
-//    @Override
-//    public WorkbookToParseFactory getWorkbookToParseFactory(Class<ParseParam> parseParamClass) {
-//        return parseFactories.get(parseParamClass);
-//    }
-
-
 }

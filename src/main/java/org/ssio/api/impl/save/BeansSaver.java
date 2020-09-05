@@ -7,9 +7,9 @@ import org.ssio.api.impl.common.PropAndColumn;
 import org.ssio.api.interfaces.save.SaveParam;
 import org.ssio.api.interfaces.save.SaveResult;
 import org.ssio.spi.interfaces.abstractsheet.factory.SsWorkbookFactoryRegistry;
-import org.ssio.spi.interfaces.abstractsheet.factory.WorkbookToSaveFactory;
 import org.ssio.spi.interfaces.abstractsheet.model.SsSheet;
 import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbook;
+import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbookFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,13 +35,13 @@ public class BeansSaver {
             throw new IllegalArgumentException(beanClassErrors.toString());
         }
 
-        WorkbookToSaveFactory workbookFactory = workbookFactoryRegistry.getWorkbookToSaveFactory(param.getClass());
+        SsWorkbookFactory workbookFactory = workbookFactoryRegistry.getWorkbookFactory(param.getSpreadsheetFileType());
         if (workbookFactory == null) {
             throw new IllegalStateException("There is no workbook factory registered for param class: " + param.getClass());
         }
 
 
-        SsWorkbook workbook = workbookFactory.newWorkbook(param);
+        SsWorkbook workbook = workbookFactory.newWorkbookForSave(param);
         SsSheet sheet =  workbook.createNewSheet();
 
         int numOfBeans = param.getBeans().size();

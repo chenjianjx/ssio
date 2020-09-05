@@ -3,7 +3,7 @@ package org.ssio.api.interfaces.parse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.ssio.api.interfaces.SpreadsheetFileType;
+import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,7 +34,7 @@ class ParseParamBuilderTest {
 
     @Test
     void build_inputCharsetNullForCsv() {
-        ParseParamBuilder builder = new ParseParamBuilder().setFileType(SpreadsheetFileType.CSV).setInputCharset(null);
+        ParseParamBuilder builder = new ParseParamBuilder().setFileType(SsBuiltInFileTypes.CSV).setInputCharset(null);
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
         assertTrue(e.getMessage().contains("the inputCharset is required"));

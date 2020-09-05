@@ -2,14 +2,14 @@ package org.ssio.api.interfaces.parse;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.ssio.api.interfaces.SpreadsheetFileType;
+import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.impl.common.sheetlocate.SsSheetLocator;
 
 import java.io.InputStream;
 
 public class ParseParam<BEAN> {
 
-    public ParseParam(Class<BEAN> beanClass, PropFromColumnMappingMode propFromColumnMappingMode, InputStream spreadsheetInput, String inputCharset, SpreadsheetFileType fileType, char cellSeparator, SsSheetLocator sheetLocator, boolean sheetHasHeader) {
+    public ParseParam(Class<BEAN> beanClass, PropFromColumnMappingMode propFromColumnMappingMode, InputStream spreadsheetInput, String inputCharset, SsBuiltInFileTypes fileType, char cellSeparator, SsSheetLocator sheetLocator, boolean sheetHasHeader) {
         this.beanClass = beanClass;
         this.propFromColumnMappingMode = propFromColumnMappingMode;
         this.spreadsheetInput = spreadsheetInput;
@@ -35,7 +35,7 @@ public class ParseParam<BEAN> {
     private char cellSeparator;
 
 
-    private SpreadsheetFileType fileType;
+    private SsBuiltInFileTypes fileType;
 
 
     private SsSheetLocator sheetLocator;
@@ -64,7 +64,7 @@ public class ParseParam<BEAN> {
         return inputCharset;
     }
 
-    public SpreadsheetFileType getFileType() {
+    public SsBuiltInFileTypes getFileType() {
         return fileType;
     }
 

@@ -1,5 +1,6 @@
 package org.ssio.api.impl.filetypespecific.office;
 
+import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.interfaces.save.SaveParam;
 import org.ssio.api.interfaces.save.DatumError;
 
@@ -23,5 +24,10 @@ public class OfficeSaveParam<BEAN> extends SaveParam<BEAN> {
 
     public String getSheetName() {
         return sheetName;
+    }
+
+    @Override
+    protected String getSpreadsheetFileType() {
+        return SsBuiltInFileTypes.OFFICE;
     }
 }

@@ -1,5 +1,6 @@
 package org.ssio.api.impl.filetypespecific.csv;
 
+import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.interfaces.save.SaveParam;
 import org.ssio.api.interfaces.save.DatumError;
 
@@ -31,5 +32,10 @@ public class CsvSaveParam<BEAN> extends SaveParam<BEAN> {
 
     public String getOutputCharset() {
         return outputCharset;
+    }
+
+    @Override
+    protected String getSpreadsheetFileType() {
+        return SsBuiltInFileTypes.CSV;
     }
 }

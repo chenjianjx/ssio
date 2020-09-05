@@ -1,14 +1,14 @@
 package org.ssio.api.impl.filetypespecific.csv;
 
-import org.ssio.api.interfaces.save.SaveParamBuilder;
 import org.ssio.api.interfaces.save.DatumError;
+import org.ssio.api.interfaces.save.SaveParamBuilder;
 
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
-public class CsvSaveParamBuilder<BEAN> extends SaveParamBuilder<BEAN, CsvSaveParam<BEAN>, CsvSaveParamBuilder> {
+public class CsvSaveParamBuilder<BEAN> extends SaveParamBuilder<BEAN, CsvSaveParamBuilder<BEAN>> {
 
     private String outputCharset;
     private char cellSeparator = CsvConstants.DEFAULT_CSV_CELL_SEPARATOR;
@@ -39,7 +39,7 @@ public class CsvSaveParamBuilder<BEAN> extends SaveParamBuilder<BEAN, CsvSavePar
     }
 
     @Override
-    protected CsvSaveParam fileTypeSpecificBuild(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget, boolean createHeader, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction) {
-        return new CsvSaveParam(beans, beanClass, outputTarget, createHeader, stillSaveIfDataError, datumErrDisplayFunction, cellSeparator, outputCharset);
+    protected CsvSaveParam<BEAN> fileTypeSpecificBuild(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget, boolean createHeader, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction) {
+        return new CsvSaveParam<>(beans, beanClass, outputTarget, createHeader, stillSaveIfDataError, datumErrDisplayFunction, cellSeparator, outputCharset);
     }
 }

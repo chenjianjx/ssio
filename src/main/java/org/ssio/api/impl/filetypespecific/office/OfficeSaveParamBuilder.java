@@ -1,14 +1,14 @@
 package org.ssio.api.impl.filetypespecific.office;
 
-import org.ssio.api.interfaces.save.SaveParamBuilder;
 import org.ssio.api.interfaces.save.DatumError;
+import org.ssio.api.interfaces.save.SaveParamBuilder;
 
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
-public class OfficeSaveParamBuilder<BEAN> extends SaveParamBuilder<BEAN, OfficeSaveParam<BEAN>, OfficeSaveParamBuilder> {
+public class OfficeSaveParamBuilder<BEAN> extends SaveParamBuilder<BEAN, OfficeSaveParamBuilder<BEAN>> {
 
     private String sheetName;
 
@@ -27,7 +27,7 @@ public class OfficeSaveParamBuilder<BEAN> extends SaveParamBuilder<BEAN, OfficeS
     }
 
     @Override
-    protected OfficeSaveParam fileTypeSpecificBuild(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget, boolean createHeader, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction) {
-        return new OfficeSaveParam(beans, beanClass, outputTarget, createHeader, stillSaveIfDataError, datumErrDisplayFunction, sheetName);
+    protected OfficeSaveParam<BEAN> fileTypeSpecificBuild(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget, boolean createHeader, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction) {
+        return new OfficeSaveParam<>(beans, beanClass, outputTarget, createHeader, stillSaveIfDataError, datumErrDisplayFunction, sheetName);
     }
 }

@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.ssio.api.impl.filetypespecific.csv.CsvConstants;
-import org.ssio.api.interfaces.SpreadsheetFileType;
+import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.impl.common.BeanClassInspector;
 import org.ssio.util.code.BuilderPatternHelper;
 import org.ssio.api.impl.common.sheetlocate.SsSheetLocator;
@@ -21,7 +21,7 @@ public class ParseParamBuilder<BEAN> {
     private InputStream spreadsheetInput;
     private String inputCharset;
     private char cellSeparator = CsvConstants.DEFAULT_CSV_CELL_SEPARATOR;
-    private SpreadsheetFileType fileType;
+    private SsBuiltInFileTypes fileType;
     private SsSheetLocator sheetLocator = SsSheetLocator.byIndexLocator(0);
     private boolean sheetHasHeader = true;
 
@@ -54,7 +54,7 @@ public class ParseParamBuilder<BEAN> {
     /**
      * not nullable
      */
-    public ParseParamBuilder<BEAN> setFileType(SpreadsheetFileType fileType) {
+    public ParseParamBuilder<BEAN> setFileType(SsBuiltInFileTypes fileType) {
         this.fileType = fileType;
         return this;
     }
@@ -110,7 +110,7 @@ public class ParseParamBuilder<BEAN> {
             errors.add("The beanClass doesn't have an accessible zero-argument constructor: " + beanClass.getName());
         }
 
-        if (fileType == SpreadsheetFileType.CSV && inputCharset == null) {
+        if (fileType == SsBuiltInFileTypes.CSV && inputCharset == null) {
             errors.add("For CSV input the inputCharset is required");
         }
 

@@ -18,9 +18,7 @@ public abstract class SaveParam<BEAN> {
     /**
      * show the stacktrace in the cells. Can be used in troubleshooting situations
      */
-    public static Function<DatumError, String> DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION = (datumError) -> {
-        return datumError.getStackTrace();
-    };
+    public static Function<DatumError, String> DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION = (datumError) -> datumError.getStackTrace();
 
 
     private Collection<BEAN> beans;
@@ -74,6 +72,8 @@ public abstract class SaveParam<BEAN> {
     public boolean isCreateHeader() {
         return createHeader;
     }
+
+    public abstract String getSpreadsheetFileType();
 
 
     @Override

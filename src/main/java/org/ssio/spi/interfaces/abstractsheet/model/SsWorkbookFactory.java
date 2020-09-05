@@ -1,12 +1,21 @@
 package org.ssio.spi.interfaces.abstractsheet.model;
 
-import org.ssio.api.interfaces.SpreadsheetFileType;
+import org.ssio.api.interfaces.parse.ParseParam;
+import org.ssio.api.interfaces.save.SaveParam;
 
 import java.io.IOException;
-import java.io.InputStream;
 
-public interface SsWorkbookFactory {
+public interface SsWorkbookFactory<W extends SsWorkbook> {
+
+    /**
+     * create a new workbook for beans save
+     */
+    W newWorkbookForSave(SaveParam param);
 
 
-    SsWorkbook createWorkbookFromInput(SpreadsheetFileType fileType, InputStream spreadsheetInput, String inputCharset, char cellSeparator) throws IOException;
+    /**
+     * create a workbook object from input , to parse it into beans
+     */
+    W loadWorkbookToParse(ParseParam param) throws IOException;
+
 }

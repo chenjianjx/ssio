@@ -1,9 +1,9 @@
 package org.ssio.spi.clientexternal.spiregistry;
 
-import org.ssio.spi.clientexternal.filetypspecific.SsBuiltInFileTypes;
+import org.ssio.spi.clientexternal.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.spi.developerexternal.abstractsheet.factory.SsWorkbookFactory;
-import org.ssio.spi.internal.abstractsheet.filetypespecific.csv.factory.CsvWorkbookFactory;
-import org.ssio.spi.internal.abstractsheet.filetypespecific.office.factory.OfficeWorkbookFactory;
+import org.ssio.spi.internal.filetypespecific.abstractsheet.csv.factory.CsvWorkbookFactory;
+import org.ssio.spi.internal.filetypespecific.abstractsheet.office.factory.OfficeWorkbookFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

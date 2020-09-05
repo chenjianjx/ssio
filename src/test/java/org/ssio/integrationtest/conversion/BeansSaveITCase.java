@@ -12,9 +12,9 @@ import org.ssio.api.external.save.SaveParam;
 import org.ssio.api.external.save.SaveParamBuilder;
 import org.ssio.api.external.save.SaveResult;
 import org.ssio.api.factory.SsioManagerFactory;
-import org.ssio.spi.clientexternal.filetypspecific.SsBuiltInFileTypes;
-import org.ssio.spi.clientexternal.filetypspecific.csv.save.CsvSaveParamBuilder;
-import org.ssio.spi.clientexternal.filetypspecific.office.save.OfficeSaveParamBuilder;
+import org.ssio.spi.clientexternal.filetypespecific.SsBuiltInFileTypes;
+import org.ssio.spi.clientexternal.filetypespecific.csv.save.CsvSaveParamBuilder;
+import org.ssio.spi.clientexternal.filetypespecific.office.save.OfficeSaveParamBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

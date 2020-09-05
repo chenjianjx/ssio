@@ -1,4 +1,4 @@
-package org.ssio.integrationtest.conversion;
+package org.ssio.integrationtest.beans;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.ssio.api.external.SsioApiConstants;

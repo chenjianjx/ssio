@@ -1,4 +1,4 @@
-package org.ssio.integrationtest.conversion;
+package org.ssio.integrationtest.cases;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,6 +12,13 @@ import org.ssio.api.external.save.SaveParam;
 import org.ssio.api.external.save.SaveParamBuilder;
 import org.ssio.api.external.save.SaveResult;
 import org.ssio.api.factory.SsioManagerFactory;
+import org.ssio.integrationtest.beans.ITBean;
+import org.ssio.integrationtest.beans.ITBeanFactory;
+import org.ssio.integrationtest.beans.ITFormatTestBean;
+import org.ssio.integrationtest.beans.ITSickBean;
+import org.ssio.integrationtest.beans.ITSimpleBean;
+import org.ssio.integrationtest.beans.ITStrangeAnnotationBean;
+import org.ssio.integrationtest.beans.ITTypeHandlerTestBean;
 import org.ssio.spi.clientexternal.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.spi.clientexternal.filetypespecific.csv.save.CsvSaveParamBuilder;
 import org.ssio.spi.clientexternal.filetypespecific.office.save.OfficeSaveParamBuilder;
@@ -27,7 +34,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.ssio.integrationtest.conversion.ITTestHelper.decideTargetFileExtension;
+import static org.ssio.integrationtest.helper.ITTestHelper.decideTargetFileExtension;
 
 class BeansSaveITCase {
     SsioManager manager = SsioManagerFactory.newInstance();

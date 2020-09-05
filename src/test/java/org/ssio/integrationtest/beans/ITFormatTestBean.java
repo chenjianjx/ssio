@@ -1,4 +1,4 @@
-package org.ssio.integrationtest.conversion;
+package org.ssio.integrationtest.beans;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

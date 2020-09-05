@@ -1,4 +1,4 @@
-package org.ssio.integrationtest.conversion;
+package org.ssio.integrationtest.helper;
 
 import org.ssio.spi.clientexternal.filetypespecific.SsBuiltInFileTypes;
 

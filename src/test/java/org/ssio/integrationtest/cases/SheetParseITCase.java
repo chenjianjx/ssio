@@ -1,4 +1,4 @@
-package org.ssio.integrationtest.conversion;
+package org.ssio.integrationtest.cases;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -16,6 +16,7 @@ import org.ssio.api.external.parse.ParseResult;
 import org.ssio.api.external.parse.PropFromColumnMappingMode;
 import org.ssio.api.factory.SsioManagerFactory;
 import org.ssio.api.internal.common.sheetlocate.SsSheetLocator;
+import org.ssio.integrationtest.beans.*;
 import org.ssio.spi.clientexternal.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.spi.clientexternal.filetypespecific.csv.parse.CsvParseParamBuilder;
 import org.ssio.spi.clientexternal.filetypespecific.office.parse.OfficeParseParamBuilder;
@@ -26,7 +27,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.ssio.integrationtest.conversion.ITTestHelper.decideTargetFileExtension;
+import static org.ssio.integrationtest.helper.ITTestHelper.decideTargetFileExtension;
 
 
 public class SheetParseITCase {

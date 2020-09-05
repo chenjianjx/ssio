@@ -3,46 +3,66 @@ package org.ssio.api.interfaces.parse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
+
+import java.io.InputStream;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
+
 class ParseParamBuilderTest {
 
+    public static class TestParam<BEAN> extends ParseParam<BEAN> {
 
-    @Test
+        public TestParam(Class<BEAN> beanClass, PropFromColumnMappingMode propFromColumnMappingMode, InputStream spreadsheetInput, boolean sheetHasHeader) {
+            super(beanClass, propFromColumnMappingMode, spreadsheetInput, sheetHasHeader);
+        }
+
+        @Override
+        public String getSpreadsheetFileType() {
+            return "anything";
+        }
+    }
+
+    public static class TestParamBuilder<BEAN> extends ParseParamBuilder<BEAN, ParseParamBuilderTest.TestParamBuilder<BEAN>> {
+
+        @Override
+        protected TestParam fileTypeSpecificBuild(Class<BEAN> beanClass, PropFromColumnMappingMode propFromColumnMappingMode, InputStream spreadsheetInput, boolean sheetHasHeader) {
+            return new TestParam(beanClass, propFromColumnMappingMode, spreadsheetInput, sheetHasHeader);
+        }
+
+        @Override
+        protected void fileTypeSpecificValidate(List<String> errors) {
+        }
+    }
+
+        @Test
     void build_allWrong() {
-        ParseParamBuilder builder = new ParseParamBuilder().setSheetLocator(null).setPropFromColumnMappingMode(null);
+        ParseParamBuilder builder = new TestParamBuilder().setPropFromColumnMappingMode(null);
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
 
         assertTrue(e.getMessage().contains("beanClass cannot be null"));
         assertTrue(e.getMessage().contains("propFromColumnMappingMode cannot be null"));
         assertTrue(e.getMessage().contains("spreadsheetInput cannot be null"));
-        assertTrue(e.getMessage().contains("fileType cannot be null"));
-        assertTrue(e.getMessage().contains("sheetLocator cannot be null"));
+
     }
 
     @ParameterizedTest
     @ValueSource(classes = {OneArgumentConstructorBean.class, NonAccessibleConstructorBean.class})
     void build_invalidBean(Class<?> beanClass) {
-        ParseParamBuilder builder = new ParseParamBuilder().setBeanClass(beanClass);
+        ParseParamBuilder builder = new TestParamBuilder().setBeanClass(beanClass);
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
         assertTrue(e.getMessage().contains("doesn't have an accessible zero-argument constructor"));
     }
 
-    @Test
-    void build_inputCharsetNullForCsv() {
-        ParseParamBuilder builder = new ParseParamBuilder().setFileType(SsBuiltInFileTypes.CSV).setInputCharset(null);
-
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);
-        assertTrue(e.getMessage().contains("the inputCharset is required"));
-    }
+//
 
     @Test
     void build_sheetHasNoHeaderButModeIsByName() {
-        ParseParamBuilder builder = new ParseParamBuilder()
+        ParseParamBuilder builder = new TestParamBuilder()
                 .setBeanClass(SimpleBean.class).setSheetHasHeader(false).setPropFromColumnMappingMode(PropFromColumnMappingMode.BY_NAME);
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, builder::build);

@@ -74,9 +74,10 @@ public class CsvWorkbook implements SsWorkbook {
     }
 
     @Override
-    public int getNumberOfSheets() {
-        return 1;
+    public SsSheet getSheetToParse() {
+        return this.sheet;
     }
+
 
     @Override
     public SsSheet getSheetByName(String sheetName) {

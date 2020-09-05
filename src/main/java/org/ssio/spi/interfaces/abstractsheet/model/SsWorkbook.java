@@ -8,8 +8,6 @@ import java.io.OutputStream;
  */
 public interface SsWorkbook {
     SsSheet createNewSheet();
-    
-    int getNumberOfSheets();
 
     /**
      * Find the sheet using the name
@@ -25,4 +23,6 @@ public interface SsWorkbook {
     SsSheet getSheetAt(int sheetIndex);
 
     void write(OutputStream outputTarget) throws IOException;
+
+    SsSheet getSheetToParse();
 }

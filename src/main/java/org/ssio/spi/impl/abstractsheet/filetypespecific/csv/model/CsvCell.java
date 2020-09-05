@@ -1,9 +1,9 @@
 package org.ssio.spi.impl.abstractsheet.filetypespecific.csv.model;
 
-import org.ssio.spi.impl.abstractsheet.filetypespecific.csv.cellvaluebinder.CsvCellValueBinderRepo;
-import org.ssio.spi.interfaces.abstractsheet.model.SsCell;
 import org.ssio.api.interfaces.typing.SimpleTypeEnum;
+import org.ssio.spi.impl.abstractsheet.filetypespecific.csv.cellvaluebinder.CsvCellValueBinderRepo;
 import org.ssio.spi.interfaces.abstractsheet.cellvaluebinder.SsCellValueBinder;
+import org.ssio.spi.interfaces.abstractsheet.model.SsCell;
 
 public class CsvCell implements SsCell {
 

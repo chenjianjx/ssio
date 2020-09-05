@@ -38,7 +38,7 @@ public abstract class ParseParamBuilder<BEAN, BUILDER extends ParseParamBuilder<
     /**
      * not nullable
      */
-    public ParseParamBuilder setSpreadsheetInput(InputStream spreadsheetInput) {
+    public BUILDER setSpreadsheetInput(InputStream spreadsheetInput) {
         this.spreadsheetInput = spreadsheetInput;
         return self();
     }
@@ -49,7 +49,7 @@ public abstract class ParseParamBuilder<BEAN, BUILDER extends ParseParamBuilder<
      *
      * @return
      */
-    public ParseParamBuilder setSheetHasHeader(boolean sheetHasHeader) {
+    public BUILDER setSheetHasHeader(boolean sheetHasHeader) {
         this.sheetHasHeader = sheetHasHeader;
         return self();
     }

@@ -6,10 +6,10 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
-import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.OfficeCellValueBinderRepo;
-import org.ssio.spi.interfaces.abstractsheet.model.SsCell;
 import org.ssio.api.interfaces.typing.SimpleTypeEnum;
+import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.OfficeCellValueBinderRepo;
 import org.ssio.spi.interfaces.abstractsheet.cellvaluebinder.SsCellValueBinder;
+import org.ssio.spi.interfaces.abstractsheet.model.SsCell;
 
 public class OfficeCell implements SsCell {
     /**

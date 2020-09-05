@@ -1,8 +1,8 @@
 package org.ssio.api.interfaces.annotation;
 
+import org.ssio.api.interfaces.SsioApiConstants;
 import org.ssio.api.interfaces.typing.ComplexTypeHandler;
 import org.ssio.api.interfaces.typing.SimpleTypeEnum;
-import org.ssio.api.interfaces.SsioApiConstants;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -35,9 +35,9 @@ public class BeansSaver {
             throw new IllegalArgumentException(beanClassErrors.toString());
         }
 
-        SsWorkbookFactory workbookFactory = workbookFactoryRegistry.getWorkbookFactory(param.getSpreadsheetFileType());
+        SsWorkbookFactory workbookFactory = workbookFactoryRegistry.getFactory(param.getSpreadsheetFileType());
         if (workbookFactory == null) {
-            throw new IllegalStateException("There is no workbook factory registered for param class: " + param.getClass());
+            throw new IllegalStateException("There is no workbook factory registered for file type: " + param.getSpreadsheetFileType());
         }
 
 

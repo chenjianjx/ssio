@@ -14,12 +14,12 @@ public class DefaultWorkbookFactoryRegistry implements SsWorkbookFactoryRegistry
     private Map<String, SsWorkbookFactory> factoryMap = new LinkedHashMap<>();
 
     @Override
-    public void registerWorkbook(String spreadSheetFileType, SsWorkbookFactory factory) {
+    public void register(String spreadSheetFileType, SsWorkbookFactory factory) {
         factoryMap.put(spreadSheetFileType, factory);
     }
 
     @Override
-    public SsWorkbookFactory getWorkbookFactory(String spreadSheetFileType) {
+    public SsWorkbookFactory getFactory(String spreadSheetFileType) {
         return factoryMap.get(spreadSheetFileType);
     }
 }

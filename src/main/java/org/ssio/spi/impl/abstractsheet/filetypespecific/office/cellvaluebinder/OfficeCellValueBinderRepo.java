@@ -1,8 +1,6 @@
 package org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder;
 
 import org.ssio.api.interfaces.typing.SimpleTypeEnum;
-import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.IntegerOfficeCellValueBinder;
-import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.ShortOfficeCellValueBinder;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.BigDecimalOfficeCellValueBinder;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.BigIntegerOfficeCellValueBinder;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.BooleanOfficeCellValueBinder;
@@ -10,6 +8,7 @@ import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.b
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.DoubleOfficeCellValueBinder;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.EnumOfficeCellValueBinder;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.FloatOfficeCellValueBinder;
+import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.IntegerOfficeCellValueBinder;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.LocalDateOfficeCellValueBinder;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.LocalDateTimeOfficeCellValueBinder;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.LongOfficeCellValueBinder;
@@ -19,6 +18,7 @@ import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.b
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.PrimitiveIntOfficeCellValueBinder;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.PrimitiveLongOfficeCellValueBinder;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.PrimitiveShortOfficeCellValueBinder;
+import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.ShortOfficeCellValueBinder;
 import org.ssio.spi.impl.abstractsheet.filetypespecific.office.cellvaluebinder.bytype.StringOfficeCellValueBinder;
 import org.ssio.util.lang.SsioReflectionUtils;
 

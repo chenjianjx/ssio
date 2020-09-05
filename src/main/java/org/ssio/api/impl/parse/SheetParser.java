@@ -13,7 +13,6 @@ import org.ssio.api.interfaces.parse.PropFromColumnMappingMode;
 import org.ssio.api.interfaces.typing.ComplexTypeHandler;
 import org.ssio.api.interfaces.typing.SimpleTypeEnum;
 import org.ssio.spi.interfaces.abstractsheet.factory.SsWorkbookFactoryRegistry;
-import org.ssio.spi.interfaces.abstractsheet.model.DefaultSsFactory;
 import org.ssio.spi.interfaces.abstractsheet.model.SsCell;
 import org.ssio.spi.interfaces.abstractsheet.model.SsRow;
 import org.ssio.spi.interfaces.abstractsheet.model.SsSheet;
@@ -48,19 +47,14 @@ public class SheetParser {
         }
 
 
-        SsWorkbookFactory ssFactory = new DefaultSsFactory();
-        SsWorkbook workbook = ssFactory.createWorkbookFromInput(param.getFileType(), param.getSpreadsheetInput(), param.getInputCharset(), param.getCellSeparator());
-        if (workbook.getNumberOfSheets() <= 0) {
-            logger.warn("There are no sheets in the spreadsheet");
-            return result;
+        SsWorkbookFactory workbookFactory = workbookFactoryRegistry.getFactory(param.getSpreadsheetFileType());
+        if (workbookFactory == null) {
+            throw new IllegalStateException("There is no workbook factory registered for file type: " + param.getSpreadsheetFileType());
         }
 
-        SsSheet sheet = param.getSheetLocator().getSheet(workbook);
+        SsWorkbook workbook = workbookFactory.loadWorkbookToParse(param);
 
-        if (sheet == null) {
-            throw new IllegalArgumentException("No sheet found using locator: " + param.getSheetLocator().getDesc());
-        }
-
+        SsSheet sheet = workbook.getSheetToParse();
 
         //if map by name, find the column indexes
         if (param.getPropFromColumnMappingMode() == PropFromColumnMappingMode.BY_NAME) {

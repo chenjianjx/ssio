@@ -1,18 +1,15 @@
 package org.ssio.api.impl;
 
+import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.impl.parse.SheetParser;
 import org.ssio.api.impl.save.BeansSaver;
-import org.ssio.api.impl.filetypespecific.csv.save.CsvSaveParam;
-import org.ssio.api.impl.filetypespecific.office.save.OfficeSaveParam;
 import org.ssio.api.interfaces.SsioManager;
 import org.ssio.api.interfaces.parse.ParseParam;
 import org.ssio.api.interfaces.parse.ParseResult;
 import org.ssio.api.interfaces.save.SaveParam;
 import org.ssio.api.interfaces.save.SaveResult;
-import org.ssio.spi.impl.abstractsheet.filetypespecific.csv.factory.CsvWorkbookToParseFactory;
-import org.ssio.spi.impl.abstractsheet.filetypespecific.csv.factory.CsvWorkbookToSaveFactory;
-import org.ssio.spi.impl.abstractsheet.filetypespecific.office.factory.OfficeWorkbookToParseFactory;
-import org.ssio.spi.impl.abstractsheet.filetypespecific.office.factory.OfficeWorkbookToSaveFactory;
+import org.ssio.spi.impl.abstractsheet.filetypespecific.csv.factory.CsvWorkbookFactory;
+import org.ssio.spi.impl.abstractsheet.filetypespecific.office.factory.OfficeWorkbookFactory;
 import org.ssio.spi.interfaces.abstractsheet.factory.SsWorkbookFactoryRegistry;
 import org.ssio.spi.interfaces.abstractsheet.factory.defaults.DefaultWorkbookFactoryRegistry;
 
@@ -37,11 +34,9 @@ public class SsioManagerImpl implements SsioManager {
          */
         workbookFactoryRegistry = new DefaultWorkbookFactoryRegistry();
         //built-in supports for office-like spreadsheets and csv
-        workbookFactoryRegistry.registerWorkbookToSaveFactory(CsvSaveParam.class, new CsvWorkbookToSaveFactory());
-        workbookFactoryRegistry.registerWorkbookToSaveFactory(OfficeSaveParam.class, new OfficeWorkbookToSaveFactory());
+        workbookFactoryRegistry.register(SsBuiltInFileTypes.CSV, new CsvWorkbookFactory());
+        workbookFactoryRegistry.register(SsBuiltInFileTypes.OFFICE, new OfficeWorkbookFactory());
 
-        workbookFactoryRegistry.registerWorkbookToParseFactory(ParseParam.class, new CsvWorkbookToParseFactory());
-        workbookFactoryRegistry.registerWorkbookToParseFactory(ParseParam.class, new OfficeWorkbookToParseFactory());
 
         beansSaver = new BeansSaver(workbookFactoryRegistry);
         sheetParser = new SheetParser(workbookFactoryRegistry);

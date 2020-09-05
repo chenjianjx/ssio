@@ -1,14 +1,13 @@
 package org.ssio.api.impl.filetypespecific.csv.parse;
 
 import org.ssio.api.impl.filetypespecific.csv.CsvConstants;
-import org.ssio.api.interfaces.parse.ParseParam;
 import org.ssio.api.interfaces.parse.ParseParamBuilder;
 import org.ssio.api.interfaces.parse.PropFromColumnMappingMode;
 
 import java.io.InputStream;
 import java.util.List;
 
-public class CsvParseParamBuilder<BEAN> extends ParseParamBuilder<BEAN> {
+public class CsvParseParamBuilder<BEAN> extends ParseParamBuilder<BEAN, CsvParseParamBuilder<BEAN>> {
     private String inputCharset;
     private char cellSeparator = CsvConstants.DEFAULT_CSV_CELL_SEPARATOR;
 

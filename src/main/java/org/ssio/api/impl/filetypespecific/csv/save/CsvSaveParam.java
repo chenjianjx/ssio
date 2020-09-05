@@ -1,8 +1,8 @@
 package org.ssio.api.impl.filetypespecific.csv.save;
 
 import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
-import org.ssio.api.interfaces.save.SaveParam;
 import org.ssio.api.interfaces.save.DatumError;
+import org.ssio.api.interfaces.save.SaveParam;
 
 import java.io.OutputStream;
 import java.util.Collection;

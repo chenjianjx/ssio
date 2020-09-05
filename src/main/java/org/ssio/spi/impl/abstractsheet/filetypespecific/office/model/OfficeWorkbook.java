@@ -3,6 +3,7 @@ package org.ssio.spi.impl.abstractsheet.filetypespecific.office.model;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.ssio.api.impl.common.sheetlocate.SsSheetLocator;
 import org.ssio.spi.interfaces.abstractsheet.model.SsSheet;
 import org.ssio.spi.interfaces.abstractsheet.model.SsWorkbook;
 
@@ -17,6 +18,7 @@ public class OfficeWorkbook implements SsWorkbook {
     private List<OfficeSheet> sheets = new ArrayList<>();
 
     private String sheetNameForSave;
+    private OfficeSheet sheetToParse;
 
     private OfficeWorkbook() {
 
@@ -30,12 +32,17 @@ public class OfficeWorkbook implements SsWorkbook {
         return workbook;
     }
 
-    public static OfficeWorkbook createFromInput(InputStream spreadsheetInput) throws IOException {
+    public static OfficeWorkbook createFromInput(InputStream spreadsheetInput, SsSheetLocator sheetLocator) throws IOException {
         Workbook poiBook = WorkbookFactory.create(spreadsheetInput);
         OfficeWorkbook workbook = new OfficeWorkbook();
         workbook.poiBook = poiBook;
         for (int i = 0; i < poiBook.getNumberOfSheets(); i++) {
             workbook.sheets.add(OfficeSheet.createFromExistingPoiSheet(poiBook.getSheetAt(i)));
+        }
+
+        workbook.sheetToParse = (OfficeSheet) sheetLocator.getSheet(workbook);
+        if (workbook.sheetToParse == null) {
+            throw new IllegalArgumentException("No sheet found using locator: " + sheetLocator.getDesc());
         }
         return workbook;
     }
@@ -53,9 +60,10 @@ public class OfficeWorkbook implements SsWorkbook {
     }
 
     @Override
-    public int getNumberOfSheets() {
-        return sheets.size();
+    public SsSheet getSheetToParse() {
+        return this.sheetToParse;
     }
+
 
     @Override
     public SsSheet getSheetByName(String sheetName) {

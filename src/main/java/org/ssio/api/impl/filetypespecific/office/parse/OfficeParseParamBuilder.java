@@ -8,7 +8,7 @@ import org.ssio.util.code.BuilderPatternHelper;
 import java.io.InputStream;
 import java.util.List;
 
-public class OfficeParseParamBuilder<BEAN> extends ParseParamBuilder<BEAN> {
+public class OfficeParseParamBuilder<BEAN> extends ParseParamBuilder<BEAN, OfficeParseParamBuilder<BEAN>> {
     private SsSheetLocator sheetLocator = SsSheetLocator.byIndexLocator(0);
 
 

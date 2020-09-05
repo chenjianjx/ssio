@@ -19,7 +19,7 @@ class SaveParamBuilderTest {
         }
 
         @Override
-        protected String getSpreadsheetFileType() {
+        public String getSpreadsheetFileType() {
             return "anything";
         }
     }

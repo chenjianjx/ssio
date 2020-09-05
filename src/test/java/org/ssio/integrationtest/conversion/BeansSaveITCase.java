@@ -4,13 +4,12 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.ssio.api.impl.SsioManagerImpl;
+import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.impl.filetypespecific.csv.save.CsvSaveParamBuilder;
 import org.ssio.api.impl.filetypespecific.office.save.OfficeSaveParamBuilder;
-import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.interfaces.SsioManager;
 import org.ssio.api.interfaces.save.DatumError;
 import org.ssio.api.interfaces.save.SaveParam;
@@ -28,18 +27,24 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.ssio.integrationtest.conversion.ITTestHelper.decideTargetFileExtension;
 
 class BeansSaveITCase {
     SsioManager manager = new SsioManagerImpl();
+
 
     @BeforeAll
     public static void init() {
         System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "DEBUG");
     }
 
+    static Stream<String> fileTypeProvider() {
+        return Stream.of(SsBuiltInFileTypes.CSV, SsBuiltInFileTypes.OFFICE);
+    }
+
     @ParameterizedTest
-    @EnumSource(SsBuiltInFileTypes.class)
-    void save_positiveTest(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
+    @MethodSource("fileTypeProvider")
+    void save_positiveTest(String spreadsheetFileType) throws IOException {
 
         Collection<ITBean> beans = Arrays.asList(
                 ITBeanFactory.allEmpty(),
@@ -61,7 +66,7 @@ class BeansSaveITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_positiveTest", ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_positiveTest", spreadsheetFileType), spreadsheet);
 
         if (result.hasDatumErrors()) {
             for (DatumError datumError : result.getDatumErrors()) {
@@ -74,8 +79,8 @@ class BeansSaveITCase {
 
 
     @ParameterizedTest
-    @EnumSource(SsBuiltInFileTypes.class)
-    void save_strangeAnnotationTest(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
+    @MethodSource("fileTypeProvider")
+    void save_strangeAnnotationTest(String spreadsheetFileType) throws IOException {
 
         Collection<ITStrangeAnnotationBean> beans = Arrays.asList(new ITStrangeAnnotationBean());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -94,7 +99,7 @@ class BeansSaveITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_strangeAnnotationTest", ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_strangeAnnotationTest", spreadsheetFileType), spreadsheet);
 
         if (result.hasDatumErrors()) {
             for (DatumError datumError : result.getDatumErrors()) {
@@ -108,7 +113,7 @@ class BeansSaveITCase {
 
     @ParameterizedTest
     @MethodSource("save_datumError_provider")
-    void save_datumError(SsBuiltInFileTypes spreadsheetFileType, Function<DatumError, String> datumErrDisplayFunction, String datumErrDisplayFunctionName) throws IOException {
+    void save_datumError(String spreadsheetFileType, Function<DatumError, String> datumErrDisplayFunction, String datumErrDisplayFunctionName) throws IOException {
 
         Collection<ITSickBean> beans = Arrays.asList(
                 new ITSickBean(), new ITSickBean());
@@ -129,7 +134,7 @@ class BeansSaveITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_datumError_" + datumErrDisplayFunctionName, ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_datumError_" + datumErrDisplayFunctionName, spreadsheetFileType), spreadsheet);
 
         if (result.hasNoDatumErrors()) {
             fail("There should be datum errors");
@@ -151,8 +156,8 @@ class BeansSaveITCase {
 
 
     @ParameterizedTest
-    @EnumSource(SsBuiltInFileTypes.class)
-    void save_datumError_noSave(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
+    @MethodSource("fileTypeProvider")
+    void save_datumError_noSave(String spreadsheetFileType) throws IOException {
 
         Collection<ITSickBean> beans = Arrays.asList(new ITSickBean());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -199,7 +204,7 @@ class BeansSaveITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_csvSeparator_" + getSeparatorName(cellSeparator), ITTestHelper.decideTargetFileExtension(SsBuiltInFileTypes.CSV)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_csvSeparator_" + getSeparatorName(cellSeparator), SsBuiltInFileTypes.CSV), spreadsheet);
 
         if (result.hasDatumErrors()) {
             fail("There should be no datum errors");
@@ -219,8 +224,8 @@ class BeansSaveITCase {
 
 
     @ParameterizedTest
-    @EnumSource(SsBuiltInFileTypes.class)
-    void save_noHeader(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
+    @MethodSource("fileTypeProvider")
+    void save_noHeader(String spreadsheetFileType) throws IOException {
 
         Collection<ITSimpleBean> beans = Arrays.asList(new ITSimpleBean(), new ITSimpleBean());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -240,7 +245,7 @@ class BeansSaveITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_noHeader", ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_noHeader", spreadsheetFileType), spreadsheet);
 
         if (result.hasDatumErrors()) {
             fail("There should be no datum errors");
@@ -250,8 +255,8 @@ class BeansSaveITCase {
 
 
     @ParameterizedTest
-    @EnumSource(SsBuiltInFileTypes.class)
-    void save_formatTest(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
+    @MethodSource("fileTypeProvider")
+    void save_formatTest(String spreadsheetFileType) throws IOException {
 
         Collection<ITFormatTestBean> beans = Arrays.asList(
                 ITFormatTestBean.firstDayOfEveryMonthIn2020());
@@ -271,7 +276,7 @@ class BeansSaveITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_formatTest", ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_formatTest", spreadsheetFileType), spreadsheet);
 
         if (result.hasDatumErrors()) {
             for (DatumError datumError : result.getDatumErrors()) {
@@ -284,8 +289,8 @@ class BeansSaveITCase {
 
 
     @ParameterizedTest
-    @EnumSource(SsBuiltInFileTypes.class)
-    void save_typeHandlerTest(SsBuiltInFileTypes spreadsheetFileType) throws IOException {
+    @MethodSource("fileTypeProvider")
+    void save_typeHandlerTest(String spreadsheetFileType) throws IOException {
 
         Collection<ITTypeHandlerTestBean> beans = Arrays.asList(ITTypeHandlerTestBean.beckham(), ITTypeHandlerTestBean.nobody());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -304,7 +309,7 @@ class BeansSaveITCase {
         // do a save for human eye check
         byte[] spreadsheet = outputStream.toByteArray();
         assertTrue(spreadsheet.length > 0);
-        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_typeHandlerTest", ITTestHelper.decideTargetFileExtension(spreadsheetFileType)), spreadsheet);
+        FileUtils.writeByteArrayToFile(createSpreadsheetFile("save_typeHandlerTest", spreadsheetFileType), spreadsheet);
 
         if (result.hasDatumErrors()) {
             for (DatumError datumError : result.getDatumErrors()) {
@@ -316,30 +321,29 @@ class BeansSaveITCase {
     }
 
 
-    private SaveParamBuilder newSaveParamBuilder(SsBuiltInFileTypes fileType) {
+    private SaveParamBuilder newSaveParamBuilder(String fileType) {
         switch (fileType) {
-            case OFFICE: {
+            case SsBuiltInFileTypes.OFFICE: {
                 return new OfficeSaveParamBuilder().setSheetName("first sheet");
             }
-            case CSV: {
+            case SsBuiltInFileTypes.CSV: {
                 return new CsvSaveParamBuilder().setOutputCharset("utf8");
             }
             default:
                 throw new IllegalStateException();
         }
-
-
     }
 
     /**
      * @param prefix
-     * @param extension including the dot "."
+     * @param fileType
      * @return
      */
-    private File createSpreadsheetFile(String prefix, String extension) {
+    private File createSpreadsheetFile(String prefix, String fileType) {
+
         File dir = new File(System.getProperty("java.io.tmpdir"), "/ssio-it-test");
         dir.mkdirs();
-        String filename = prefix + "-" + System.nanoTime() + extension;
+        String filename = prefix + "-" + System.nanoTime() + decideTargetFileExtension(fileType);
         File file = new File(dir, filename);
         System.out.println("File created: " + file.getAbsolutePath());
         return file;

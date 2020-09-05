@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ssio.api.impl.common.BeanClassInspector;
 import org.ssio.api.impl.common.PropAndColumn;
+import org.ssio.api.impl.common.abstractsheet.SsCellHelper;
+import org.ssio.api.impl.common.abstractsheet.SsSheetHelper;
 import org.ssio.api.interfaces.parse.CellError;
 import org.ssio.api.interfaces.parse.ParseParam;
 import org.ssio.api.interfaces.parse.ParseResult;
@@ -31,6 +33,8 @@ public class SheetParser {
     private static final Logger logger = LoggerFactory.getLogger(SheetParser.class);
     private final SsWorkbookFactoryRegistry workbookFactoryRegistry;
     private BeanClassInspector beanClassInspector = new BeanClassInspector();
+
+    private SsCellHelper cellHelper = new SsCellHelper();
 
     public SheetParser(SsWorkbookFactoryRegistry workbookFactoryRegistry) {
         this.workbookFactoryRegistry = workbookFactoryRegistry;
@@ -112,7 +116,7 @@ public class SheetParser {
         for (int columnIndex = 0; columnIndex < row.getNumberOfCells(); columnIndex++) {
             SsCell cell = row.getCell(columnIndex);
 
-            String headerText = StringUtils.trimToNull((String) cell.readValueAsType(SimpleTypeEnum.String, null, null));
+            String headerText = StringUtils.trimToNull((String) cellHelper.readValueAsType(cell, SimpleTypeEnum.String, null, null));
             if (headerText == null) {
                 continue;
             }
@@ -143,7 +147,7 @@ public class SheetParser {
             SsCell cell = row.getCell(columnIndex);
 
             try {
-                Object value = cell.readValueAsType(propAndColumn.getSimpleTypeEnum(), propAndColumn.getEnumClassIfEnum(), propAndColumn.getFormat());
+                Object value = cellHelper.readValueAsType(cell, propAndColumn.getSimpleTypeEnum(), propAndColumn.getEnumClassIfEnum(), propAndColumn.getFormat());
                 if (propAndColumn.getTypeHandlerClass() != null) {
                     ComplexTypeHandler typeHandler = createInstance(propAndColumn.getTypeHandlerClass());
                     if (value == null) {

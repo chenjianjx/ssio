@@ -3,8 +3,6 @@ package org.ssio.spi.impl.abstractsheet.filetypespecific.office.model;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.ssio.spi.interfaces.abstractsheet.model.SsRow;
 import org.ssio.spi.interfaces.abstractsheet.model.SsSheet;
 
@@ -13,7 +11,6 @@ import java.util.Map;
 
 public class OfficeSheet implements SsSheet {
 
-    private static final Logger logger = LoggerFactory.getLogger(OfficeSheet.class);
 
     private Sheet poiSheet;
 
@@ -54,10 +51,6 @@ public class OfficeSheet implements SsSheet {
         poiSheet.autoSizeColumn(columnIndex);
     }
 
-    @Override
-    public Logger getLogger() {
-        return logger;
-    }
 
     @Override
     public String getSheetName() {

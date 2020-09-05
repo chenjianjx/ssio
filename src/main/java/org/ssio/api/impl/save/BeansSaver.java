@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ssio.api.impl.common.BeanClassInspector;
 import org.ssio.api.impl.common.PropAndColumn;
+import org.ssio.api.impl.common.abstractsheet.SsCellHelper;
+import org.ssio.api.impl.common.abstractsheet.SsSheetHelper;
 import org.ssio.api.interfaces.save.SaveParam;
 import org.ssio.api.interfaces.save.SaveResult;
 import org.ssio.spi.interfaces.abstractsheet.factory.SsWorkbookFactoryRegistry;
@@ -21,6 +23,7 @@ public class BeansSaver {
     private final SsWorkbookFactoryRegistry workbookFactoryRegistry;
 
     private BeanClassInspector beanClassInspector = new BeanClassInspector();
+    private SsSheetHelper sheetHelper = new SsSheetHelper(new SsCellHelper());
 
     public BeansSaver(SsWorkbookFactoryRegistry workbookFactoryRegistry) {
         this.workbookFactoryRegistry = workbookFactoryRegistry;
@@ -42,7 +45,7 @@ public class BeansSaver {
 
 
         SsWorkbook workbook = workbookFactory.newWorkbookForSave(param);
-        SsSheet sheet =  workbook.createNewSheet();
+        SsSheet sheet = workbook.createNewSheet();
 
         int numOfBeans = param.getBeans().size();
         logger.info(numOfBeans + " beans will be written to a spreadsheet");
@@ -51,7 +54,7 @@ public class BeansSaver {
 
         int rowIndex = 0;
         if (param.isCreateHeader()) {
-            sheet.createHeaderRow(propAndColumnList);
+            sheetHelper.createHeaderRow(sheet, propAndColumnList);
             logger.debug("Header row created");
             rowIndex++;
         }
@@ -60,7 +63,7 @@ public class BeansSaver {
         List<BEAN> beans = new ArrayList<>(param.getBeans());
         for (int recordIndex = 0; recordIndex < beans.size(); recordIndex++) {
             BEAN bean = beans.get(recordIndex);
-            sheet.createDataRow(propAndColumnList, bean, recordIndex, rowIndex, param.getDatumErrDisplayFunction(), result.getDatumErrors());
+            sheetHelper.createDataRow(sheet, propAndColumnList, bean, recordIndex, rowIndex, param.getDatumErrDisplayFunction(), result.getDatumErrors());
             logger.debug("Row created for record " + (recordIndex + 1) + "/" + numOfBeans);
             rowIndex++;
         }

@@ -2,8 +2,6 @@ package org.ssio.spi.impl.abstractsheet.filetypespecific.csv.model;
 
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.ssio.spi.interfaces.abstractsheet.model.SsRow;
 import org.ssio.spi.interfaces.abstractsheet.model.SsSheet;
 
@@ -13,7 +11,6 @@ import java.util.List;
 
 public class CsvSheet implements SsSheet {
 
-    private static final Logger logger = LoggerFactory.getLogger(CsvSheet.class);
 
     private List<CsvRow> rows = new ArrayList<>();
 
@@ -45,10 +42,6 @@ public class CsvSheet implements SsSheet {
         //do nothing;
     }
 
-    @Override
-    public Logger getLogger() {
-        return logger;
-    }
 
     @Override
     public String getSheetName() {

@@ -1,7 +1,7 @@
 package org.ssio.integrationtest.conversion;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.ssio.api.interfaces.SsioApiConstants;
+import org.ssio.api.external.SsioApiConstants;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

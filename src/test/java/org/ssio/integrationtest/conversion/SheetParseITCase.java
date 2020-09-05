@@ -7,17 +7,19 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.ssio.api.impl.SsioManagerImpl;
-import org.ssio.api.impl.common.sheetlocate.SsSheetLocator;
-import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
-import org.ssio.api.impl.filetypespecific.csv.parse.CsvParseParamBuilder;
-import org.ssio.api.impl.filetypespecific.office.parse.OfficeParseParamBuilder;
-import org.ssio.api.interfaces.annotation.SsColumn;
-import org.ssio.api.interfaces.parse.CellError;
-import org.ssio.api.interfaces.parse.ParseParam;
-import org.ssio.api.interfaces.parse.ParseParamBuilder;
-import org.ssio.api.interfaces.parse.ParseResult;
-import org.ssio.api.interfaces.parse.PropFromColumnMappingMode;
+import org.ssio.api.external.SsioManager;
+import org.ssio.api.factory.SsioManagerFactory;
+import org.ssio.api.internal.SsioManagerImpl;
+import org.ssio.api.internal.common.sheetlocate.SsSheetLocator;
+import org.ssio.spi.clientexternal.filetypspecific.SsBuiltInFileTypes;
+import org.ssio.spi.clientexternal.filetypspecific.csv.parse.CsvParseParamBuilder;
+import org.ssio.spi.clientexternal.filetypspecific.office.parse.OfficeParseParamBuilder;
+import org.ssio.api.external.annotation.SsColumn;
+import org.ssio.api.external.parse.CellError;
+import org.ssio.api.external.parse.ParseParam;
+import org.ssio.api.external.parse.ParseParamBuilder;
+import org.ssio.api.external.parse.ParseResult;
+import org.ssio.api.external.parse.PropFromColumnMappingMode;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +31,7 @@ import static org.ssio.integrationtest.conversion.ITTestHelper.decideTargetFileE
 
 
 public class SheetParseITCase {
-    SsioManagerImpl manager = new SsioManagerImpl();
+    SsioManager manager = SsioManagerFactory.newInstance();
 
 
     @BeforeAll

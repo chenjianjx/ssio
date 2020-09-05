@@ -3,8 +3,8 @@ package org.ssio.integrationtest.conversion;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.ssio.api.interfaces.annotation.SsColumn;
-import org.ssio.api.interfaces.typing.ComplexTypeHandler;
+import org.ssio.api.external.annotation.SsColumn;
+import org.ssio.api.external.typing.ComplexTypeHandler;
 
 import java.time.Instant;
 import java.time.LocalDate;

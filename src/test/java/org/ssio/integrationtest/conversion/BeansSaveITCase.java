@@ -6,15 +6,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.ssio.api.impl.SsioManagerImpl;
-import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
-import org.ssio.api.impl.filetypespecific.csv.save.CsvSaveParamBuilder;
-import org.ssio.api.impl.filetypespecific.office.save.OfficeSaveParamBuilder;
-import org.ssio.api.interfaces.SsioManager;
-import org.ssio.api.interfaces.save.DatumError;
-import org.ssio.api.interfaces.save.SaveParam;
-import org.ssio.api.interfaces.save.SaveParamBuilder;
-import org.ssio.api.interfaces.save.SaveResult;
+import org.ssio.api.external.SsioManager;
+import org.ssio.api.external.save.DatumError;
+import org.ssio.api.external.save.SaveParam;
+import org.ssio.api.external.save.SaveParamBuilder;
+import org.ssio.api.external.save.SaveResult;
+import org.ssio.api.factory.SsioManagerFactory;
+import org.ssio.spi.clientexternal.filetypspecific.SsBuiltInFileTypes;
+import org.ssio.spi.clientexternal.filetypspecific.csv.save.CsvSaveParamBuilder;
+import org.ssio.spi.clientexternal.filetypspecific.office.save.OfficeSaveParamBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -30,8 +30,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.ssio.integrationtest.conversion.ITTestHelper.decideTargetFileExtension;
 
 class BeansSaveITCase {
-    SsioManager manager = new SsioManagerImpl();
-
+    SsioManager manager = SsioManagerFactory.newInstance();
 
     @BeforeAll
     public static void init() {

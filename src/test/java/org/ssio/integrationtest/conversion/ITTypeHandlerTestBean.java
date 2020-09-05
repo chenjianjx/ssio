@@ -13,13 +13,13 @@ import java.time.ZoneOffset;
 import java.util.Objects;
 
 public class ITTypeHandlerTestBean {
-    @SsColumn(index = 0, typeHandlerClass = NameTypeHandler.class)
+    @SsColumn(index = 0, typeHandler = NameTypeHandler.class)
     private Name name;
 
     @SsColumn(index = 1)
     private String nickName;
 
-    @SsColumn(index = 2, typeHandlerClass = BirthDateTypeHandler.class)
+    @SsColumn(index = 2, typeHandler = BirthDateTypeHandler.class)
     private LocalDate birthDate;
 
 

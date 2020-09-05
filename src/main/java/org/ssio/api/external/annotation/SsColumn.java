@@ -67,6 +67,6 @@ public @interface SsColumn {
      *
      * @return
      */
-    Class<? extends ComplexTypeHandler> typeHandlerClass() default ComplexTypeHandler.NO_HANDLING.class;
+    Class<? extends ComplexTypeHandler> typeHandler() default ComplexTypeHandler.NO_HANDLING.class;
 
 }

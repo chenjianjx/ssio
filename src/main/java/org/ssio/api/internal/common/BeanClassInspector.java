@@ -99,7 +99,7 @@ public class BeanClassInspector {
             }
 
             //check property type
-            Class<? extends ComplexTypeHandler> typeHandler = annotation.typeHandlerClass();
+            Class<? extends ComplexTypeHandler> typeHandler = annotation.typeHandler();
             if (typeHandler == ComplexTypeHandler.NO_HANDLING.class) {
                 typeHandler = null;
             }

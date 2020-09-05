@@ -16,7 +16,7 @@ Save javabeans to a spreadsheet, or parse a spreadsheet into javabeans
   
 # Quick start
 
-Go to xxx and add the dependency to your maven/gradle project.
+Find [ssio in central maven](https://search.maven.org/search?q=a:ssio) and add the dependency to your maven/gradle project.
 
 **Bean definition** 
 

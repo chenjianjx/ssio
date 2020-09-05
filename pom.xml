@@ -6,7 +6,8 @@
 	<artifactId>ssio</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0.0</version>
-	<name>Conversion between javabeans and spreadsheets, along with some other features</name>
+	<name>Simple Spreadsheet I/O</name>
+	<description>Save javabeans to a spreadsheet, or parse a spreadsheet into javabeans</description>
 	<url>https://github.com/chenjianjx/ssio</url>
 
 	<licenses>

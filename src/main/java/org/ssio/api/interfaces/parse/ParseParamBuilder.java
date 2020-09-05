@@ -3,11 +3,8 @@ package org.ssio.api.interfaces.parse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.ssio.api.impl.filetypespecific.csv.CsvConstants;
-import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.impl.common.BeanClassInspector;
 import org.ssio.util.code.BuilderPatternHelper;
-import org.ssio.api.impl.common.sheetlocate.SsSheetLocator;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -15,85 +12,50 @@ import java.util.List;
 
 import static org.ssio.util.lang.SsioReflectionUtils.hasAccessibleZeroArgumentConstructor;
 
-public class ParseParamBuilder<BEAN> {
+public abstract class ParseParamBuilder<BEAN, BUILDER extends ParseParamBuilder<BEAN, BUILDER>> {
     private Class<BEAN> beanClass;
     private PropFromColumnMappingMode propFromColumnMappingMode = PropFromColumnMappingMode.BY_NAME;
     private InputStream spreadsheetInput;
-    private String inputCharset;
-    private char cellSeparator = CsvConstants.DEFAULT_CSV_CELL_SEPARATOR;
-    private SsBuiltInFileTypes fileType;
-    private SsSheetLocator sheetLocator = SsSheetLocator.byIndexLocator(0);
     private boolean sheetHasHeader = true;
 
 
     /**
      * not nullable
      */
-    public ParseParamBuilder<BEAN> setBeanClass(Class<BEAN> beanClass) {
+    public BUILDER setBeanClass(Class<BEAN> beanClass) {
         this.beanClass = beanClass;
-        return this;
+        return self();
     }
 
     /**
      * not nullable. Default is by column name
      */
-    public ParseParamBuilder<BEAN> setPropFromColumnMappingMode(PropFromColumnMappingMode propFromColumnMappingMode) {
+    public BUILDER setPropFromColumnMappingMode(PropFromColumnMappingMode propFromColumnMappingMode) {
         this.propFromColumnMappingMode = propFromColumnMappingMode;
-        return this;
+        return self();
     }
 
     /**
      * not nullable
      */
-    public ParseParamBuilder<BEAN> setSpreadsheetInput(InputStream spreadsheetInput) {
+    public ParseParamBuilder setSpreadsheetInput(InputStream spreadsheetInput) {
         this.spreadsheetInput = spreadsheetInput;
-        return this;
+        return self();
     }
 
-
-    /**
-     * not nullable
-     */
-    public ParseParamBuilder<BEAN> setFileType(SsBuiltInFileTypes fileType) {
-        this.fileType = fileType;
-        return this;
-    }
-
-
-    /**
-     * which sheet to load the data ?  By default it's the sheet at index 0
-     */
-    public ParseParamBuilder<BEAN> setSheetLocator(SsSheetLocator sheetLocator) {
-        this.sheetLocator = sheetLocator;
-        return this;
-    }
-
-
-    /**
-     * Required for CSV input.  Ignored by office(Excel) input
-     */
-    public ParseParamBuilder<BEAN> setInputCharset(String inputCharset) {
-        this.inputCharset = inputCharset;
-        return this;
-    }
-
-
-    /**
-     * Only used for CSV.  Default is ","
-     */
-    public ParseParamBuilder<BEAN> setCellSeparator(char cellSeparator) {
-        this.cellSeparator = cellSeparator;
-        return this;
-    }
 
     /**
      * The sheet has a header. default true.
      *
      * @return
      */
-    public ParseParamBuilder<BEAN> setSheetHasHeader(boolean sheetHasHeader) {
+    public ParseParamBuilder setSheetHasHeader(boolean sheetHasHeader) {
         this.sheetHasHeader = sheetHasHeader;
-        return this;
+        return self();
+    }
+
+    private BUILDER self() {
+        return (BUILDER) this;
     }
 
     private List<String> validate() {
@@ -102,17 +64,14 @@ public class ParseParamBuilder<BEAN> {
         List<String> errors = new ArrayList<>();
         builderHelper.validateFieldNotNull("beanClass", beanClass, errors);
         builderHelper.validateFieldNotNull("spreadsheetInput", spreadsheetInput, errors);
-        builderHelper.validateFieldNotNull("fileType", fileType, errors);
-        builderHelper.validateFieldNotNull("sheetLocator", sheetLocator, errors);
+
+
         builderHelper.validateFieldNotNull("propFromColumnMappingMode", propFromColumnMappingMode, errors);
 
         if (beanClass != null && !hasAccessibleZeroArgumentConstructor(beanClass)) {
             errors.add("The beanClass doesn't have an accessible zero-argument constructor: " + beanClass.getName());
         }
 
-        if (fileType == SsBuiltInFileTypes.CSV && inputCharset == null) {
-            errors.add("For CSV input the inputCharset is required");
-        }
 
         if (propFromColumnMappingMode == PropFromColumnMappingMode.BY_NAME && !sheetHasHeader) {
             errors.add("If the propFromColumnMappingMode is " + PropFromColumnMappingMode.BY_NAME + ", then the sheet must have header");
@@ -135,8 +94,13 @@ public class ParseParamBuilder<BEAN> {
         if (errors.size() > 0) {
             throw new IllegalArgumentException("Cannot build an object because of the following errors: \n" + StringUtils.join(errors, "\n"));
         }
-        return new ParseParam(beanClass, propFromColumnMappingMode, spreadsheetInput, inputCharset, fileType, cellSeparator, sheetLocator, sheetHasHeader);
+        return fileTypeSpecificBuild(beanClass, propFromColumnMappingMode, spreadsheetInput, sheetHasHeader);
     }
+
+    protected abstract ParseParam fileTypeSpecificBuild(Class<BEAN> beanClass, PropFromColumnMappingMode propFromColumnMappingMode, InputStream spreadsheetInput, boolean sheetHasHeader);
+
+    protected abstract void fileTypeSpecificValidate(List<String> errors);
+
 
     @Override
     public String toString() {

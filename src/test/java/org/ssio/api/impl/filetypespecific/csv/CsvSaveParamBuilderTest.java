@@ -1,7 +1,7 @@
 package org.ssio.api.impl.filetypespecific.csv;
 
 import org.junit.jupiter.api.Test;
-import org.ssio.api.impl.filetypespecific.csv.CsvSaveParamBuilder;
+import org.ssio.api.impl.filetypespecific.csv.save.CsvSaveParamBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;

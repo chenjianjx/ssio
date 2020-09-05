@@ -1,4 +1,4 @@
-package org.ssio.api.impl.filetypespecific.office;
+package org.ssio.api.impl.filetypespecific.office.save;
 
 import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.interfaces.save.SaveParam;
@@ -27,7 +27,7 @@ public class OfficeSaveParam<BEAN> extends SaveParam<BEAN> {
     }
 
     @Override
-    protected String getSpreadsheetFileType() {
+    public String getSpreadsheetFileType() {
         return SsBuiltInFileTypes.OFFICE;
     }
 }

@@ -1,4 +1,4 @@
-package org.ssio.api.impl.filetypespecific.csv;
+package org.ssio.api.impl.filetypespecific.csv.save;
 
 import org.ssio.api.impl.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.interfaces.save.SaveParam;
@@ -35,7 +35,7 @@ public class CsvSaveParam<BEAN> extends SaveParam<BEAN> {
     }
 
     @Override
-    protected String getSpreadsheetFileType() {
+    public String getSpreadsheetFileType() {
         return SsBuiltInFileTypes.CSV;
     }
 }

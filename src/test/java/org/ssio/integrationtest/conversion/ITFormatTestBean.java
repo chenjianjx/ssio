@@ -3,7 +3,7 @@ package org.ssio.integrationtest.conversion;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.time.DateUtils;
-import org.ssio.api.common.annotation.SsColumn;
+import org.ssio.api.external.annotation.SsColumn;
 
 import java.text.ParseException;
 import java.time.LocalDate;

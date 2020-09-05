@@ -2,7 +2,7 @@ package org.ssio.integrationtest.conversion;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.ssio.api.common.annotation.SsColumn;
+import org.ssio.api.external.annotation.SsColumn;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

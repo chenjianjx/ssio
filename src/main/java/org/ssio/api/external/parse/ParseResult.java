@@ -11,11 +11,11 @@ public class ParseResult<BEAN> {
     private List<BEAN> beans = new ArrayList<>();
 
     /**
-     * the errors of data rows (not including header row) found while being parsed. The error here can tell you which cell is wrong.
+     * the errors of data rows (not including header row) found while the sheet is parsed. The errors here can tell you which cells are wrong.
      */
     private List<CellError> cellErrors = new ArrayList<>();
 
-    public boolean hasCellErrors(){
+    public boolean hasCellErrors() {
         return this.cellErrors.size() > 0;
     }
 

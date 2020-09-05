@@ -16,7 +16,7 @@ public abstract class SaveParam<BEAN> {
     public static Function<DatumError, String> DATUM_ERR_BLANK_DISPLAY_FUNCTION = (datumError) -> "";
 
     /**
-     * show the stacktrace in the cells. Can be used in troubleshooting situations
+     * show the stacktrace in the cells. Can be used in troubleshooting scenarios
      */
     public static Function<DatumError, String> DATUM_ERR_DISPLAY_STACKTRACE_FUNCTION = (datumError) -> datumError.getStackTrace();
 

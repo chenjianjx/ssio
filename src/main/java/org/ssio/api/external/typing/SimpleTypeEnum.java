@@ -10,7 +10,9 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
- * only these types can be written to a cell.  If your field value is not in here, you need to convert it to one of these
+ * Only these types can be written to a cell.
+ * All cells can only be parsed as a value in one of these types.
+ * If your property's type is not in here, you need to convert it to one of these types.  See {@link ComplexTypeHandler}
  */
 public enum SimpleTypeEnum {
 

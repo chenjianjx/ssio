@@ -1,5 +1,5 @@
 package org.ssio.api.external.parse;
- 
+
 
 /**
  * Given a bean property "foo",  from which column to get its value?

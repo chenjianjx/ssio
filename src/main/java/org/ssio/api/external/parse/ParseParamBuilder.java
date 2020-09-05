@@ -45,7 +45,7 @@ public abstract class ParseParamBuilder<BEAN, BUILDER extends ParseParamBuilder<
 
 
     /**
-     * The sheet has a header. default true.
+     * Does the sheet have a header?  default true.
      *
      * @return
      */
@@ -74,12 +74,14 @@ public abstract class ParseParamBuilder<BEAN, BUILDER extends ParseParamBuilder<
 
 
         if (propFromColumnMappingMode == PropFromColumnMappingMode.BY_NAME && !sheetHasHeader) {
-            errors.add("If the propFromColumnMappingMode is " + PropFromColumnMappingMode.BY_NAME + ", then the sheet must have header");
+            errors.add("If the propFromColumnMappingMode is " + PropFromColumnMappingMode.BY_NAME + ", then the sheet must have a header");
         }
 
         if (!sheetHasHeader && propFromColumnMappingMode != PropFromColumnMappingMode.BY_INDEX) {
             errors.add("If the sheet has no header, then propFromColumnMappingMode has to be " + PropFromColumnMappingMode.BY_INDEX);
         }
+
+        fileTypeSpecificValidate(errors);
 
         if (beanClass != null && propFromColumnMappingMode != null) {
             new BeanClassInspector().getPropAndColumnMappingsForParseMode(beanClass, propFromColumnMappingMode, errors);

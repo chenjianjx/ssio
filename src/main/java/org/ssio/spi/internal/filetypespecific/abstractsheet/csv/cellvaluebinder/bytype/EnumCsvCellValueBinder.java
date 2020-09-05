@@ -16,7 +16,6 @@ public class EnumCsvCellValueBinder<T extends Enum<T>> extends CsvCellValueBinde
     }
 
 
-
     @Override
     protected Object parseFromCellText(String format, String text) {
         String string = StringUtils.trimToNull(text);

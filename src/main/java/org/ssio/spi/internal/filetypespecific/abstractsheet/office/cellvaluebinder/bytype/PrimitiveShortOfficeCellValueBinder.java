@@ -7,7 +7,7 @@ import org.ssio.spi.internal.filetypespecific.abstractsheet.office.cellvaluebind
 public class PrimitiveShortOfficeCellValueBinder extends OfficeCellValueBinder {
     @Override
     protected void setNonNullValueToPoiCell(Cell poiCell, String format, Object value) {
-        poiCell.setCellValue((short)value);
+        poiCell.setCellValue((short) value);
     }
 
     /**
@@ -41,7 +41,7 @@ public class PrimitiveShortOfficeCellValueBinder extends OfficeCellValueBinder {
             }
             case NUMERIC: {
                 double v = poiCell.getNumericCellValue();
-                return (short)v;
+                return (short) v;
             }
 
             default:

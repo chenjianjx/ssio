@@ -23,6 +23,9 @@ import java.util.stream.Collectors;
 
 import static org.ssio.util.lang.SsioReflectionUtils.createInstance;
 
+/**
+ * Basically, the class process all {@link SsColumn} annotations in a class
+ */
 public class BeanClassInspector {
 
 

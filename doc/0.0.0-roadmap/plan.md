@@ -16,9 +16,9 @@
 * type handler ✔
 * format for date in excel and csv ✔ 
 * optional header during parsing ✔
-* Integration test to be serious
-  * can run with maven
-  * does the check
-* fix the api/internal problem and make helper/manager/workers injectable
-  * extensible file type   
+* fix the api/internal problem and make helper/manager/workers injectable ✔ 
+* make extensible  ✔
 * [Release Milestone]  readme
+  * 99% Readme with sample code
+  * Do a central maven release
+  * Update the readme 

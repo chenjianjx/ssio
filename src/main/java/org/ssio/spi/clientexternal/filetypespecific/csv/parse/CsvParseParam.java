@@ -1,8 +1,8 @@
 package org.ssio.spi.clientexternal.filetypespecific.csv.parse;
 
-import org.ssio.spi.clientexternal.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.external.parse.ParseParam;
 import org.ssio.api.external.parse.PropFromColumnMappingMode;
+import org.ssio.spi.clientexternal.filetypespecific.SsBuiltInFileTypes;
 
 import java.io.InputStream;
 
@@ -13,7 +13,7 @@ public class CsvParseParam<BEAN> extends ParseParam<BEAN> {
     private char cellSeparator;
 
     /**
-     * Please the builder to build it
+     * Please use the builder to build it
      */
     protected CsvParseParam(Class<BEAN> beanClass, PropFromColumnMappingMode propFromColumnMappingMode, InputStream spreadsheetInput, boolean sheetHasHeader,
                             String inputCharset, char cellSeparator) {

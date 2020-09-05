@@ -9,7 +9,7 @@ import java.math.BigInteger;
 public class BigIntegerOfficeCellValueBinder extends OfficeCellValueBinder {
     @Override
     protected void setNonNullValueToPoiCell(Cell poiCell, String format, Object value) {
-        poiCell.setCellValue(((BigInteger)value).doubleValue());
+        poiCell.setCellValue(((BigInteger) value).doubleValue());
     }
 
     @Override
@@ -36,7 +36,7 @@ public class BigIntegerOfficeCellValueBinder extends OfficeCellValueBinder {
             }
             case NUMERIC: {
                 double v = poiCell.getNumericCellValue();
-                return BigInteger.valueOf((long)v);
+                return BigInteger.valueOf((long) v);
             }
 
             default:

@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * The annotation to map a java bean property <=> a column in the sheet.
- * Please put it on a field, or on a getter/setter method.
+ * The annotation to map a java bean property to or from a column in the sheet.
+ * Please put the annotation on a field, or on a getter/setter method.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
@@ -48,13 +48,13 @@ public @interface SsColumn {
 
 
     /**
-     * The pattern in spreadsheet if the property type is one of [{@link Date}, {@link LocalDate}, {@link LocalDateTime} ] .
-     * The pattern should be {@link java.text.SimpleDateFormat}-compatible pattern definition.
+     * The format in spreadsheet if the property type is one of [{@link Date}, {@link LocalDate}, {@link LocalDateTime} ] .
+     * The format should be {@link java.text.SimpleDateFormat}-compatible pattern definition.
      * Default values are:
      * * For {@link Date} and {@link LocalDateTime}, it is {@link SsioApiConstants#DEFAULT_LOCAL_DATE_TIME_PATTERN};
      * * For {@link LocalDate}, it is {@link SsioApiConstants#DEFAULT_LOCAL_DATE_PATTERN};
      * <p>
-     * For other types, this pattern will be ignored.
+     * For other types, this format will be ignored.
      *
      * @return
      */
@@ -62,8 +62,8 @@ public @interface SsColumn {
 
 
     /**
-     * If the property is not of a simple type supported by {@link SimpleTypeEnum}, you need to provider a handler here to make conversions between your complex type and the supported simple types.
-     * You can also use it for simple-typed properties, for example, if you want handle a LocalDate as a number
+     * If the property is not of a simple type supported by {@link SimpleTypeEnum}, you need to provider a handler here to make conversions between your complex type and a supported simple type.
+     * You can also use it for simple-typed properties, for example, if you want save a LocalDate as a number
      *
      * @return
      */

@@ -1,8 +1,8 @@
 package org.ssio.spi.clientexternal.filetypespecific.csv.save;
 
-import org.ssio.spi.clientexternal.filetypespecific.SsBuiltInFileTypes;
 import org.ssio.api.external.save.DatumError;
 import org.ssio.api.external.save.SaveParam;
+import org.ssio.spi.clientexternal.filetypespecific.SsBuiltInFileTypes;
 
 import java.io.OutputStream;
 import java.util.Collection;
@@ -16,11 +16,10 @@ public class CsvSaveParam<BEAN> extends SaveParam<BEAN> {
 
     /**
      * Please use the builder to create an instance
-     *
      */
     protected CsvSaveParam(Collection<BEAN> beans, Class<BEAN> beanClass, OutputStream outputTarget,
-                        boolean createHeader, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction,
-                        char cellSeparator, String outputCharset) {
+                           boolean createHeader, boolean stillSaveIfDataError, Function<DatumError, String> datumErrDisplayFunction,
+                           char cellSeparator, String outputCharset) {
         super(beans, beanClass, outputTarget, createHeader, stillSaveIfDataError, datumErrDisplayFunction);
         this.cellSeparator = cellSeparator;
         this.outputCharset = outputCharset;

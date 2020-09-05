@@ -13,13 +13,21 @@ import java.util.Map;
  */
 public class SsioManagerFactory {
 
+    public static SsioManager newInstance() {
+        return newInstance(Collections.emptyMap());
+    }
+
+    /**
+     * Use this one if you have workbooks outside {@link org.ssio.spi.clientexternal.filetypespecific.SsBuiltInFileTypes}
+     *
+     * @param extraWorkbookFactories
+     * @return
+     */
     public static SsioManager newInstance(Map<String, SsWorkbookFactory> extraWorkbookFactories) {
         SsWorkbookFactoryRegistry workbookFactoryRegistry = new SsWorkbookFactoryRegistry();
         extraWorkbookFactories.forEach((fileType, factory) -> workbookFactoryRegistry.register(fileType, factory));
         return new SsioManagerImpl(workbookFactoryRegistry);
     }
 
-    public static SsioManager newInstance() {
-        return newInstance(Collections.emptyMap());
-    }
+
 }

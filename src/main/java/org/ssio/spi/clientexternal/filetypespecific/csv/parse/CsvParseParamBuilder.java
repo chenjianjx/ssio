@@ -1,8 +1,8 @@
 package org.ssio.spi.clientexternal.filetypespecific.csv.parse;
 
-import org.ssio.spi.clientexternal.filetypespecific.csv.CsvConstants;
 import org.ssio.api.external.parse.ParseParamBuilder;
 import org.ssio.api.external.parse.PropFromColumnMappingMode;
+import org.ssio.spi.clientexternal.filetypespecific.csv.CsvConstants;
 
 import java.io.InputStream;
 import java.util.List;

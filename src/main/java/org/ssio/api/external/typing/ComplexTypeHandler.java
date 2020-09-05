@@ -1,10 +1,14 @@
 package org.ssio.api.external.typing;
 
 /**
- * Note:  please make the implementation classes "light-weighted", which means initialisation should be very quick.
+ * Convert complex types to simple types so that they can be handled.
+ * <p>
+ * Note:
+ * * Please make the implementation classes "light-weighted", which means initialisation should be very quick.
+ * * Please make the class stateless.   Ssio MIGHT use only a single instance of a property for all rows
  *
  * @param <C> The complex type
- * @param <S> The simplified type
+ * @param <S> The simple type
  */
 public interface ComplexTypeHandler<C, S> {
 
@@ -17,10 +21,7 @@ public interface ComplexTypeHandler<C, S> {
 
 
     /**
-     * Convert the complex value to a simple-typed value so that it can be saved onto a sheet. Make an empty implementation if you don't need to save
-     *
-     * @param complexTypeValue keep in mind this can be null
-     * @return The type of the value must be consistent with the return type of {@link #getTargetSimpleType()}
+     * Convert the complex value to a simple-typed value so that it can be saved onto a sheet. Make an empty implementation if you don't are not doing save
      */
     S nonNullValueToSimple(C complexTypeValue);
 
@@ -28,9 +29,8 @@ public interface ComplexTypeHandler<C, S> {
 
 
     /**
-     * Convert simple-typed value to the complex-typed value, which is what you want in your javabeans. Make an empty implementation if you don't need to parse
+     * Convert simple-typed value to complex-typed value, which is what you want in your javabeans. Make an empty implementation if you don't are not doing parse
      *
-     * @param simpleTypeValue keep in mind this can be null
      * @return
      */
     C fromNonNullSimpleTypeValue(S simpleTypeValue);
@@ -38,6 +38,9 @@ public interface ComplexTypeHandler<C, S> {
     C fromNullSimpleTypeValue();
 
 
+    /**
+     * Only used by the related annotation, which doesn't accept null as the default value
+     */
     class NO_HANDLING implements ComplexTypeHandler<Object, Object> {
 
 

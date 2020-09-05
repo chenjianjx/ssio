@@ -7,9 +7,9 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.ssio.api.external.typing.SimpleTypeEnum;
-import org.ssio.spi.internal.filetypespecific.abstractsheet.office.cellvaluebinder.OfficeCellValueBinderRepo;
 import org.ssio.spi.developerexternal.abstractsheet.cellvaluebinder.SsCellValueBinder;
 import org.ssio.spi.developerexternal.abstractsheet.model.SsCell;
+import org.ssio.spi.internal.filetypespecific.abstractsheet.office.cellvaluebinder.OfficeCellValueBinderRepo;
 
 public class OfficeCell implements SsCell {
     /**

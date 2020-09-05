@@ -7,6 +7,9 @@ import org.ssio.api.external.typing.SimpleTypeEnum;
 
 import java.util.Objects;
 
+/**
+ * The mapping between a prop and a column
+ */
 public class PropAndColumn {
     /**
      * won't be null

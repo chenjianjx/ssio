@@ -10,7 +10,7 @@ import org.ssio.spi.developerexternal.abstractsheet.model.SsCell;
 public class SsCellHelper {
 
     /**
-     * read the value as a target java type
+     * read the value into a target java type
      *
      * @throws RuntimeException if the cell value and the java type are not compatible with each other
      */
@@ -23,7 +23,7 @@ public class SsCellHelper {
     }
 
     /**
-     * Write value of some type, to this cell
+     * Write some value of some java type, to this cell
      *
      * @param valueType
      * @param valueEnumClassIfEnum

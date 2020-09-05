@@ -1,8 +1,8 @@
 package org.ssio.spi.clientexternal.filetypespecific.office.parse;
 
-import org.ssio.api.internal.common.sheetlocate.SsSheetLocator;
 import org.ssio.api.external.parse.ParseParamBuilder;
 import org.ssio.api.external.parse.PropFromColumnMappingMode;
+import org.ssio.api.internal.common.sheetlocate.SsSheetLocator;
 import org.ssio.util.code.BuilderPatternHelper;
 
 import java.io.InputStream;
@@ -13,7 +13,7 @@ public class OfficeParseParamBuilder<BEAN> extends ParseParamBuilder<BEAN, Offic
 
 
     /**
-     * which sheet to load the data ?  By default it's the sheet at index 0
+     * which sheet to load the data from?  By default it's the sheet at index 0
      */
     public OfficeParseParamBuilder<BEAN> setSheetLocator(SsSheetLocator sheetLocator) {
         this.sheetLocator = sheetLocator;

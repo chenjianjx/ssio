@@ -14,7 +14,6 @@ public class OfficeSaveParamBuilder<BEAN> extends SaveParamBuilder<BEAN, OfficeS
 
     /**
      * nullable.
-     * will be ignored by csv
      */
     public OfficeSaveParamBuilder<BEAN> setSheetName(String sheetName) {
         this.sheetName = sheetName;

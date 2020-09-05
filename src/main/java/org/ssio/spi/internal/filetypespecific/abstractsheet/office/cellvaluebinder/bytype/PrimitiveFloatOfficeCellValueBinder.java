@@ -9,6 +9,7 @@ public class PrimitiveFloatOfficeCellValueBinder extends OfficeCellValueBinder {
     protected void setNonNullValueToPoiCell(Cell poiCell, String format, Object value) {
         poiCell.setCellValue((float) value);
     }
+
     /**
      * @return won't be null
      */
@@ -40,7 +41,7 @@ public class PrimitiveFloatOfficeCellValueBinder extends OfficeCellValueBinder {
             }
             case NUMERIC: {
                 double v = poiCell.getNumericCellValue();
-                return (float)v;
+                return (float) v;
             }
 
             default:

@@ -11,10 +11,7 @@ import org.ssio.spi.clientexternal.spiregistry.SsWorkbookFactoryRegistry;
 
 import java.io.IOException;
 
-/**
- * The facade.
- * It's state-less, hence thread-safe
- */
+
 public class SsioManagerImpl implements SsioManager {
 
     private BeansSaver beansSaver;
@@ -49,12 +46,4 @@ public class SsioManagerImpl implements SsioManager {
         return sheetParser.doWork(param);
     }
 
-    /**
-     * Expose it, in case you need to add your own registry  (An SPI socket)
-     *
-     * @return
-     */
-    public SsWorkbookFactoryRegistry getWorkbookFactoryRegistry() {
-        return workbookFactoryRegistry;
-    }
 }

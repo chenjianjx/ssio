@@ -7,8 +7,8 @@ public class SsSheetByNameLocator implements SsSheetLocator {
 
     private String name;
 
-    public SsSheetByNameLocator(String index) {
-        this.name = index;
+    public SsSheetByNameLocator(String name) {
+        this.name = name;
     }
 
     public String getName() {

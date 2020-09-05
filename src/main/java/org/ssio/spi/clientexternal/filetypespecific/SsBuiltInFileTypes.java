@@ -2,7 +2,7 @@ package org.ssio.spi.clientexternal.filetypespecific;
 
 /**
  * built-in spreadsheet file types.
- * This is not defined as enum, so extension is possible
+ * This is not defined as an enum so that extension is possible
  */
 public interface SsBuiltInFileTypes {
     /**

@@ -1,8 +1,8 @@
 package org.ssio.spi.clientexternal.filetypespecific.csv.save;
 
-import org.ssio.spi.clientexternal.filetypespecific.csv.CsvConstants;
 import org.ssio.api.external.save.DatumError;
 import org.ssio.api.external.save.SaveParamBuilder;
+import org.ssio.spi.clientexternal.filetypespecific.csv.CsvConstants;
 
 import java.io.OutputStream;
 import java.util.Collection;

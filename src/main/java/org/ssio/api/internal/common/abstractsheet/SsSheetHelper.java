@@ -4,10 +4,10 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.ssio.api.internal.common.PropAndColumn;
 import org.ssio.api.external.save.DatumError;
 import org.ssio.api.external.typing.ComplexTypeHandler;
 import org.ssio.api.external.typing.SimpleTypeEnum;
+import org.ssio.api.internal.common.PropAndColumn;
 import org.ssio.spi.developerexternal.abstractsheet.model.SsCell;
 import org.ssio.spi.developerexternal.abstractsheet.model.SsRow;
 import org.ssio.spi.developerexternal.abstractsheet.model.SsSheet;
@@ -18,13 +18,13 @@ import java.util.function.Function;
 import static org.ssio.util.lang.SsioReflectionUtils.createInstance;
 
 /**
- * some file-type-independent logic
+ * some file-type-independent logic for sheets
  */
 public class SsSheetHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(SsSheetHelper.class);
 
-    private SsCellHelper cellHelper ;
+    private SsCellHelper cellHelper;
 
     public SsSheetHelper(SsCellHelper cellHelper) {
         this.cellHelper = cellHelper;

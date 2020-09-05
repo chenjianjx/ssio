@@ -7,7 +7,7 @@ import org.ssio.spi.internal.filetypespecific.abstractsheet.office.cellvaluebind
 public class DoubleOfficeCellValueBinder extends OfficeCellValueBinder {
     @Override
     protected void setNonNullValueToPoiCell(Cell poiCell, String format, Object value) {
-        poiCell.setCellValue(((Double)value));
+        poiCell.setCellValue(((Double) value));
     }
 
     @Override

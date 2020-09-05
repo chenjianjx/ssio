@@ -7,7 +7,8 @@ import org.ssio.spi.developerexternal.abstractsheet.model.SsWorkbook;
 import java.io.IOException;
 
 /**
- * Ab implementation of this class serves as the entry of the spi-implementation
+ * The factory to create an abstract workbook
+ * An implementation of this class will serve as the entry of the spi-implementation
  *
  * @param <W>
  */

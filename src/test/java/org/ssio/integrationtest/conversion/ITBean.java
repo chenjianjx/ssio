@@ -57,8 +57,6 @@ public class ITBean {
     private ITEnum enumeration;
 
 
-
-
     public boolean isPrimBoolean() {
         return primBoolean;
     }

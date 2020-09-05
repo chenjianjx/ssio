@@ -1,8 +1,8 @@
 package org.ssio.spi.internal.filetypespecific.abstractsheet.csv.cellvaluebinder;
 
 
-import org.ssio.spi.internal.filetypespecific.abstractsheet.csv.model.CsvCell;
 import org.ssio.spi.developerexternal.abstractsheet.cellvaluebinder.SsCellValueBinder;
+import org.ssio.spi.internal.filetypespecific.abstractsheet.csv.model.CsvCell;
 
 public abstract class CsvCellValueBinder implements SsCellValueBinder<CsvCell> {
 

@@ -1,8 +1,8 @@
 package org.ssio.spi.internal.filetypespecific.abstractsheet.office.cellvaluebinder;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.ssio.spi.internal.filetypespecific.abstractsheet.office.model.OfficeCell;
 import org.ssio.spi.developerexternal.abstractsheet.cellvaluebinder.SsCellValueBinder;
+import org.ssio.spi.internal.filetypespecific.abstractsheet.office.model.OfficeCell;
 
 
 public abstract class OfficeCellValueBinder implements SsCellValueBinder<OfficeCell> {
@@ -28,7 +28,8 @@ public abstract class OfficeCellValueBinder implements SsCellValueBinder<OfficeC
 
     /**
      * set value to a cell
-     *  @param poiCell
+     *
+     * @param poiCell
      * @param format
      * @param value   the java type of the value must be the curated type of the binder
      */

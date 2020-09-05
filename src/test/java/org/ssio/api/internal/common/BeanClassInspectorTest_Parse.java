@@ -103,7 +103,6 @@ class BeanClassInspectorTest_Parse {
     }
 
 
-
     @Test
     void getMappings_allCases_byIndex() {
 

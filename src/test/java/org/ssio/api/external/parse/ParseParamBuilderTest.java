@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-
 class ParseParamBuilderTest {
 
     public static class TestParam<BEAN> extends ParseParam<BEAN> {
@@ -38,7 +37,7 @@ class ParseParamBuilderTest {
         }
     }
 
-        @Test
+    @Test
     void build_allWrong() {
         ParseParamBuilder builder = new TestParamBuilder().setPropFromColumnMappingMode(null);
 

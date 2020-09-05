@@ -8,11 +8,14 @@ import org.ssio.api.external.save.SaveResult;
 
 import java.io.IOException;
 
+/**
+ * The facade
+ */
 public interface SsioManager {
 
 
     /**
-     * beans to sheet
+     * save beans to sheet
      *
      * @param param Please use {@link SaveParamBuilder} to create the param
      */
@@ -20,7 +23,7 @@ public interface SsioManager {
 
 
     /**
-     * sheet to beans
+     * parse sheet into beans
      *
      * @param param Please use {@link ParseParam} to create the param
      * @return

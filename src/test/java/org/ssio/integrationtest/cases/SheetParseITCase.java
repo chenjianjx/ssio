@@ -41,7 +41,7 @@ public class SheetParseITCase {
     }
 
     static Stream<String> fileTypeProvider() {
-        return Stream.of(SsBuiltInFileTypes.OFFICE, SsBuiltInFileTypes.CSV);
+        return Stream.of(SsBuiltInFileTypes.CSV, SsBuiltInFileTypes.OFFICE);
     }
 
     static Stream<Arguments> fileType_mappingMode_provider() {
@@ -478,26 +478,6 @@ public class SheetParseITCase {
 
             ParseResult<ITSimpleBean> result = manager.parse(param);
             printResult(result);
-
-//            assertEquals(4, result.getBeans().size());
-//            assertFalse(result.hasCellErrors());
-//
-//            ITSimpleBean bean1 = result.getBeans().get(0);
-//            assertEquals("string1", bean1.getStr());
-//            assertEquals(100, bean1.getPrimInt());
-//
-//            ITSimpleBean bean2 = result.getBeans().get(1);
-//            assertEquals(null, bean2.getStr());
-//            assertEquals(0, bean2.getPrimInt());
-//
-//            ITSimpleBean bean3 = result.getBeans().get(2);
-//            assertEquals(null, bean3.getStr());
-//            assertEquals(0, bean3.getPrimInt());
-//
-//            ITSimpleBean bean4 = result.getBeans().get(3);
-//            assertEquals("string2", bean4.getStr());
-//            assertEquals(200, bean4.getPrimInt());
-
 
             assertEquals(2, result.getBeans().size());
             assertFalse(result.hasCellErrors());

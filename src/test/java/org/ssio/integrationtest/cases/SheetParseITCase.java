@@ -3,6 +3,7 @@ package org.ssio.integrationtest.cases;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -40,7 +41,7 @@ public class SheetParseITCase {
     }
 
     static Stream<String> fileTypeProvider() {
-        return Stream.of(SsBuiltInFileTypes.CSV, SsBuiltInFileTypes.OFFICE);
+        return Stream.of(SsBuiltInFileTypes.OFFICE, SsBuiltInFileTypes.CSV);
     }
 
     static Stream<Arguments> fileType_mappingMode_provider() {
@@ -463,6 +464,56 @@ public class SheetParseITCase {
         }
 
     }
+
+    @ParameterizedTest
+    @MethodSource("fileTypeProvider")
+    void sheetToBeans_withEmptyRowsTest(String spreadsheetFileType) throws IOException {
+        String inputResourceClasspath = "/integration-test/SimpleBean-with-empty-rows" + decideTargetFileExtension(spreadsheetFileType);
+        try (InputStream input = this.getClass().getResourceAsStream(inputResourceClasspath)) {
+            ParseParam<ITSimpleBean> param =
+                    newParseParamBuilder(spreadsheetFileType)
+                            .setBeanClass(ITSimpleBean.class)
+                            .setSpreadsheetInput(input)
+                            .build();
+
+            ParseResult<ITSimpleBean> result = manager.parse(param);
+            printResult(result);
+
+//            assertEquals(4, result.getBeans().size());
+//            assertFalse(result.hasCellErrors());
+//
+//            ITSimpleBean bean1 = result.getBeans().get(0);
+//            assertEquals("string1", bean1.getStr());
+//            assertEquals(100, bean1.getPrimInt());
+//
+//            ITSimpleBean bean2 = result.getBeans().get(1);
+//            assertEquals(null, bean2.getStr());
+//            assertEquals(0, bean2.getPrimInt());
+//
+//            ITSimpleBean bean3 = result.getBeans().get(2);
+//            assertEquals(null, bean3.getStr());
+//            assertEquals(0, bean3.getPrimInt());
+//
+//            ITSimpleBean bean4 = result.getBeans().get(3);
+//            assertEquals("string2", bean4.getStr());
+//            assertEquals(200, bean4.getPrimInt());
+
+
+            assertEquals(2, result.getBeans().size());
+            assertFalse(result.hasCellErrors());
+
+            ITSimpleBean bean1 = result.getBeans().get(0);
+            assertEquals("string1", bean1.getStr());
+            assertEquals(100, bean1.getPrimInt());
+
+
+            ITSimpleBean bean2 = result.getBeans().get(1);
+            assertEquals("string2", bean2.getStr());
+            assertEquals(200, bean2.getPrimInt());
+        }
+    }
+
+
 
     private ParseParamBuilder newParseParamBuilder(String fileType) {
         switch (fileType) {

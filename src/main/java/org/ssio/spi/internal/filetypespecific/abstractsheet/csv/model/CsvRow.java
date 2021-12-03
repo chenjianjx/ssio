@@ -2,6 +2,7 @@ package org.ssio.spi.internal.filetypespecific.abstractsheet.csv.model;
 
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
 import org.ssio.spi.developerexternal.abstractsheet.model.SsCell;
 import org.ssio.spi.developerexternal.abstractsheet.model.SsRow;
 
@@ -23,10 +24,16 @@ public class CsvRow implements SsRow {
 
     public static CsvRow createFromAcsRecord(CSVRecord acsRecord) {
         CsvRow row = new CsvRow();
+        boolean allColumnsBlank = true;
         for (String s : acsRecord) {
+            allColumnsBlank = StringUtils.isBlank(s) && allColumnsBlank;
             row.cells.add(CsvCell.createWithContent(s));
         }
-        return row;
+        if (allColumnsBlank) {
+            return null;
+        } else {
+            return row;
+        }
     }
 
     @Override

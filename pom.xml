@@ -5,7 +5,7 @@
 	<groupId>com.github.chenjianjx</groupId>
 	<artifactId>ssio</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.1</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<name>Simple Spreadsheet I/O</name>
 	<description>Save javabeans to a spreadsheet, or parse a spreadsheet into javabeans</description>
 	<url>https://github.com/chenjianjx/ssio</url>

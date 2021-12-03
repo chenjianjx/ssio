@@ -16,13 +16,8 @@ Save javabeans to a spreadsheet, or parse a spreadsheet into javabeans
   
 # Quick start
 
-```
-        <dependency>
-            <groupId>com.github.chenjianjx</groupId>
-            <artifactId>ssio</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-```        
+Go to [https://search.maven.org/artifact/com.github.chenjianjx/ssio](https://search.maven.org/artifact/com.github.chenjianjx/ssio) to find the latest version, and add it to your project with maven or gradle.  
+
 
 **Bean definition** 
 
@@ -90,6 +85,7 @@ public class Player {
 * Things that may be surprising (to some people)
   * @SsColumn can be applied to getter/setter methods
   * @SsColumn defined in parent classes will be inherited
+  * During parsing, blank rows will be ignored
 
 All features are covered by the [integration tests](/src/test/java/org/ssio/integrationtest/cases)
   
@@ -101,4 +97,4 @@ A sample of extension can be found at https://github.com/chenjianjx/ssio-extensi
 
 # Credits
 * The library is based on [Apache POI](https://poi.apache.org/) and [Apache Commons CSV](https://commons.apache.org/proper/commons-csv/index.html)
-* [Sep4j](https://github.com/chenjianjx/sep4j) is a precursor of this lbirary
+* [Sep4j](https://github.com/chenjianjx/sep4j) is a precursor of this library

@@ -10,7 +10,7 @@ public class ITSimpleBean {
     private String str = "some string";
 
     @SsColumn(index = 1)
-    private int primInt = 100;
+    private int primInt = 99;
 
     public String getStr() {
         return str;

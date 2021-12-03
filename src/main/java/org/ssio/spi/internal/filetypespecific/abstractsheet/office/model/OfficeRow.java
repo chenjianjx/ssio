@@ -32,6 +32,10 @@ public class OfficeRow implements SsRow {
         OfficeRow row = new OfficeRow();
         row.poiRow = poiRow;
 
+        if (poiRow == null) {
+            return null;
+        }
+
         int numOfCells = poiRow.getLastCellNum();
         for (int i = 0; i < numOfCells; i++) {
             Cell poiCell = poiRow.getCell(i);

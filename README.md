@@ -4,7 +4,7 @@ Save javabeans to a spreadsheet, or parse a spreadsheet into javabeans
 
 # Features
 * Annotation based mapping
-* Support Excel-like Spreadsheets & CSV 
+* Support Excel-like files & CSV 
 * Complex type handling 
 * Saving features
   * Show errors in cells (if needed) 

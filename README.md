@@ -1,27 +1,28 @@
 # Ssio = Simple Spreadsheet I/O
 
-Save javabeans to a spreadsheet, or parse a spreadsheet into javabeans
+Save javabeans to a spreadsheet, or parse a spreadsheet into javabeans. 
 
 # Features
 * Annotation based mapping
-* Support Excel-like files & CSV 
-* Complex type handling 
+* Support Excel, CSV and other spreadsheet types 
+* Complex type handling
 * Saving features
   * Show errors in cells (if needed) 
-  * Optional header 
+  * Optional header
 * Parsing features
-  * Parse from non-first sheet
-  * Map by column name/index
-  * Parse sheet without header 
+  * Map by column name or column index
+  * Parse a sheet without a header 
   
 # Quick start
 
-**Maven/Gradle Dependency** 
+_The following will use Excel type (`*.xlsx`) as an example.  For other [spreadsheet types](#supported-spreadsheet-types), check corresponding docs._
 
-Go to [https://search.maven.org/artifact/com.github.chenjianjx/ssio](https://search.maven.org/artifact/com.github.chenjianjx/ssio) to find the latest version, and add it to your project with maven or gradle.  
+## Maven/Gradle Dependency 
+
+Click [this](https://search.maven.org/artifact/com.github.chenjianjx.ssio/ssio-ext-office) to find the latest version, and add it to your project with maven or gradle.
 
 
-**Bean definition** 
+## Add annotations to your JavaBean
 
 ```java
 public class Player {
@@ -35,68 +36,98 @@ public class Player {
     @SsColumn(index = 2, typeHandler = FullNameTypeHandler.class) //complex prop type
     private FullName fullName;
 
-    @SsColumn(index = 3) //The enum's name() will be saved. Otherwise, use a typeHandler
+    //The enum's name() will be saved. You can use a typeHandler to change it
+    @SsColumn(index = 3) 
     private SportType sportType;
 
     @SsColumn(index = 4, format = "yyyy/MM/dd") //date format
     private LocalDate birthDate;
 
-    @SsColumn(index = 5, typeHandler = TimestampAsMillisHandler.class)
     //if you prefer saving timestamp as number
+    @SsColumn(index = 5, typeHandler = TimestampAsMillisHandler.class)
     private LocalDateTime createdWhen;
     ...
 }
 ```
 
-**Save** 
+## Beans to spreadsheet in one line of code
+
 ```java
-
-      SaveParam<Player> saveParam =
-                //Excel-like file. For CSV,  use "new CsvSaveParamBuilder()"
-                new OfficeSaveParamBuilder<Player>()  
-                        .setBeanClass(Player.class)
-                        .setBeans(players)
-                        .setOutputTarget(outputStream)
-                        .build();
-
-        //Go to the SsioManagerFactory.java to see IoC options
-        SsioManager ssioManager = SsioManagerFactory.newInstance();
-
-        SaveResult saveResult = ssioManager.save(saveParam);
-        //saveResult.getDatumErrors()
-
-```
-
-**Parse**
-```java
-        //Excel-like file. For CSV,  use "new CsvParseParamBuilder()"
-        ParseParam<Player> parseParam = new OfficeParseParamBuilder()
-                .setBeanClass(Player.class)
-                .setSpreadsheetInput(inputStream)
-                .build();
-
-        ParseResult<Player> parseResult = ssioManager.parse(parseParam);
-        List<Player> parsedPlayers = parseResult.getBeans();
-        // parseResult.getCellErrors();
-
+OfficeSsioTemplate.defaultInstance().toSheet(players, Player.class, outputStream, false);
 ```  
 
-# Advanced features
 
-* Explore [SaveParamBuilder](src/main/java/org/ssio/api/external/save/SaveParamBuilder.java) , [ParseParamBuilder](src/main/java/org/ssio/api/external/parse/ParseParamBuilder.java) and their child classes for all options
-* Things that may be surprising (to some people)
-  * @SsColumn can be applied to getter/setter methods
-  * @SsColumn defined in parent classes will be inherited
-  * During parsing, blank rows will be ignored
+## Spreadsheet to beans in one line of code
 
-All features are covered by the [integration tests](/src/test/java/org/ssio/integrationtest/cases)
+```java
+List<Player> players = OfficeSsioTemplate.defaultInstance()
+                            .toBeans(inputStream, Player.class, true);
+```  
+
+# Want more control ?
+
+You can get more control by using more parameters, and can get more details from a result data structure .
+
+_The following will use Excel type (`*.xlsx`) as an example.  For other [spreadsheet types](#supported-spreadsheet-types), check corresponding docs._
+
+## Beans to spreadsheet
+
+```java
+SaveParam<Player> saveParam =
+    new OfficeSaveParamBuilder<Player>()
+        .setBeans(players)
+        .setBeanClass(Player.class)
+        .setOutputTarget(outputStream)
+        .setCreateHeader(false)  //no header
+        .setStillSaveIfDataError(false) //if there is data error, don't write to output
+        .setDatumErrDisplayFunction(
+                //put datum error stack trace in the cell
+                (datumError) -> datumError.getStackTrace()) 
+        .build();
+
+SsioManager ssioManager = new SsioManagerImpl(new OfficeWorkbookFactory()); //IoC friendly
+
+SaveResult saveResult = ssioManager.save(saveParam);
+
+//It will tell which bean's which property is wrong and why
+saveResult.getDatumErrors().forEach(System.err::println); 
+```
+
+## Spreadsheet to beans
+
+```java
+
+ParseParam<Player> parseParam = new OfficeParseParamBuilder<Player>()
+        .setBeanClass(Player.class)
+        //e.g. column 3 -> bean property "foo"
+        .setPropFromColumnMappingMode(PropFromColumnMappingMode.BY_INDEX) 
+        .setSpreadsheetInput(inputStream)
+        .setSheetHasHeader(false) //The sheet has no header row
+        //In a multi-sheet Excel file, find the target sheet
+        .setSheetLocator(SheetLocator.byNameLocator("Sheet0")) 
+        .build();
+
+SsioManager ssioManager = new SsioManagerImpl(new OfficeWorkbookFactory()); //IoC friendly
+
+ParseResult<Player> parseResult = ssioManager.parse(parseParam);
+List<Player> parsedPlayers = parseResult.getBeans();
+//It will tell which cell is wrong and why
+parseResult.getCellErrors().forEach(System.err::println); 
+```
+
+
+# Things that may be surprising
+
+* @SsColumn can be applied to getter/setter methods
+* @SsColumn defined in parent classes will be inherited
+* During parsing, blank rows will be ignored
   
-# Extend ssio
-It's possible to extend ssio for file types other than Excel-like files and CSV files, e.g., Google Spreadsheet
+# Supported spreadsheet types
 
-A sample of extension can be found at https://github.com/chenjianjx/ssio-extension-sample
-    
+* [Excel](./ssio-ext-office/README.md)
+* [Csv](./ssio-ext-csv/README.md)
+* [Html table](./ssio-ext-html-table/README.md)
+
 
 # Credits
-* The library is based on [Apache POI](https://poi.apache.org/) and [Apache Commons CSV](https://commons.apache.org/proper/commons-csv/index.html)
 * [Sep4j](https://github.com/chenjianjx/sep4j) is a precursor of this library

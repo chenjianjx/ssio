@@ -1,0 +1,10 @@
+dependencies {
+    api(project(":ssio-core"))
+
+    implementation "commons-io:commons-io"
+    implementation "org.apache.commons:commons-lang3"
+
+    implementation "org.slf4j:slf4j-api"
+    implementation "org.junit.jupiter:junit-jupiter"
+    implementation "org.slf4j:slf4j-simple"
+}

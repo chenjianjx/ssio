@@ -1,0 +1,28 @@
+body {
+    margin: 32px;
+}
+
+.my-own-table {
+    width: 100%;
+    border-collapse: collapse;
+    display: block;
+    overflow-x: auto;
+}
+
+.my-own-table, .my-own-table th, .my-own-table td {
+    border: 1px solid #5c6bc0;
+}
+
+.my-own-table th {
+    background-color: #3f51b5;
+    color: white;
+    padding: 15px;
+    text-align: left;
+}
+
+.my-own-table td {
+    background-color: #e8eaf6;
+    color: #283593;
+    padding: 15px;
+    text-align: left;
+}

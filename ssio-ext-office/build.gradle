@@ -1,0 +1,11 @@
+dependencies {
+    api(project(":ssio-core"))
+
+    implementation "org.apache.poi:poi-ooxml"
+    implementation "org.apache.commons:commons-lang3"
+
+
+    testImplementation "commons-io:commons-io"
+    testImplementation(project(":ssio-ext-test-common"))
+    testImplementation "org.junit.jupiter:junit-jupiter" //to let intellij identify test cases
+}

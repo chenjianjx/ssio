@@ -1,0 +1,5 @@
+include "ssio-core"
+include "ssio-ext-test-common"
+include "ssio-ext-csv"
+include "ssio-ext-office"
+include "ssio-ext-html-table"

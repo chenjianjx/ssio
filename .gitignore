@@ -11,3 +11,7 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 /*.iml
 /**/.DS_Store
+/.gradle/
+/gradle/libs.versions.toml
+/**/build/
+/gradle.properties

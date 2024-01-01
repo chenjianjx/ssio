@@ -8,6 +8,7 @@ buildscript {
     }
     dependencies {
         classpath("io.spring.gradle:dependency-management-plugin:1.1.4")
+        classpath('org.owasp:dependency-check-gradle:9.0.7')
     }
 }
 
@@ -30,6 +31,7 @@ subprojects {
     apply plugin: 'pmd'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
+    apply plugin: 'org.owasp.dependencycheck'
 
 
     java {
@@ -42,26 +44,26 @@ subprojects {
 
     dependencyManagement {
 
-        def slf4jVersion = "1.7.30"
+        def slf4jVersion = "1.7.36"
 
         dependencies {
-            dependency "commons-io:commons-io:2.7"
-            dependency "org.apache.commons:commons-lang3:3.11"
+            dependency "commons-io:commons-io:2.15.1"
+            dependency "org.apache.commons:commons-lang3:3.14.0"
             dependency "commons-beanutils:commons-beanutils:1.9.4"
-            dependency "org.apache.poi:poi-ooxml:4.1.2"
-            dependency "org.apache.commons:commons-csv:1.6"
+            dependency "org.apache.poi:poi-ooxml:5.2.5"
+            dependency "org.apache.commons:commons-csv:1.10.0"
             dependency "org.slf4j:slf4j-api:${slf4jVersion}"
-            dependency 'org.projectlombok:lombok:1.18.22'
-            dependency 'org.jsoup:jsoup:1.17.1'
+            dependency 'org.projectlombok:lombok:1.18.30'
+            dependency 'org.jsoup:jsoup:1.17.2'
 
-            dependency 'org.junit.jupiter:junit-jupiter:5.6.2'
-            dependency 'org.mockito:mockito-core:3.11.2'
+            dependency 'org.junit.jupiter:junit-jupiter:5.10.1'
+            dependency 'org.mockito:mockito-core:3.12.4'
             dependency "org.slf4j:slf4j-simple:${slf4jVersion}"
         }
     }
 
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
     }
 
@@ -73,6 +75,12 @@ subprojects {
 
     test {
         useJUnitPlatform()
+    }
+
+    dependencyCheck {
+        nvd {
+            apiKey = nvdApiKey
+        }
     }
 
 
@@ -89,6 +97,10 @@ subprojects {
                     }
                 }
                 pom {
+                    name = "${project.name}"
+                    description = 'Simple Spreadsheet I/O - ${project.name}'
+                    url = "https://github.com/chenjianjx/ssio/${project.name}"
+
                     scm {
                         connection = "scm:git:git://github.com/chenjianjx/ssio.git"
                         developerConnection = "scm:git:ssh://github.com:chenjianjx/ssio.git/${project.name}"
@@ -131,7 +143,7 @@ subprojects {
     }
 }
 
-task testAll {
+tasks.register('testAll') {
     dependsOn subprojects*.test
 }
 

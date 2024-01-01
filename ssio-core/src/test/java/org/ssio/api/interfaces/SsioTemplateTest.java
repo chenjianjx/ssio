@@ -8,6 +8,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentMatchers;
 import org.ssio.api.interfaces.annotation.SsColumn;
 import org.ssio.api.interfaces.parse.CellError;
 import org.ssio.api.interfaces.parse.CellsErrorDuringParseException;
@@ -36,7 +37,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -149,7 +149,7 @@ class SsioTemplateTest {
 
         SaveResult saveResult = new SaveResult();
         saveResult.getDatumErrors().addAll(datumErrorsDuringSave);
-        when(ssioTemplate.ssioManager.save(any())).thenReturn(saveResult);
+        when(ssioTemplate.ssioManager.save(ArgumentMatchers.any())).thenReturn(saveResult);
 
         Executable exec = () -> ssioTemplate.save(() -> new TestSaveParamBuilder(), beans, TestBean.class, outputTarget, stillSaveIfDataError);
 
@@ -183,7 +183,7 @@ class SsioTemplateTest {
         List<TestBean> resultBeans = Collections.singletonList(new TestBean("someString"));
         parseResult.getBeans().addAll(resultBeans);
         parseResult.getCellErrors().addAll(cellErrorsDuringParse);
-        when(ssioTemplate.ssioManager.parse(any())).thenReturn(parseResult);
+        when(ssioTemplate.ssioManager.parse(ArgumentMatchers.any())).thenReturn(parseResult);
 
         Supplier<List<TestBean>> parse = () -> {
             try {

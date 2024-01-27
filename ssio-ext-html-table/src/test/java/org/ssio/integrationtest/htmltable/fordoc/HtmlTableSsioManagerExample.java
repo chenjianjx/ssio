@@ -25,7 +25,7 @@ import static org.ssio.integrationtest.support.SsioITHelper.createSpreadsheetFil
 public class HtmlTableSsioManagerExample {
 
     public static void main(String args[]) throws IOException {
-        File sheetFile = createSpreadsheetFile(HtmlTableSsioManagerExample.class.getSimpleName(), "htmltable");
+        File sheetFile = createSpreadsheetFile(HtmlTableSsioManagerExample.class.getSimpleName(), "html");
 
         FileOutputStream outputStream = new FileOutputStream(sheetFile);
 

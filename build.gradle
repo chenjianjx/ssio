@@ -98,7 +98,7 @@ subprojects {
                 }
                 pom {
                     name = "${project.name}"
-                    description = 'Simple Spreadsheet I/O - ${project.name}'
+                    description = "Simple Spreadsheet I/O - ${project.name}"
                     url = "https://github.com/chenjianjx/ssio/${project.name}"
 
                     scm {

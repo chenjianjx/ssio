@@ -25,7 +25,7 @@ import static org.ssio.integrationtest.support.SsioITHelper.createSpreadsheetFil
 public class HtmlTableSsioManagerExample {
 
     public static void main(String args[]) throws IOException {
-        File sheetFile = createSpreadsheetFile(HtmlTableSsioManagerExample.class.getSimpleName(), "htmltable");
+        File sheetFile = createSpreadsheetFile(HtmlTableSsioManagerExample.class.getSimpleName(), "html");
 
         FileOutputStream outputStream = new FileOutputStream(sheetFile);
 
@@ -46,7 +46,7 @@ public class HtmlTableSsioManagerExample {
                                 //assign an ID to the table html element
                                 .setOneTableAttribute("id", "some-id")
                                 //assign a CSS class to the table html element
-                                .setOneTableAttribute("class", "my-own-table")
+                            //    .setOneTableAttribute("class", "my-own-table")
                                 .build())
                         .build();
 

@@ -4,7 +4,6 @@ body {
 .ssio-table {
     width: 100%;
     border-collapse: collapse;
-    display: block;
     overflow-x: auto;
 }
 

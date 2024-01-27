@@ -37,9 +37,9 @@ public @interface SsColumn {
 
     /**
      * The column name in the sheet.
-     * For save: If it is not supplied, the name will be derived from the java property name, e.g.  fooBar => Foo Bar
+     * For save: If it is not supplied, the name will be derived from the java property name, e.g.  "fooBar" to "Foo Bar"
      * For parse:
-     * * If the column mapping mode is by name and the name is not supplied here, the name the name will be derived from the java property name, e.g. column "Foo Bar" will be mapped to "fooBar"
+     * * If the column mapping mode is by name and the name is not supplied here, the name will be derived from the java property name, e.g. column "Foo Bar" will be mapped to "fooBar"
      * * If the column mapping mode is not by name, the name here will be ignored
      *
      

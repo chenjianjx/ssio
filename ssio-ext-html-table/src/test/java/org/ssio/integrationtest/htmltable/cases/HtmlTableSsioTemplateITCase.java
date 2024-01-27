@@ -9,6 +9,7 @@ import org.ssio.api.interfaces.htmltable.HtmlTableSsioTemplate;
 import org.ssio.api.interfaces.htmltable.save.HtmlElementAttributes;
 import org.ssio.integrationtest.beans.ITBean;
 import org.ssio.integrationtest.beans.ITBeanFactory;
+import org.ssio.integrationtest.beans.ITSimpleBean;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,9 +38,16 @@ class HtmlTableSsioTemplateITCase {
         }
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = {true, false})
-    void beansToHtmlPage_customAttributes(boolean withTableAttributes) throws IOException {
+    @Test
+    void beansToHtmlPage_simpleBean() throws IOException {
+        File targetFile = createSpreadsheetFile("beansToHtmlPage_simpleBean", "html");
+        try (OutputStream outputStream = new FileOutputStream(targetFile)) {
+            HtmlTableSsioTemplate.defaultInstance().toHtmlPage(Arrays.asList(new ITSimpleBean()), ITSimpleBean.class, outputStream, "utf8", false);
+        }
+    }
+
+    @Test
+    void beansToHtmlPage_customAttributes() throws IOException {
         File targetFile = createSpreadsheetFile("beansToHtmlPage_customAttributes", "html");
         String ownStyles = IOUtils.toString(this.getClass().getResource("/integration-test/ownStyles.css"), "utf8");
 

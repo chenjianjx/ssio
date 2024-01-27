@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class SsioStringUtils {
 
     /**
-     * firstName => First Name
+     * "firstName" to "First Name"
      *
      * @param camelStr
      

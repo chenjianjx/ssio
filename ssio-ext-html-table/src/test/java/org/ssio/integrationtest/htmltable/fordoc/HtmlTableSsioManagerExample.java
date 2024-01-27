@@ -46,7 +46,7 @@ public class HtmlTableSsioManagerExample {
                                 //assign an ID to the table html element
                                 .setOneTableAttribute("id", "some-id")
                                 //assign a CSS class to the table html element
-                            //    .setOneTableAttribute("class", "my-own-table")
+                                .setOneTableAttribute("class", "my-own-table")
                                 .build())
                         .build();
 
